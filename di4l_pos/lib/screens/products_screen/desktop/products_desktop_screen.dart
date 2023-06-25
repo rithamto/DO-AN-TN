@@ -10,7 +10,7 @@ class ProductsDesktopScreen extends StatefulWidget {
   static BlocProvider<ProductsCubit> provider() {
     return BlocProvider(
       create: (context) => ProductsCubit(),
-      child: ProductsDesktopScreen(),
+      child: const ProductsDesktopScreen(),
     );
   }
 
@@ -31,7 +31,7 @@ class _ProductsDesktopScreenState extends State<ProductsDesktopScreen>
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.all(8.0),
-        child: Text('Products'),
+        child: const Text('Products'),
       ),
     );
   }

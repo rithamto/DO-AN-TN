@@ -58,7 +58,7 @@ class ProductResponse {
 class VariantValueCount {
   ProductVariation productVariation;
   int count;
-  VariantValueCount(this.productVariation, this.count); 
+  VariantValueCount(this.productVariation, this.count);
 }
 
 class Product {
@@ -98,6 +98,7 @@ class Product {
     this.subCategory,
     this.productTax,
     this.productLocations,
+    this.purchaseLines,
   });
 
   int? id;
@@ -135,6 +136,7 @@ class Product {
   dynamic subCategory;
   dynamic productTax;
   List<ProductLocation?>? productLocations;
+  List<PurchaseLine?>? purchaseLines;
   List<ProductOfSell> variantsSelect = [];
 
   Product copyWith({
@@ -173,45 +175,47 @@ class Product {
     dynamic subCategory,
     dynamic productTax,
     List<ProductLocation?>? productLocations,
+    List<PurchaseLine?>? purchaseLines,
   }) =>
       Product(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        businessId: businessId ?? this.businessId,
-        type: type ?? this.type,
-        subUnitIds: subUnitIds ?? this.subUnitIds,
-        enableStock: enableStock ?? this.enableStock,
-        alertQuantity: alertQuantity ?? this.alertQuantity,
-        sku: sku ?? this.sku,
-        barcodeType: barcodeType ?? this.barcodeType,
-        expiryPeriod: expiryPeriod ?? this.expiryPeriod,
-        expiryPeriodType: expiryPeriodType ?? this.expiryPeriodType,
-        enableSrNo: enableSrNo ?? this.enableSrNo,
-        weight: weight ?? this.weight,
-        productCustomField1: productCustomField1 ?? this.productCustomField1,
-        productCustomField2: productCustomField2 ?? this.productCustomField2,
-        productCustomField3: productCustomField3 ?? this.productCustomField3,
-        productCustomField4: productCustomField4 ?? this.productCustomField4,
-        image: image ?? this.image,
-        woocommerceMediaId: woocommerceMediaId ?? this.woocommerceMediaId,
-        productDescription: productDescription ?? this.productDescription,
-        createdBy: createdBy ?? this.createdBy,
-        woocommerceProductId: woocommerceProductId ?? this.woocommerceProductId,
-        woocommerceDisableSync:
-            woocommerceDisableSync ?? this.woocommerceDisableSync,
-        warrantyId: warrantyId ?? this.warrantyId,
-        isInactive: isInactive ?? this.isInactive,
-        repairModelId: repairModelId ?? this.repairModelId,
-        notForSelling: notForSelling ?? this.notForSelling,
-        imageUrl: imageUrl ?? this.imageUrl,
-        productVariations: productVariations ?? this.productVariations,
-        brand: brand ?? this.brand,
-        unit: unit ?? this.unit,
-        category: category ?? this.category,
-        subCategory: subCategory ?? this.subCategory,
-        productTax: productTax ?? this.productTax,
-        productLocations: productLocations ?? this.productLocations,
-      );
+          id: id ?? this.id,
+          name: name ?? this.name,
+          businessId: businessId ?? this.businessId,
+          type: type ?? this.type,
+          subUnitIds: subUnitIds ?? this.subUnitIds,
+          enableStock: enableStock ?? this.enableStock,
+          alertQuantity: alertQuantity ?? this.alertQuantity,
+          sku: sku ?? this.sku,
+          barcodeType: barcodeType ?? this.barcodeType,
+          expiryPeriod: expiryPeriod ?? this.expiryPeriod,
+          expiryPeriodType: expiryPeriodType ?? this.expiryPeriodType,
+          enableSrNo: enableSrNo ?? this.enableSrNo,
+          weight: weight ?? this.weight,
+          productCustomField1: productCustomField1 ?? this.productCustomField1,
+          productCustomField2: productCustomField2 ?? this.productCustomField2,
+          productCustomField3: productCustomField3 ?? this.productCustomField3,
+          productCustomField4: productCustomField4 ?? this.productCustomField4,
+          image: image ?? this.image,
+          woocommerceMediaId: woocommerceMediaId ?? this.woocommerceMediaId,
+          productDescription: productDescription ?? this.productDescription,
+          createdBy: createdBy ?? this.createdBy,
+          woocommerceProductId:
+              woocommerceProductId ?? this.woocommerceProductId,
+          woocommerceDisableSync:
+              woocommerceDisableSync ?? this.woocommerceDisableSync,
+          warrantyId: warrantyId ?? this.warrantyId,
+          isInactive: isInactive ?? this.isInactive,
+          repairModelId: repairModelId ?? this.repairModelId,
+          notForSelling: notForSelling ?? this.notForSelling,
+          imageUrl: imageUrl ?? this.imageUrl,
+          productVariations: productVariations ?? this.productVariations,
+          brand: brand ?? this.brand,
+          unit: unit ?? this.unit,
+          category: category ?? this.category,
+          subCategory: subCategory ?? this.subCategory,
+          productTax: productTax ?? this.productTax,
+          productLocations: productLocations ?? this.productLocations,
+          purchaseLines: purchaseLines ?? this.purchaseLines);
 
   factory Product.fromRawJson(String str) => Product.fromJson(json.decode(str));
 
@@ -261,6 +265,10 @@ class Product {
             ? null
             : List<ProductLocation>.from(json["product_locations"]
                 .map((x) => ProductLocation.fromJson(x))),
+        purchaseLines: json["purchase_lines"] == null
+            ? null
+            : List<PurchaseLine>.from(
+                json["purchase_lines"].map((x) => PurchaseLine.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -402,4 +410,112 @@ class ProductVariation {
     }
     return (variations ?? []).map((e) => e?.subSku ?? '').join(', ');
   }
+}
+
+class PurchaseLine {
+  int? id;
+  int? transactionId;
+  int? productId;
+  int? variationId;
+  int? quantity;
+  String? ppWithoutDiscount;
+  String? discountPercent;
+  String? purchasePrice;
+  String? purchasePriceIncTax;
+  String? itemTax;
+  dynamic taxId;
+  dynamic purchaseOrderLineId;
+  String? quantitySold;
+  String? quantityAdjusted;
+  String? quantityReturned;
+  String? poQuantityPurchased;
+  String? mfgQuantityUsed;
+  dynamic mfgDate;
+  dynamic expDate;
+  dynamic lotNumber;
+  dynamic subUnitId;
+  String? createdAt;
+  String? updatedAt;
+
+  PurchaseLine({
+    this.id,
+    this.transactionId,
+    this.productId,
+    this.variationId,
+    this.quantity,
+    this.ppWithoutDiscount,
+    this.discountPercent,
+    this.purchasePrice,
+    this.purchasePriceIncTax,
+    this.itemTax,
+    this.taxId,
+    this.purchaseOrderLineId,
+    this.quantitySold,
+    this.quantityAdjusted,
+    this.quantityReturned,
+    this.poQuantityPurchased,
+    this.mfgQuantityUsed,
+    this.mfgDate,
+    this.expDate,
+    this.lotNumber,
+    this.subUnitId,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  factory PurchaseLine.fromRawJson(String str) =>
+      PurchaseLine.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory PurchaseLine.fromJson(Map<String, dynamic> json) => PurchaseLine(
+        id: json["id"],
+        transactionId: json["transaction_id"],
+        productId: json["product_id"],
+        variationId: json["variation_id"],
+        quantity: json["quantity"],
+        ppWithoutDiscount: json["pp_without_discount"],
+        discountPercent: json["discount_percent"],
+        purchasePrice: json["purchase_price"],
+        purchasePriceIncTax: json["purchase_price_inc_tax"],
+        itemTax: json["item_tax"],
+        taxId: json["tax_id"],
+        purchaseOrderLineId: json["purchase_order_line_id"],
+        quantitySold: json["quantity_sold"],
+        quantityAdjusted: json["quantity_adjusted"],
+        quantityReturned: json["quantity_returned"],
+        poQuantityPurchased: json["po_quantity_purchased"],
+        mfgQuantityUsed: json["mfg_quantity_used"],
+        mfgDate: json["mfg_date"],
+        expDate: json["exp_date"],
+        lotNumber: json["lot_number"],
+        subUnitId: json["sub_unit_id"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+      );
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "transaction_id": transactionId,
+        "product_id": productId,
+        "variation_id": variationId,
+        "quantity": quantity,
+        "pp_without_discount": ppWithoutDiscount,
+        "discount_percent": discountPercent,
+        "purchase_price": purchasePrice,
+        "purchase_price_inc_tax": purchasePriceIncTax,
+        "item_tax": itemTax,
+        "tax_id": taxId,
+        "purchase_order_line_id": purchaseOrderLineId,
+        "quantity_sold": quantitySold,
+        "quantity_adjusted": quantityAdjusted,
+        "quantity_returned": quantityReturned,
+        "po_quantity_purchased": poQuantityPurchased,
+        "mfg_quantity_used": mfgQuantityUsed,
+        "mfg_date": mfgDate,
+        "exp_date": expDate,
+        "lot_number": lotNumber,
+        "sub_unit_id": subUnitId,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+      };
 }

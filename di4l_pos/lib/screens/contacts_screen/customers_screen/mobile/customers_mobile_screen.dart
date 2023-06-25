@@ -127,7 +127,7 @@ class _CustomersScreenState extends State<CustomersMobileScreen>
   }
 }
 
-class buildBottomAppBar extends StatelessWidget with PreferredSizeWidget {
+class buildBottomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const buildBottomAppBar(
       {Key? key,
       required bool showSearch,
@@ -150,7 +150,7 @@ class buildBottomAppBar extends StatelessWidget with PreferredSizeWidget {
     return _showSearch
         ? SearchWidgetContact(
             controller: _txtSearch,
-            hintText: 'Tìm kiếm khách hàng',
+            hintText: 'T??m ki???m kh??ch h??ng',
             onChange: _onChange)
         : TabBar(
             labelColor: GlobalColors.primaryColor,
@@ -164,9 +164,9 @@ class buildBottomAppBar extends StatelessWidget with PreferredSizeWidget {
             indicatorSize: TabBarIndicatorSize.label,
             tabs: <Widget>[
                 CustomTabBar(title: 'all'.tr),
-                CustomTabBar(title: 'Chưa giao'.tr),
-                CustomTabBar(title: 'Phải thu'.tr),
-                CustomTabBar(title: 'Phải trả'.tr),
+                CustomTabBar(title: 'Ch??a giao'.tr),
+                CustomTabBar(title: 'Ph???i thu'.tr),
+                CustomTabBar(title: 'Ph???i tr???'.tr),
               ]);
   }
 

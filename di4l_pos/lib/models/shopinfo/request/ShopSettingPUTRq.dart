@@ -7,11 +7,11 @@ import 'dart:convert';
 class ShopSettingRq {
   String? name;
   String? startDate;
-  String? defaultProfitPercent;
+  int? defaultProfitPercent;
   int? currencyId;
   String? currencySymbolPlacement;
   String? timeZone;
-  String? businessLogo;
+  // String? businessLogo;
   int? fyStartMonth;
   String? accountingMethod;
   int? transactionEditDays;
@@ -57,14 +57,14 @@ class ShopSettingRq {
   int? enableTooltip;
   int? enableRp;
   String? rpName;
-  String? amountForUnitRp;
-  String? minOrderTotalForRp;
-  String? maxRpPerOrder;
-  String? redeemAmountPerUnitRp;
-  String? minOrderTotalForRedeem;
-  String? minRedeemPoint;
-  String? maxRedeemPoint;
-  String? rpExpiryPeriod;
+  dynamic amountForUnitRp;
+  dynamic minOrderTotalForRp;
+  dynamic maxRpPerOrder;
+  dynamic redeemAmountPerUnitRp;
+  dynamic minOrderTotalForRedeem;
+  dynamic minRedeemPoint;
+  dynamic maxRedeemPoint;
+  dynamic rpExpiryPeriod;
   String? rpExpiryType;
   String? domain;
 
@@ -75,7 +75,7 @@ class ShopSettingRq {
     this.currencyId,
     this.currencySymbolPlacement,
     this.timeZone,
-    this.businessLogo,
+    // this.businessLogo,
     this.fyStartMonth,
     this.accountingMethod,
     this.transactionEditDays,
@@ -136,11 +136,11 @@ class ShopSettingRq {
   ShopSettingRq copyWith({
     String? name,
     String? startDate,
-    String? defaultProfitPercent,
+    int? defaultProfitPercent,
     int? currencyId,
     String? currencySymbolPlacement,
     String? timeZone,
-    String? businessLogo,
+    // String? businessLogo,
     int? fyStartMonth,
     String? accountingMethod,
     int? transactionEditDays,
@@ -186,14 +186,14 @@ class ShopSettingRq {
     int? enableTooltip,
     int? enableRp,
     String? rpName,
-    String? amountForUnitRp,
-    String? minOrderTotalForRp,
-    String? maxRpPerOrder,
-    String? redeemAmountPerUnitRp,
-    String? minOrderTotalForRedeem,
-    String? minRedeemPoint,
-    String? maxRedeemPoint,
-    String? rpExpiryPeriod,
+    dynamic amountForUnitRp,
+    dynamic minOrderTotalForRp,
+    dynamic maxRpPerOrder,
+    dynamic redeemAmountPerUnitRp,
+    dynamic minOrderTotalForRedeem,
+    dynamic minRedeemPoint,
+    dynamic maxRedeemPoint,
+    dynamic rpExpiryPeriod,
     String? rpExpiryType,
     String? domain,
   }) =>
@@ -205,7 +205,7 @@ class ShopSettingRq {
         currencySymbolPlacement:
             currencySymbolPlacement ?? this.currencySymbolPlacement,
         timeZone: timeZone ?? this.timeZone,
-        businessLogo: businessLogo ?? this.businessLogo,
+        // businessLogo: businessLogo ?? this.businessLogo,
         fyStartMonth: fyStartMonth ?? this.fyStartMonth,
         accountingMethod: accountingMethod ?? this.accountingMethod,
         transactionEditDays: transactionEditDays ?? this.transactionEditDays,
@@ -278,7 +278,7 @@ class ShopSettingRq {
         currencyId: json["currency_id"],
         currencySymbolPlacement: json["currency_symbol_placement"],
         timeZone: json["time_zone"],
-        businessLogo: json["business_logo"],
+        // businessLogo: json["business_logo"],
         fyStartMonth: json["fy_start_month"],
         accountingMethod: json["accounting_method"],
         transactionEditDays: json["transaction_edit_days"],
@@ -362,7 +362,7 @@ class ShopSettingRq {
         "currency_id": currencyId,
         "currency_symbol_placement": currencySymbolPlacement,
         "time_zone": timeZone,
-        "business_logo": businessLogo,
+        // "business_logo": businessLogo,
         "fy_start_month": fyStartMonth,
         "accounting_method": accountingMethod,
         "transaction_edit_days": transactionEditDays,
@@ -1844,6 +1844,8 @@ class SmsSettings {
   String? twilioSid;
   String? twilioToken;
   String? twilioFrom;
+  String? speedToken;
+  String? speedFrom;
   String? smsStartLesson;
   String? url;
   String? sendToParamName;
@@ -1884,6 +1886,8 @@ class SmsSettings {
     this.twilioSid,
     this.twilioToken,
     this.twilioFrom,
+    this.speedToken,
+    this.speedFrom,
     this.smsStartLesson,
     this.url,
     this.sendToParamName,
@@ -1925,6 +1929,8 @@ class SmsSettings {
     String? twilioSid,
     String? twilioToken,
     String? twilioFrom,
+    String? speedToken,
+    String? speedFrom,
     String? smsStartLesson,
     String? url,
     String? sendToParamName,
@@ -1965,6 +1971,8 @@ class SmsSettings {
         twilioSid: twilioSid ?? this.twilioSid,
         twilioToken: twilioToken ?? this.twilioToken,
         twilioFrom: twilioFrom ?? this.twilioFrom,
+        speedToken: speedToken ?? this.speedToken,
+        speedFrom: speedFrom ?? this.speedFrom,
         smsStartLesson: smsStartLesson ?? this.smsStartLesson,
         url: url ?? this.url,
         sendToParamName: sendToParamName ?? this.sendToParamName,
@@ -2011,6 +2019,8 @@ class SmsSettings {
         twilioSid: json["twilio_sid"],
         twilioToken: json["twilio_token"],
         twilioFrom: json["twilio_from"],
+        speedToken: json["speed_token"],
+        speedFrom: json["speed_from"],
         smsStartLesson: json["sms_start_lesson"],
         url: json["url"],
         sendToParamName: json["send_to_param_name"],
@@ -2052,6 +2062,8 @@ class SmsSettings {
         "twilio_sid": twilioSid,
         "twilio_token": twilioToken,
         "twilio_from": twilioFrom,
+        "speed_token": speedToken,
+        "speed_from": speedFrom,
         "sms_start_lesson": smsStartLesson,
         "url": url,
         "send_to_param_name": sendToParamName,

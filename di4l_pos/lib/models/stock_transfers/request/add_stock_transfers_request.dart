@@ -1,17 +1,19 @@
 class AddStockTransfersRequest {
   String? refNo;
   String? status;
-  String? locationId;
-  String? transferLocationId;
+  int? locationId;
+  String? transactionDate;
+  int? transferLocationId;
   dynamic searchProduct;
   String? finalTotal;
-  List<Products>? products;
+  List<ProductsRequest>? products;
   String? shippingCharges;
   String? additionalNotes;
 
   AddStockTransfersRequest(
       {this.refNo,
       this.status,
+      this.transactionDate,
       this.locationId,
       this.transferLocationId,
       this.searchProduct,
@@ -23,14 +25,15 @@ class AddStockTransfersRequest {
   AddStockTransfersRequest.fromJson(Map<String, dynamic> json) {
     refNo = json['ref_no'];
     status = json['status'];
+    transactionDate = json['transaction_date'];
     locationId = json['location_id'];
     transferLocationId = json['transfer_location_id'];
     searchProduct = json['search_product'];
     finalTotal = json['final_total'];
     if (json['products'] != null) {
-      products = <Products>[];
+      products = <ProductsRequest>[];
       json['products'].forEach((v) {
-        products!.add(Products.fromJson(v));
+        products!.add(ProductsRequest.fromJson(v));
       });
     }
     shippingCharges = json['shipping_charges'];
@@ -41,6 +44,7 @@ class AddStockTransfersRequest {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['ref_no'] = refNo;
     data['status'] = status;
+    data['transaction_date'] = transactionDate;
     data['location_id'] = locationId;
     data['transfer_location_id'] = transferLocationId;
     data['search_product'] = searchProduct;
@@ -54,19 +58,19 @@ class AddStockTransfersRequest {
   }
 }
 
-class Products {
+class ProductsRequest {
   String? lotNoLineId;
-  String? productId;
-  String? variationId;
-  String? enableStock;
+  int? productId;
+  int? variationId;
+  int? enableStock;
   String? quantity;
-  String? baseUnitMultiplier;
-  String? productUnitId;
-  String? subUnitId;
+  dynamic baseUnitMultiplier;
+  int? productUnitId;
+  int? subUnitId;
   String? unitPrice;
   String? price;
 
-  Products(
+  ProductsRequest(
       {this.lotNoLineId,
       this.productId,
       this.variationId,
@@ -78,7 +82,7 @@ class Products {
       this.unitPrice,
       this.price});
 
-  Products.fromJson(Map<String, dynamic> json) {
+  ProductsRequest.fromJson(Map<String, dynamic> json) {
     lotNoLineId = json['lot_no_line_id'];
     productId = json['product_id'];
     variationId = json['variation_id'];

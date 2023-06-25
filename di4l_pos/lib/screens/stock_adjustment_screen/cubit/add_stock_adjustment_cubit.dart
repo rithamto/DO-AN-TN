@@ -46,6 +46,7 @@ class AddStockAdjustmentCubit extends Cubit<AddStockAdjustmentState> {
             data: state.data!
                 .copyWith(status: StatusType.loading, error: 'Loading...')));
         final request = AddStockAdjustmentRequest(
+          finalTotal: finalTotal,
           locationId: locationId,
           transactionDate: transactionDate,
           adjustmentType: adjustmentType,
@@ -67,7 +68,6 @@ class AddStockAdjustmentCubit extends Cubit<AddStockAdjustmentState> {
         }
       }
     } catch (error) {
-      debugPrint('Error:${error}');
       emit(AddStockAdjustmentState.status(
           data: state.data!.copyWith(
               status: StatusType.error, error: 'Something went wrong')));
@@ -80,6 +80,11 @@ class AddStockAdjustmentCubit extends Cubit<AddStockAdjustmentState> {
   void enableProduct(bool? value, String type) {
     emit(AddStockAdjustmentState.enableProduct(
         data: state.data!.copyWith(enableProduct: value!)));
+  }
+
+  void sum(String value) {
+    emit(AddStockAdjustmentState.enableProduct(
+        data: state.data!.copyWith(sum: value)));
   }
 
   Future<String> checkEmpty(

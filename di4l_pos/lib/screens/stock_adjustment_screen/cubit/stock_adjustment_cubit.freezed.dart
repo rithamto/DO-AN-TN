@@ -19,11 +19,14 @@ mixin _$StockAdjustmentStateData {
   StatusType get status => throw _privateConstructorUsedError;
   List<StockAdjustmentData> get stockAdjustments =>
       throw _privateConstructorUsedError;
+  List<StockAdjustmentData> get stockAdjustmentsOriginal =>
+      throw _privateConstructorUsedError;
   StockAdjustmentData? get stockAdjustment =>
       throw _privateConstructorUsedError;
   StockAdjustment? get stockAdjustmentDetail =>
       throw _privateConstructorUsedError;
   List<Activities> get activities => throw _privateConstructorUsedError;
+  int? get page => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $StockAdjustmentStateDataCopyWith<StockAdjustmentStateData> get copyWith =>
@@ -39,9 +42,11 @@ abstract class $StockAdjustmentStateDataCopyWith<$Res> {
   $Res call(
       {StatusType status,
       List<StockAdjustmentData> stockAdjustments,
+      List<StockAdjustmentData> stockAdjustmentsOriginal,
       StockAdjustmentData? stockAdjustment,
       StockAdjustment? stockAdjustmentDetail,
-      List<Activities> activities});
+      List<Activities> activities,
+      int? page});
 }
 
 /// @nodoc
@@ -60,9 +65,11 @@ class _$StockAdjustmentStateDataCopyWithImpl<$Res,
   $Res call({
     Object? status = null,
     Object? stockAdjustments = null,
+    Object? stockAdjustmentsOriginal = null,
     Object? stockAdjustment = freezed,
     Object? stockAdjustmentDetail = freezed,
     Object? activities = null,
+    Object? page = freezed,
   }) {
     return _then(_value.copyWith(
       status: null == status
@@ -72,6 +79,10 @@ class _$StockAdjustmentStateDataCopyWithImpl<$Res,
       stockAdjustments: null == stockAdjustments
           ? _value.stockAdjustments
           : stockAdjustments // ignore: cast_nullable_to_non_nullable
+              as List<StockAdjustmentData>,
+      stockAdjustmentsOriginal: null == stockAdjustmentsOriginal
+          ? _value.stockAdjustmentsOriginal
+          : stockAdjustmentsOriginal // ignore: cast_nullable_to_non_nullable
               as List<StockAdjustmentData>,
       stockAdjustment: freezed == stockAdjustment
           ? _value.stockAdjustment
@@ -85,6 +96,10 @@ class _$StockAdjustmentStateDataCopyWithImpl<$Res,
           ? _value.activities
           : activities // ignore: cast_nullable_to_non_nullable
               as List<Activities>,
+      page: freezed == page
+          ? _value.page
+          : page // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -101,9 +116,11 @@ abstract class _$$_StockAdjustmentStateDataCopyWith<$Res>
   $Res call(
       {StatusType status,
       List<StockAdjustmentData> stockAdjustments,
+      List<StockAdjustmentData> stockAdjustmentsOriginal,
       StockAdjustmentData? stockAdjustment,
       StockAdjustment? stockAdjustmentDetail,
-      List<Activities> activities});
+      List<Activities> activities,
+      int? page});
 }
 
 /// @nodoc
@@ -120,9 +137,11 @@ class __$$_StockAdjustmentStateDataCopyWithImpl<$Res>
   $Res call({
     Object? status = null,
     Object? stockAdjustments = null,
+    Object? stockAdjustmentsOriginal = null,
     Object? stockAdjustment = freezed,
     Object? stockAdjustmentDetail = freezed,
     Object? activities = null,
+    Object? page = freezed,
   }) {
     return _then(_$_StockAdjustmentStateData(
       status: null == status
@@ -132,6 +151,10 @@ class __$$_StockAdjustmentStateDataCopyWithImpl<$Res>
       stockAdjustments: null == stockAdjustments
           ? _value._stockAdjustments
           : stockAdjustments // ignore: cast_nullable_to_non_nullable
+              as List<StockAdjustmentData>,
+      stockAdjustmentsOriginal: null == stockAdjustmentsOriginal
+          ? _value._stockAdjustmentsOriginal
+          : stockAdjustmentsOriginal // ignore: cast_nullable_to_non_nullable
               as List<StockAdjustmentData>,
       stockAdjustment: freezed == stockAdjustment
           ? _value.stockAdjustment
@@ -145,6 +168,10 @@ class __$$_StockAdjustmentStateDataCopyWithImpl<$Res>
           ? _value._activities
           : activities // ignore: cast_nullable_to_non_nullable
               as List<Activities>,
+      page: freezed == page
+          ? _value.page
+          : page // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -155,10 +182,13 @@ class _$_StockAdjustmentStateData implements _StockAdjustmentStateData {
   const _$_StockAdjustmentStateData(
       {this.status = StatusType.init,
       final List<StockAdjustmentData> stockAdjustments = const [],
+      final List<StockAdjustmentData> stockAdjustmentsOriginal = const [],
       this.stockAdjustment,
       this.stockAdjustmentDetail,
-      final List<Activities> activities = const []})
+      final List<Activities> activities = const [],
+      this.page = 0})
       : _stockAdjustments = stockAdjustments,
+        _stockAdjustmentsOriginal = stockAdjustmentsOriginal,
         _activities = activities;
 
   @override
@@ -172,6 +202,16 @@ class _$_StockAdjustmentStateData implements _StockAdjustmentStateData {
       return _stockAdjustments;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_stockAdjustments);
+  }
+
+  final List<StockAdjustmentData> _stockAdjustmentsOriginal;
+  @override
+  @JsonKey()
+  List<StockAdjustmentData> get stockAdjustmentsOriginal {
+    if (_stockAdjustmentsOriginal is EqualUnmodifiableListView)
+      return _stockAdjustmentsOriginal;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_stockAdjustmentsOriginal);
   }
 
   @override
@@ -188,8 +228,12 @@ class _$_StockAdjustmentStateData implements _StockAdjustmentStateData {
   }
 
   @override
+  @JsonKey()
+  final int? page;
+
+  @override
   String toString() {
-    return 'StockAdjustmentStateData(status: $status, stockAdjustments: $stockAdjustments, stockAdjustment: $stockAdjustment, stockAdjustmentDetail: $stockAdjustmentDetail, activities: $activities)';
+    return 'StockAdjustmentStateData(status: $status, stockAdjustments: $stockAdjustments, stockAdjustmentsOriginal: $stockAdjustmentsOriginal, stockAdjustment: $stockAdjustment, stockAdjustmentDetail: $stockAdjustmentDetail, activities: $activities, page: $page)';
   }
 
   @override
@@ -200,12 +244,15 @@ class _$_StockAdjustmentStateData implements _StockAdjustmentStateData {
             (identical(other.status, status) || other.status == status) &&
             const DeepCollectionEquality()
                 .equals(other._stockAdjustments, _stockAdjustments) &&
+            const DeepCollectionEquality().equals(
+                other._stockAdjustmentsOriginal, _stockAdjustmentsOriginal) &&
             (identical(other.stockAdjustment, stockAdjustment) ||
                 other.stockAdjustment == stockAdjustment) &&
             (identical(other.stockAdjustmentDetail, stockAdjustmentDetail) ||
                 other.stockAdjustmentDetail == stockAdjustmentDetail) &&
             const DeepCollectionEquality()
-                .equals(other._activities, _activities));
+                .equals(other._activities, _activities) &&
+            (identical(other.page, page) || other.page == page));
   }
 
   @override
@@ -213,9 +260,11 @@ class _$_StockAdjustmentStateData implements _StockAdjustmentStateData {
       runtimeType,
       status,
       const DeepCollectionEquality().hash(_stockAdjustments),
+      const DeepCollectionEquality().hash(_stockAdjustmentsOriginal),
       stockAdjustment,
       stockAdjustmentDetail,
-      const DeepCollectionEquality().hash(_activities));
+      const DeepCollectionEquality().hash(_activities),
+      page);
 
   @JsonKey(ignore: true)
   @override
@@ -229,20 +278,26 @@ abstract class _StockAdjustmentStateData implements StockAdjustmentStateData {
   const factory _StockAdjustmentStateData(
       {final StatusType status,
       final List<StockAdjustmentData> stockAdjustments,
+      final List<StockAdjustmentData> stockAdjustmentsOriginal,
       final StockAdjustmentData? stockAdjustment,
       final StockAdjustment? stockAdjustmentDetail,
-      final List<Activities> activities}) = _$_StockAdjustmentStateData;
+      final List<Activities> activities,
+      final int? page}) = _$_StockAdjustmentStateData;
 
   @override
   StatusType get status;
   @override
   List<StockAdjustmentData> get stockAdjustments;
   @override
+  List<StockAdjustmentData> get stockAdjustmentsOriginal;
+  @override
   StockAdjustmentData? get stockAdjustment;
   @override
   StockAdjustment? get stockAdjustmentDetail;
   @override
   List<Activities> get activities;
+  @override
+  int? get page;
   @override
   @JsonKey(ignore: true)
   _$$_StockAdjustmentStateDataCopyWith<_$_StockAdjustmentStateData>

@@ -5,9 +5,11 @@ class StockTransfersStateData with _$StockTransfersStateData {
   const factory StockTransfersStateData({
     @Default(StatusType.init) StatusType status,
     @Default([]) List<StockTransfersData> stockTransfers,
+    @Default([]) List<StockTransfersData> stockTransfersOriginal,
     SellTransfer? sellTransfers,
     LocationDetails? locationDetails,
     @Default([]) List<Activities> activities,
+    @Default(0) int? page,
     Subject? subject,
   }) = _StockTransfersStateData;
 }

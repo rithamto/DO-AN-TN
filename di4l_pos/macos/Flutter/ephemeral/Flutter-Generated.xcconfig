@@ -1,6 +1,6 @@
 // This is a generated file; do not edit or check into version control.
-FLUTTER_ROOT=D:\DATA\fvm\3.7.3
-FLUTTER_APPLICATION_PATH=G:\work\di4l_pos_flutter\di4l_pos
+FLUTTER_ROOT=/Users/di4ldev/fvm/versions/3.7.3
+FLUTTER_APPLICATION_PATH=/Users/di4ldev/projects/di4l_pos_flutter/di4l_pos
 COCOAPODS_PARALLEL_CODE_SIGN=true
 FLUTTER_BUILD_DIR=build
 FLUTTER_BUILD_NAME=1.0.0

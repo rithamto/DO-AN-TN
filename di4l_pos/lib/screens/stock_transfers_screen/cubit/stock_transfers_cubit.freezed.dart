@@ -19,9 +19,12 @@ mixin _$StockTransfersStateData {
   StatusType get status => throw _privateConstructorUsedError;
   List<StockTransfersData> get stockTransfers =>
       throw _privateConstructorUsedError;
+  List<StockTransfersData> get stockTransfersOriginal =>
+      throw _privateConstructorUsedError;
   SellTransfer? get sellTransfers => throw _privateConstructorUsedError;
   LocationDetails? get locationDetails => throw _privateConstructorUsedError;
   List<Activities> get activities => throw _privateConstructorUsedError;
+  int? get page => throw _privateConstructorUsedError;
   Subject? get subject => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -38,9 +41,11 @@ abstract class $StockTransfersStateDataCopyWith<$Res> {
   $Res call(
       {StatusType status,
       List<StockTransfersData> stockTransfers,
+      List<StockTransfersData> stockTransfersOriginal,
       SellTransfer? sellTransfers,
       LocationDetails? locationDetails,
       List<Activities> activities,
+      int? page,
       Subject? subject});
 }
 
@@ -60,9 +65,11 @@ class _$StockTransfersStateDataCopyWithImpl<$Res,
   $Res call({
     Object? status = null,
     Object? stockTransfers = null,
+    Object? stockTransfersOriginal = null,
     Object? sellTransfers = freezed,
     Object? locationDetails = freezed,
     Object? activities = null,
+    Object? page = freezed,
     Object? subject = freezed,
   }) {
     return _then(_value.copyWith(
@@ -73,6 +80,10 @@ class _$StockTransfersStateDataCopyWithImpl<$Res,
       stockTransfers: null == stockTransfers
           ? _value.stockTransfers
           : stockTransfers // ignore: cast_nullable_to_non_nullable
+              as List<StockTransfersData>,
+      stockTransfersOriginal: null == stockTransfersOriginal
+          ? _value.stockTransfersOriginal
+          : stockTransfersOriginal // ignore: cast_nullable_to_non_nullable
               as List<StockTransfersData>,
       sellTransfers: freezed == sellTransfers
           ? _value.sellTransfers
@@ -86,6 +97,10 @@ class _$StockTransfersStateDataCopyWithImpl<$Res,
           ? _value.activities
           : activities // ignore: cast_nullable_to_non_nullable
               as List<Activities>,
+      page: freezed == page
+          ? _value.page
+          : page // ignore: cast_nullable_to_non_nullable
+              as int?,
       subject: freezed == subject
           ? _value.subject
           : subject // ignore: cast_nullable_to_non_nullable
@@ -105,9 +120,11 @@ abstract class _$$_StockTransfersStateDataCopyWith<$Res>
   $Res call(
       {StatusType status,
       List<StockTransfersData> stockTransfers,
+      List<StockTransfersData> stockTransfersOriginal,
       SellTransfer? sellTransfers,
       LocationDetails? locationDetails,
       List<Activities> activities,
+      int? page,
       Subject? subject});
 }
 
@@ -125,9 +142,11 @@ class __$$_StockTransfersStateDataCopyWithImpl<$Res>
   $Res call({
     Object? status = null,
     Object? stockTransfers = null,
+    Object? stockTransfersOriginal = null,
     Object? sellTransfers = freezed,
     Object? locationDetails = freezed,
     Object? activities = null,
+    Object? page = freezed,
     Object? subject = freezed,
   }) {
     return _then(_$_StockTransfersStateData(
@@ -138,6 +157,10 @@ class __$$_StockTransfersStateDataCopyWithImpl<$Res>
       stockTransfers: null == stockTransfers
           ? _value._stockTransfers
           : stockTransfers // ignore: cast_nullable_to_non_nullable
+              as List<StockTransfersData>,
+      stockTransfersOriginal: null == stockTransfersOriginal
+          ? _value._stockTransfersOriginal
+          : stockTransfersOriginal // ignore: cast_nullable_to_non_nullable
               as List<StockTransfersData>,
       sellTransfers: freezed == sellTransfers
           ? _value.sellTransfers
@@ -151,6 +174,10 @@ class __$$_StockTransfersStateDataCopyWithImpl<$Res>
           ? _value._activities
           : activities // ignore: cast_nullable_to_non_nullable
               as List<Activities>,
+      page: freezed == page
+          ? _value.page
+          : page // ignore: cast_nullable_to_non_nullable
+              as int?,
       subject: freezed == subject
           ? _value.subject
           : subject // ignore: cast_nullable_to_non_nullable
@@ -165,11 +192,14 @@ class _$_StockTransfersStateData implements _StockTransfersStateData {
   const _$_StockTransfersStateData(
       {this.status = StatusType.init,
       final List<StockTransfersData> stockTransfers = const [],
+      final List<StockTransfersData> stockTransfersOriginal = const [],
       this.sellTransfers,
       this.locationDetails,
       final List<Activities> activities = const [],
+      this.page = 0,
       this.subject})
       : _stockTransfers = stockTransfers,
+        _stockTransfersOriginal = stockTransfersOriginal,
         _activities = activities;
 
   @override
@@ -182,6 +212,16 @@ class _$_StockTransfersStateData implements _StockTransfersStateData {
     if (_stockTransfers is EqualUnmodifiableListView) return _stockTransfers;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_stockTransfers);
+  }
+
+  final List<StockTransfersData> _stockTransfersOriginal;
+  @override
+  @JsonKey()
+  List<StockTransfersData> get stockTransfersOriginal {
+    if (_stockTransfersOriginal is EqualUnmodifiableListView)
+      return _stockTransfersOriginal;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_stockTransfersOriginal);
   }
 
   @override
@@ -198,11 +238,14 @@ class _$_StockTransfersStateData implements _StockTransfersStateData {
   }
 
   @override
+  @JsonKey()
+  final int? page;
+  @override
   final Subject? subject;
 
   @override
   String toString() {
-    return 'StockTransfersStateData(status: $status, stockTransfers: $stockTransfers, sellTransfers: $sellTransfers, locationDetails: $locationDetails, activities: $activities, subject: $subject)';
+    return 'StockTransfersStateData(status: $status, stockTransfers: $stockTransfers, stockTransfersOriginal: $stockTransfersOriginal, sellTransfers: $sellTransfers, locationDetails: $locationDetails, activities: $activities, page: $page, subject: $subject)';
   }
 
   @override
@@ -213,12 +256,15 @@ class _$_StockTransfersStateData implements _StockTransfersStateData {
             (identical(other.status, status) || other.status == status) &&
             const DeepCollectionEquality()
                 .equals(other._stockTransfers, _stockTransfers) &&
+            const DeepCollectionEquality().equals(
+                other._stockTransfersOriginal, _stockTransfersOriginal) &&
             (identical(other.sellTransfers, sellTransfers) ||
                 other.sellTransfers == sellTransfers) &&
             (identical(other.locationDetails, locationDetails) ||
                 other.locationDetails == locationDetails) &&
             const DeepCollectionEquality()
                 .equals(other._activities, _activities) &&
+            (identical(other.page, page) || other.page == page) &&
             (identical(other.subject, subject) || other.subject == subject));
   }
 
@@ -227,9 +273,11 @@ class _$_StockTransfersStateData implements _StockTransfersStateData {
       runtimeType,
       status,
       const DeepCollectionEquality().hash(_stockTransfers),
+      const DeepCollectionEquality().hash(_stockTransfersOriginal),
       sellTransfers,
       locationDetails,
       const DeepCollectionEquality().hash(_activities),
+      page,
       subject);
 
   @JsonKey(ignore: true)
@@ -245,9 +293,11 @@ abstract class _StockTransfersStateData implements StockTransfersStateData {
   const factory _StockTransfersStateData(
       {final StatusType status,
       final List<StockTransfersData> stockTransfers,
+      final List<StockTransfersData> stockTransfersOriginal,
       final SellTransfer? sellTransfers,
       final LocationDetails? locationDetails,
       final List<Activities> activities,
+      final int? page,
       final Subject? subject}) = _$_StockTransfersStateData;
 
   @override
@@ -255,11 +305,15 @@ abstract class _StockTransfersStateData implements StockTransfersStateData {
   @override
   List<StockTransfersData> get stockTransfers;
   @override
+  List<StockTransfersData> get stockTransfersOriginal;
+  @override
   SellTransfer? get sellTransfers;
   @override
   LocationDetails? get locationDetails;
   @override
   List<Activities> get activities;
+  @override
+  int? get page;
   @override
   Subject? get subject;
   @override

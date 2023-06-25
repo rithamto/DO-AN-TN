@@ -103,8 +103,7 @@ class Variation {
         variationValueId: json["variation_value_id"],
         defaultPurchasePrice: json["default_purchase_price"],
         dppIncTax: json["dpp_inc_tax"],
-        profitPercent:
-            json["profit_percent"],
+        profitPercent: json["profit_percent"],
         defaultSellPrice: json["default_sell_price"],
         sellPriceIncTax: json["sell_price_inc_tax"],
         createdAt: json["created_at"],
@@ -131,16 +130,13 @@ class Variation {
         "name": name,
         "product_id": productId,
         "sub_sku": subSku,
-        "product_variation_id":
-            productVariationId,
+        "product_variation_id": productVariationId,
         "woocommerce_variation_id": woocommerceVariationId,
         "variation_value_id": variationValueId,
-        "default_purchase_price":
-            defaultPurchasePrice,
+        "default_purchase_price": defaultPurchasePrice,
         "dpp_inc_tax": dppIncTax,
         "profit_percent": profitPercent,
-        "default_sell_price":
-            defaultSellPrice,
+        "default_sell_price": defaultSellPrice,
         "sell_price_inc_tax": sellPriceIncTax,
         "created_at": createdAt,
         "updated_at": updatedAt,
@@ -214,8 +210,7 @@ class VariantionLocationDetail {
         productVariantionId: json["product_variation_id"],
         variationId: json["variation_id"],
         locationId: json["location_id"],
-        qtyAvailable:
-            json["qty_available"],
+        qtyAvailable: json["qty_available"],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
       );
@@ -223,8 +218,7 @@ class VariantionLocationDetail {
   Map<String, dynamic> toJson() => {
         "id": id,
         "product_id": productId,
-        "product_variation_id":
-            productVariantionId,
+        "product_variation_id": productVariantionId,
         "variation_id": variationId,
         "location_id": locationId,
         "qty_available": qtyAvailable,

@@ -167,7 +167,7 @@ class _ContactsScreenState extends State<ContactsScreen> with AfterLayoutMixin {
   }
 }
 
-class buildBottomAppBar extends StatelessWidget with PreferredSizeWidget {
+class buildBottomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const buildBottomAppBar(
       {Key? key,
       required bool showSearch,

@@ -1,4 +1,4 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:di4l_pos/common/helpers.dart';
 import 'package:di4l_pos/common/ui_helpers.dart';
 import 'package:di4l_pos/enums/status_type.dart';
@@ -301,6 +301,11 @@ class ProductsCubit extends Cubit<ProductsState> {
   void productSelected(Product? p) {
     emit(ProductsState.productSelected(
         data: state.data?.copyWith(productSelected: p)));
+  }
+
+  void productsSelected(List<Product>? p) {
+    emit(ProductsState.productSelected(
+        data: state.data?.copyWith(productsSelected: p ?? [])));
   }
 
   void showValue(int? value) {

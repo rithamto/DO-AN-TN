@@ -18,7 +18,7 @@ build_iOS() {
   pod repo update;
   rm ios/Podfile.lock;
   pod install --project-directory=ios;
-  flutter build ios --no-codesign;
+  fvm flutter build ios;
 }
 
 echo "select the option to build ************"
@@ -34,7 +34,7 @@ case $n in
   1) echo "android is building...";
      flutter_clean;
      flutter_generate_delete_conflicting;
-     flutter build apk;
+     fvm flutter build apk --release;
      echo "android build finished";;
   2) echo "ios is building...";
      flutter_clean;

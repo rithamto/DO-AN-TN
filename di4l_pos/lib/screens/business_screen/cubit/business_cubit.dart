@@ -60,6 +60,11 @@ class BusinessCubit extends Cubit<BusinessState> {
         data: state.data?.copyWith(business: business)));
   }
 
+  void getBusinessTo(BusinessLocation businessTo) {
+    emit(BusinessState.getBusiness(
+        data: state.data?.copyWith(businessTo: businessTo)));
+  }
+
   Future<void> getAccounts() async {
     try {
       final accounts = await _dataRepository.switchAccount();
@@ -112,6 +117,14 @@ class BusinessCubit extends Cubit<BusinessState> {
       Helpers.handleErrorApp(error: error, isShowDialog: true);
     } finally {
       UIHelpers.dismissLoading();
+    }
+  }
+
+  Future<void> activeBusiness(int id) async {
+    try {
+      await _dataRepository.activeBusiness(id: id);
+    } catch (error) {
+      debugPrint('Active Error: $error');
     }
   }
 

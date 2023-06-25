@@ -78,18 +78,19 @@ class _UnitScreenState extends State<UnitScreen> with AfterLayoutMixin {
                                         children: [
                                           SlidableAction(
                                             backgroundColor:
-                                                GlobalColors.appBar2,
+                                                GlobalColors.blackColor,
                                             foregroundColor: Colors.white,
                                             icon: Icons.edit,
                                             label: 'edit'.tr,
                                             onPressed: (BuildContext context) {
                                               showModalBottomSheet(
-                                                shape: const RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.vertical(
-                                                            top:
-                                                                Radius.circular(
-                                                                    15.0))),
+                                                shape:
+                                                    const RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.vertical(
+                                                                top: Radius
+                                                                    .circular(
+                                                                        15.0))),
                                                 context: context,
                                                 isScrollControlled: true,
                                                 isDismissible: true,
@@ -106,10 +107,22 @@ class _UnitScreenState extends State<UnitScreen> with AfterLayoutMixin {
                                           ),
                                           SlidableAction(
                                             backgroundColor:
-                                                GlobalColors.bgOrange,
+                                                GlobalColors.redColor,
                                             foregroundColor: Colors.white,
-                                            icon: Icons.delete,
+                                            icon: Icons.add,
                                             label: 'delete'.tr,
+                                            onPressed: (BuildContext context) {
+                                              _globalKey.currentContext!
+                                                  .read<UnitCubit>()
+                                                  .deleteUnit(id: e.id!);
+                                            },
+                                          ),
+                                          SlidableAction(
+                                            backgroundColor:
+                                                GlobalColors.redColor,
+                                            foregroundColor: Colors.white,
+                                            icon: Icons.add,
+                                            label: 'delete2'.tr,
                                             onPressed: (BuildContext context) {
                                               _globalKey.currentContext!
                                                   .read<UnitCubit>()
@@ -127,14 +140,16 @@ class _UnitScreenState extends State<UnitScreen> with AfterLayoutMixin {
                                               child: Container(
                                                 decoration: BoxDecoration(
                                                   color: Colors.grey[300],
-                                                  borderRadius: const BorderRadius.all(
+                                                  borderRadius: const BorderRadius
+                                                          .all(
                                                       Radius.circular(
                                                           10.0) //                 <--- border radius here
                                                       ),
                                                 ),
                                                 height: Get.height * 0.06,
                                                 child: Padding(
-                                                  padding: const EdgeInsets.all(8.0),
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
                                                   child: Image.asset(
                                                     "assets/images/food.jpg",
                                                     color: Colors.grey,
@@ -172,7 +187,24 @@ class _UnitScreenState extends State<UnitScreen> with AfterLayoutMixin {
                                             ),
                                           ],
                                         ),
-                                        onTap: () {},
+                                        onTap: () {
+                                          showModalBottomSheet(
+                                            shape: const RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.vertical(
+                                                        top: Radius.circular(
+                                                            15.0))),
+                                            context: context,
+                                            isScrollControlled: true,
+                                            isDismissible: true,
+                                            builder: (BuildContext context) {
+                                              return AddUnitScreen.provider(
+                                                  addUnitType: AddType.UPDATE,
+                                                  unit: e,
+                                                  globalKey: _globalKey);
+                                            },
+                                          );
+                                        },
                                       ),
                                     ),
                                   ))

@@ -26,7 +26,7 @@ class NotificationIconWidget extends StatelessWidget {
             child: Container(
               height: 8,
               width: 8,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 color: Colors.red,
               ),

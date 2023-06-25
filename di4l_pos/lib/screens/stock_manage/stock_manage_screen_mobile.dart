@@ -43,16 +43,24 @@ class _StockManageScreenMobileState extends State<StockManageScreenMobile>
   @override
   FutureOr<void> afterFirstLayout(BuildContext context) {
     context.read<StockManageCubit>().getReportStockManages();
-    _txtSearchController.addListener(() {
+    _txtSearchController.addListener(() async {
+      await Future.delayed(const Duration(seconds: 1));
       context
           .read<StockManageCubit>()
-          .searchProduct(searchText: _txtSearchController.text);
+          .searchProductStockReports(searchText: _txtSearchController.text);
     });
   }
 
   bool isOpenSearch = false;
   final TextEditingController _txtSearchController = TextEditingController();
   int dropdownValue = 25;
+
+  @override
+  void dispose() {
+    _txtSearchController.dispose();
+    textController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,13 +75,6 @@ class _StockManageScreenMobileState extends State<StockManageScreenMobile>
             textColor: GlobalColors.getTextTitle(context),
             title: 'Kho Hàng'.tr,
             actions: [
-              IconButton(
-                icon: const Icon(
-                  Icons.qr_code_scanner,
-                ),
-                onPressed: () =>
-                    navigator?.pushNamed(RouteGenerator.scanBarCodeScreen),
-              ),
               !state.data!.isCategoryScreen
                   ? IconButton(
                       onPressed: () {

@@ -15,6 +15,7 @@ class ShopInfoData with _$ShopInfoData {
     ShopSettingRp? shopInfo,
     DefaultUnitRp? listDFUnit,
     File? image,
+    @Default('') String smsService,
   }) = _ShopInfoData;
 }
 

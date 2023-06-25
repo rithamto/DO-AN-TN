@@ -6,7 +6,7 @@ class ProductsStateData with _$ProductsStateData {
     @Default(StatusType.init) StatusType status,
     @Default([]) List<Product> products,
     @Default([]) List<Product> productsOriginal,
-    @Default([])List<Product> productsSelected,
+    @Default([]) List<Product> productsSelected,
     Product? product,
     Product? productSelected,
     @Default(-1) int showValue,

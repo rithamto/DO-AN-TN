@@ -7,6 +7,8 @@ import 'package:di4l_pos/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:di4l_pos/common/ui_helpers.dart';
+import 'package:di4l_pos/route_generator.dart';
 
 class LoginDesktopScreen extends StatefulWidget {
   /// MARK: - Initials;
@@ -47,72 +49,94 @@ class _LoginDesktopScreenState extends State<LoginDesktopScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _globalKey,
-      body: Row(
-        children: [
-          Expanded(
-            flex: 5,
-            child: Stack(
-              children: [
-                Container(
-                  height: Get.height,
-                  color: GlobalColors.primaryColor.withOpacity(0.3),
-                  child: Image.asset(
-                    GlobalImages.onboard3,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 7,
-            child: Column(
-              children: [
-                /// Register Button
-                const SizedBox(height: 8.0),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        isFormLogin
-                            ? 'have_not_any_account'.tr
-                            : 'already_have_an_account'.tr,
-                        style: GlobalStyles.titilliumItalic(context),
+    return BlocListener<LoginCubit, LoginState>(
+      listener: (context, state) {
+        if (state.data!.error != '') {
+          if (state.data!.error!.contains('Email') ||
+              state.data!.error!.contains('Password')) {
+            UIHelpers.showSnackBar(
+                message: state.data!.error!, type: SnackBarType.ERROR);
+          } else {
+            if (state.data!.error!.contains('Success')) {
+              navigator!.pushNamedAndRemoveUntil(
+                  RouteGenerator.switchAccount, (route) => false);
+            } else {
+              UIHelpers.showSnackBar(
+                message: 'email_or_password_is_incorrect'.tr, type: SnackBarType.ERROR);
+                
+              _txtUsername.text = '';
+              _txtPassword.text = '';
+            }
+          }
+        }
+      },
+      child: Scaffold(
+          key: _globalKey,
+          body: Row(
+            children: [
+              Expanded(
+                flex: 5,
+                child: Stack(
+                  children: [
+                    Container(
+                      height: Get.height,
+                      color: GlobalColors.primaryColor.withOpacity(0.3),
+                      child: Image.asset(
+                        GlobalImages.onboard3,
                       ),
-                      const SizedBox(width: 8.0),
-                      OutlinedButton(
-                        onPressed: () {
-                          setState(() {
-                            isFormLogin = !isFormLogin;
-                          });
-                        },
-                        style: ButtonStyle(
-                          shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 7,
+                child: Column(
+                  children: [
+                    /// Register Button
+                    const SizedBox(height: 8.0),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            isFormLogin
+                                ? 'have_not_any_account'.tr
+                                : 'already_have_an_account'.tr,
+                            style: GlobalStyles.titilliumItalic(context),
+                          ),
+                          const SizedBox(width: 8.0),
+                          OutlinedButton(
+                            onPressed: () {
+                              setState(() {
+                                isFormLogin = !isFormLogin;
+                              });
+                            },
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                ),
+                              ),
+                            ),
+                            child: Text(
+                              isFormLogin ? 'register'.tr : 'login'.tr,
+                              style: const TextStyle(
+                                color: GlobalColors.primaryColor,
+                              ),
                             ),
                           ),
-                        ),
-                        child: Text(
-                          isFormLogin ? 'register'.tr : 'login'.tr,
-                          style: const TextStyle(
-                            color: GlobalColors.primaryColor,
-                          ),
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+    
+                    isFormLogin ? _buildFormLogin() : _buildFormRegister()
+                  ],
                 ),
-
-                isFormLogin ? _buildFormLogin() : _buildFormRegister()
-              ],
-            ),
-          )
-        ],
-      ),
+              )
+            ],
+          ),
+        ),
     );
   }
 

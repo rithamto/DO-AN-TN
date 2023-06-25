@@ -14,7 +14,6 @@ class CartState with _$CartState {
   const factory CartState.status({CartStateData? data}) = Status;
   const factory CartState.getCart({CartStateData? data}) = GetCart;
   const factory CartState.addCart({CartStateData? data}) = AddCart;
-//       const factory CartState.updateCart({CartStateData? data}) = UpdateCart;
   const factory CartState.removeAll({CartStateData? data}) = RemoveAll;
   const factory CartState.removeProductAt({CartStateData? data}) =
       RemoveProductAt;

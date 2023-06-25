@@ -1,7 +1,9 @@
 class GlobalImages {
   static const String kAppIcon = 'assets/icons/pos_logo.png';
   static const String logoApp = 'assets/icons/pos_logo.png';
+  static const String splash_screen = 'assets/icons/splash_screen.jpg';
   static const String onboard1 = 'assets/images/onboard1.png';
+  static const String splashScreen = 'assets/images/splash_screen.jpg';
   static const String onboard2 = 'assets/images/onboard2.png';
   static const String onboard3 = 'assets/images/onboard3.png';
   static const String success = 'assets/images/success.png';
@@ -187,4 +189,11 @@ class GlobalImages {
 
   static const String razorpay = 'assets/svg/razorpay.svg';
   static const String stripe = 'assets/svg/stripe.svg';
+
+  //Delivery
+  static const String delivery = 'assets/svg/delivery.svg';
+  static const String ghn = 'assets/images/ghn.png';
+  static const String ghtk = 'assets/images/ghtk.png';
+  static const String viettelPost = 'assets/images/viettel-post.jpg';
+  static const String vnpost = 'assets/images/vnpost.jpg';
 }

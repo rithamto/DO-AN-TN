@@ -23,6 +23,7 @@ mixin _$AddStockTransfersStateData {
   List<Transaction> get transactionsDebt => throw _privateConstructorUsedError;
   Transaction? get transaction => throw _privateConstructorUsedError;
   List<Product> get products => throw _privateConstructorUsedError;
+  bool get enableProduct => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $AddStockTransfersStateDataCopyWith<AddStockTransfersStateData>
@@ -43,7 +44,8 @@ abstract class $AddStockTransfersStateDataCopyWith<$Res> {
       List<Transaction> transactionsOrder,
       List<Transaction> transactionsDebt,
       Transaction? transaction,
-      List<Product> products});
+      List<Product> products,
+      bool enableProduct});
 }
 
 /// @nodoc
@@ -67,6 +69,7 @@ class _$AddStockTransfersStateDataCopyWithImpl<$Res,
     Object? transactionsDebt = null,
     Object? transaction = freezed,
     Object? products = null,
+    Object? enableProduct = null,
   }) {
     return _then(_value.copyWith(
       error: null == error
@@ -97,6 +100,10 @@ class _$AddStockTransfersStateDataCopyWithImpl<$Res,
           ? _value.products
           : products // ignore: cast_nullable_to_non_nullable
               as List<Product>,
+      enableProduct: null == enableProduct
+          ? _value.enableProduct
+          : enableProduct // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -117,7 +124,8 @@ abstract class _$$_AddStockTransfersStateDataCopyWith<$Res>
       List<Transaction> transactionsOrder,
       List<Transaction> transactionsDebt,
       Transaction? transaction,
-      List<Product> products});
+      List<Product> products,
+      bool enableProduct});
 }
 
 /// @nodoc
@@ -140,6 +148,7 @@ class __$$_AddStockTransfersStateDataCopyWithImpl<$Res>
     Object? transactionsDebt = null,
     Object? transaction = freezed,
     Object? products = null,
+    Object? enableProduct = null,
   }) {
     return _then(_$_AddStockTransfersStateData(
       error: null == error
@@ -170,6 +179,10 @@ class __$$_AddStockTransfersStateDataCopyWithImpl<$Res>
           ? _value._products
           : products // ignore: cast_nullable_to_non_nullable
               as List<Product>,
+      enableProduct: null == enableProduct
+          ? _value.enableProduct
+          : enableProduct // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -184,7 +197,8 @@ class _$_AddStockTransfersStateData implements _AddStockTransfersStateData {
       final List<Transaction> transactionsOrder = const [],
       final List<Transaction> transactionsDebt = const [],
       this.transaction,
-      final List<Product> products = const []})
+      final List<Product> products = const [],
+      this.enableProduct = false})
       : _transactionsOrder = transactionsOrder,
         _transactionsDebt = transactionsDebt,
         _products = products;
@@ -230,8 +244,12 @@ class _$_AddStockTransfersStateData implements _AddStockTransfersStateData {
   }
 
   @override
+  @JsonKey()
+  final bool enableProduct;
+
+  @override
   String toString() {
-    return 'AddStockTransfersStateData(error: $error, status: $status, payType: $payType, transactionsOrder: $transactionsOrder, transactionsDebt: $transactionsDebt, transaction: $transaction, products: $products)';
+    return 'AddStockTransfersStateData(error: $error, status: $status, payType: $payType, transactionsOrder: $transactionsOrder, transactionsDebt: $transactionsDebt, transaction: $transaction, products: $products, enableProduct: $enableProduct)';
   }
 
   @override
@@ -248,7 +266,9 @@ class _$_AddStockTransfersStateData implements _AddStockTransfersStateData {
                 .equals(other._transactionsDebt, _transactionsDebt) &&
             (identical(other.transaction, transaction) ||
                 other.transaction == transaction) &&
-            const DeepCollectionEquality().equals(other._products, _products));
+            const DeepCollectionEquality().equals(other._products, _products) &&
+            (identical(other.enableProduct, enableProduct) ||
+                other.enableProduct == enableProduct));
   }
 
   @override
@@ -260,7 +280,8 @@ class _$_AddStockTransfersStateData implements _AddStockTransfersStateData {
       const DeepCollectionEquality().hash(_transactionsOrder),
       const DeepCollectionEquality().hash(_transactionsDebt),
       transaction,
-      const DeepCollectionEquality().hash(_products));
+      const DeepCollectionEquality().hash(_products),
+      enableProduct);
 
   @JsonKey(ignore: true)
   @override
@@ -279,7 +300,8 @@ abstract class _AddStockTransfersStateData
       final List<Transaction> transactionsOrder,
       final List<Transaction> transactionsDebt,
       final Transaction? transaction,
-      final List<Product> products}) = _$_AddStockTransfersStateData;
+      final List<Product> products,
+      final bool enableProduct}) = _$_AddStockTransfersStateData;
 
   @override
   String get error;
@@ -296,6 +318,8 @@ abstract class _AddStockTransfersStateData
   @override
   List<Product> get products;
   @override
+  bool get enableProduct;
+  @override
   @JsonKey(ignore: true)
   _$$_AddStockTransfersStateDataCopyWith<_$_AddStockTransfersStateData>
       get copyWith => throw _privateConstructorUsedError;
@@ -311,6 +335,7 @@ mixin _$AddStockTransfersState {
     required TResult Function(AddStockTransfersStateData? data) status,
     required TResult Function(AddStockTransfersStateData? data) transactions,
     required TResult Function(AddStockTransfersStateData? data) products,
+    required TResult Function(AddStockTransfersStateData? data) enableProduct,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -320,6 +345,7 @@ mixin _$AddStockTransfersState {
     TResult? Function(AddStockTransfersStateData? data)? status,
     TResult? Function(AddStockTransfersStateData? data)? transactions,
     TResult? Function(AddStockTransfersStateData? data)? products,
+    TResult? Function(AddStockTransfersStateData? data)? enableProduct,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -329,6 +355,7 @@ mixin _$AddStockTransfersState {
     TResult Function(AddStockTransfersStateData? data)? status,
     TResult Function(AddStockTransfersStateData? data)? transactions,
     TResult Function(AddStockTransfersStateData? data)? products,
+    TResult Function(AddStockTransfersStateData? data)? enableProduct,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -339,6 +366,7 @@ mixin _$AddStockTransfersState {
     required TResult Function(Status value) status,
     required TResult Function(GetTransactions value) transactions,
     required TResult Function(GetProducts value) products,
+    required TResult Function(EnableProduct value) enableProduct,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -348,6 +376,7 @@ mixin _$AddStockTransfersState {
     TResult? Function(Status value)? status,
     TResult? Function(GetTransactions value)? transactions,
     TResult? Function(GetProducts value)? products,
+    TResult? Function(EnableProduct value)? enableProduct,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -357,6 +386,7 @@ mixin _$AddStockTransfersState {
     TResult Function(Status value)? status,
     TResult Function(GetTransactions value)? transactions,
     TResult Function(GetProducts value)? products,
+    TResult Function(EnableProduct value)? enableProduct,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -486,6 +516,7 @@ class _$Initial implements Initial {
     required TResult Function(AddStockTransfersStateData? data) status,
     required TResult Function(AddStockTransfersStateData? data) transactions,
     required TResult Function(AddStockTransfersStateData? data) products,
+    required TResult Function(AddStockTransfersStateData? data) enableProduct,
   }) {
     return initial(data);
   }
@@ -498,6 +529,7 @@ class _$Initial implements Initial {
     TResult? Function(AddStockTransfersStateData? data)? status,
     TResult? Function(AddStockTransfersStateData? data)? transactions,
     TResult? Function(AddStockTransfersStateData? data)? products,
+    TResult? Function(AddStockTransfersStateData? data)? enableProduct,
   }) {
     return initial?.call(data);
   }
@@ -510,6 +542,7 @@ class _$Initial implements Initial {
     TResult Function(AddStockTransfersStateData? data)? status,
     TResult Function(AddStockTransfersStateData? data)? transactions,
     TResult Function(AddStockTransfersStateData? data)? products,
+    TResult Function(AddStockTransfersStateData? data)? enableProduct,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -526,6 +559,7 @@ class _$Initial implements Initial {
     required TResult Function(Status value) status,
     required TResult Function(GetTransactions value) transactions,
     required TResult Function(GetProducts value) products,
+    required TResult Function(EnableProduct value) enableProduct,
   }) {
     return initial(this);
   }
@@ -538,6 +572,7 @@ class _$Initial implements Initial {
     TResult? Function(Status value)? status,
     TResult? Function(GetTransactions value)? transactions,
     TResult? Function(GetProducts value)? products,
+    TResult? Function(EnableProduct value)? enableProduct,
   }) {
     return initial?.call(this);
   }
@@ -550,6 +585,7 @@ class _$Initial implements Initial {
     TResult Function(Status value)? status,
     TResult Function(GetTransactions value)? transactions,
     TResult Function(GetProducts value)? products,
+    TResult Function(EnableProduct value)? enableProduct,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -642,6 +678,7 @@ class _$Error implements Error {
     required TResult Function(AddStockTransfersStateData? data) status,
     required TResult Function(AddStockTransfersStateData? data) transactions,
     required TResult Function(AddStockTransfersStateData? data) products,
+    required TResult Function(AddStockTransfersStateData? data) enableProduct,
   }) {
     return error(data);
   }
@@ -654,6 +691,7 @@ class _$Error implements Error {
     TResult? Function(AddStockTransfersStateData? data)? status,
     TResult? Function(AddStockTransfersStateData? data)? transactions,
     TResult? Function(AddStockTransfersStateData? data)? products,
+    TResult? Function(AddStockTransfersStateData? data)? enableProduct,
   }) {
     return error?.call(data);
   }
@@ -666,6 +704,7 @@ class _$Error implements Error {
     TResult Function(AddStockTransfersStateData? data)? status,
     TResult Function(AddStockTransfersStateData? data)? transactions,
     TResult Function(AddStockTransfersStateData? data)? products,
+    TResult Function(AddStockTransfersStateData? data)? enableProduct,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -682,6 +721,7 @@ class _$Error implements Error {
     required TResult Function(Status value) status,
     required TResult Function(GetTransactions value) transactions,
     required TResult Function(GetProducts value) products,
+    required TResult Function(EnableProduct value) enableProduct,
   }) {
     return error(this);
   }
@@ -694,6 +734,7 @@ class _$Error implements Error {
     TResult? Function(Status value)? status,
     TResult? Function(GetTransactions value)? transactions,
     TResult? Function(GetProducts value)? products,
+    TResult? Function(EnableProduct value)? enableProduct,
   }) {
     return error?.call(this);
   }
@@ -706,6 +747,7 @@ class _$Error implements Error {
     TResult Function(Status value)? status,
     TResult Function(GetTransactions value)? transactions,
     TResult Function(GetProducts value)? products,
+    TResult Function(EnableProduct value)? enableProduct,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -797,6 +839,7 @@ class _$Status implements Status {
     required TResult Function(AddStockTransfersStateData? data) status,
     required TResult Function(AddStockTransfersStateData? data) transactions,
     required TResult Function(AddStockTransfersStateData? data) products,
+    required TResult Function(AddStockTransfersStateData? data) enableProduct,
   }) {
     return status(data);
   }
@@ -809,6 +852,7 @@ class _$Status implements Status {
     TResult? Function(AddStockTransfersStateData? data)? status,
     TResult? Function(AddStockTransfersStateData? data)? transactions,
     TResult? Function(AddStockTransfersStateData? data)? products,
+    TResult? Function(AddStockTransfersStateData? data)? enableProduct,
   }) {
     return status?.call(data);
   }
@@ -821,6 +865,7 @@ class _$Status implements Status {
     TResult Function(AddStockTransfersStateData? data)? status,
     TResult Function(AddStockTransfersStateData? data)? transactions,
     TResult Function(AddStockTransfersStateData? data)? products,
+    TResult Function(AddStockTransfersStateData? data)? enableProduct,
     required TResult orElse(),
   }) {
     if (status != null) {
@@ -837,6 +882,7 @@ class _$Status implements Status {
     required TResult Function(Status value) status,
     required TResult Function(GetTransactions value) transactions,
     required TResult Function(GetProducts value) products,
+    required TResult Function(EnableProduct value) enableProduct,
   }) {
     return status(this);
   }
@@ -849,6 +895,7 @@ class _$Status implements Status {
     TResult? Function(Status value)? status,
     TResult? Function(GetTransactions value)? transactions,
     TResult? Function(GetProducts value)? products,
+    TResult? Function(EnableProduct value)? enableProduct,
   }) {
     return status?.call(this);
   }
@@ -861,6 +908,7 @@ class _$Status implements Status {
     TResult Function(Status value)? status,
     TResult Function(GetTransactions value)? transactions,
     TResult Function(GetProducts value)? products,
+    TResult Function(EnableProduct value)? enableProduct,
     required TResult orElse(),
   }) {
     if (status != null) {
@@ -955,6 +1003,7 @@ class _$GetTransactions implements GetTransactions {
     required TResult Function(AddStockTransfersStateData? data) status,
     required TResult Function(AddStockTransfersStateData? data) transactions,
     required TResult Function(AddStockTransfersStateData? data) products,
+    required TResult Function(AddStockTransfersStateData? data) enableProduct,
   }) {
     return transactions(data);
   }
@@ -967,6 +1016,7 @@ class _$GetTransactions implements GetTransactions {
     TResult? Function(AddStockTransfersStateData? data)? status,
     TResult? Function(AddStockTransfersStateData? data)? transactions,
     TResult? Function(AddStockTransfersStateData? data)? products,
+    TResult? Function(AddStockTransfersStateData? data)? enableProduct,
   }) {
     return transactions?.call(data);
   }
@@ -979,6 +1029,7 @@ class _$GetTransactions implements GetTransactions {
     TResult Function(AddStockTransfersStateData? data)? status,
     TResult Function(AddStockTransfersStateData? data)? transactions,
     TResult Function(AddStockTransfersStateData? data)? products,
+    TResult Function(AddStockTransfersStateData? data)? enableProduct,
     required TResult orElse(),
   }) {
     if (transactions != null) {
@@ -995,6 +1046,7 @@ class _$GetTransactions implements GetTransactions {
     required TResult Function(Status value) status,
     required TResult Function(GetTransactions value) transactions,
     required TResult Function(GetProducts value) products,
+    required TResult Function(EnableProduct value) enableProduct,
   }) {
     return transactions(this);
   }
@@ -1007,6 +1059,7 @@ class _$GetTransactions implements GetTransactions {
     TResult? Function(Status value)? status,
     TResult? Function(GetTransactions value)? transactions,
     TResult? Function(GetProducts value)? products,
+    TResult? Function(EnableProduct value)? enableProduct,
   }) {
     return transactions?.call(this);
   }
@@ -1019,6 +1072,7 @@ class _$GetTransactions implements GetTransactions {
     TResult Function(Status value)? status,
     TResult Function(GetTransactions value)? transactions,
     TResult Function(GetProducts value)? products,
+    TResult Function(EnableProduct value)? enableProduct,
     required TResult orElse(),
   }) {
     if (transactions != null) {
@@ -1114,6 +1168,7 @@ class _$GetProducts implements GetProducts {
     required TResult Function(AddStockTransfersStateData? data) status,
     required TResult Function(AddStockTransfersStateData? data) transactions,
     required TResult Function(AddStockTransfersStateData? data) products,
+    required TResult Function(AddStockTransfersStateData? data) enableProduct,
   }) {
     return products(data);
   }
@@ -1126,6 +1181,7 @@ class _$GetProducts implements GetProducts {
     TResult? Function(AddStockTransfersStateData? data)? status,
     TResult? Function(AddStockTransfersStateData? data)? transactions,
     TResult? Function(AddStockTransfersStateData? data)? products,
+    TResult? Function(AddStockTransfersStateData? data)? enableProduct,
   }) {
     return products?.call(data);
   }
@@ -1138,6 +1194,7 @@ class _$GetProducts implements GetProducts {
     TResult Function(AddStockTransfersStateData? data)? status,
     TResult Function(AddStockTransfersStateData? data)? transactions,
     TResult Function(AddStockTransfersStateData? data)? products,
+    TResult Function(AddStockTransfersStateData? data)? enableProduct,
     required TResult orElse(),
   }) {
     if (products != null) {
@@ -1154,6 +1211,7 @@ class _$GetProducts implements GetProducts {
     required TResult Function(Status value) status,
     required TResult Function(GetTransactions value) transactions,
     required TResult Function(GetProducts value) products,
+    required TResult Function(EnableProduct value) enableProduct,
   }) {
     return products(this);
   }
@@ -1166,6 +1224,7 @@ class _$GetProducts implements GetProducts {
     TResult? Function(Status value)? status,
     TResult? Function(GetTransactions value)? transactions,
     TResult? Function(GetProducts value)? products,
+    TResult? Function(EnableProduct value)? enableProduct,
   }) {
     return products?.call(this);
   }
@@ -1178,6 +1237,7 @@ class _$GetProducts implements GetProducts {
     TResult Function(Status value)? status,
     TResult Function(GetTransactions value)? transactions,
     TResult Function(GetProducts value)? products,
+    TResult Function(EnableProduct value)? enableProduct,
     required TResult orElse(),
   }) {
     if (products != null) {
@@ -1196,5 +1256,170 @@ abstract class GetProducts implements AddStockTransfersState {
   @override
   @JsonKey(ignore: true)
   _$$GetProductsCopyWith<_$GetProducts> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$EnableProductCopyWith<$Res>
+    implements $AddStockTransfersStateCopyWith<$Res> {
+  factory _$$EnableProductCopyWith(
+          _$EnableProduct value, $Res Function(_$EnableProduct) then) =
+      __$$EnableProductCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({AddStockTransfersStateData? data});
+
+  @override
+  $AddStockTransfersStateDataCopyWith<$Res>? get data;
+}
+
+/// @nodoc
+class __$$EnableProductCopyWithImpl<$Res>
+    extends _$AddStockTransfersStateCopyWithImpl<$Res, _$EnableProduct>
+    implements _$$EnableProductCopyWith<$Res> {
+  __$$EnableProductCopyWithImpl(
+      _$EnableProduct _value, $Res Function(_$EnableProduct) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? data = freezed,
+  }) {
+    return _then(_$EnableProduct(
+      data: freezed == data
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as AddStockTransfersStateData?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$EnableProduct implements EnableProduct {
+  const _$EnableProduct({this.data});
+
+  @override
+  final AddStockTransfersStateData? data;
+
+  @override
+  String toString() {
+    return 'AddStockTransfersState.enableProduct(data: $data)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$EnableProduct &&
+            (identical(other.data, data) || other.data == data));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, data);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$EnableProductCopyWith<_$EnableProduct> get copyWith =>
+      __$$EnableProductCopyWithImpl<_$EnableProduct>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(AddStockTransfersStateData? data) initial,
+    required TResult Function(AddStockTransfersStateData? data) error,
+    required TResult Function(AddStockTransfersStateData? data) status,
+    required TResult Function(AddStockTransfersStateData? data) transactions,
+    required TResult Function(AddStockTransfersStateData? data) products,
+    required TResult Function(AddStockTransfersStateData? data) enableProduct,
+  }) {
+    return enableProduct(data);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(AddStockTransfersStateData? data)? initial,
+    TResult? Function(AddStockTransfersStateData? data)? error,
+    TResult? Function(AddStockTransfersStateData? data)? status,
+    TResult? Function(AddStockTransfersStateData? data)? transactions,
+    TResult? Function(AddStockTransfersStateData? data)? products,
+    TResult? Function(AddStockTransfersStateData? data)? enableProduct,
+  }) {
+    return enableProduct?.call(data);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(AddStockTransfersStateData? data)? initial,
+    TResult Function(AddStockTransfersStateData? data)? error,
+    TResult Function(AddStockTransfersStateData? data)? status,
+    TResult Function(AddStockTransfersStateData? data)? transactions,
+    TResult Function(AddStockTransfersStateData? data)? products,
+    TResult Function(AddStockTransfersStateData? data)? enableProduct,
+    required TResult orElse(),
+  }) {
+    if (enableProduct != null) {
+      return enableProduct(data);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Initial value) initial,
+    required TResult Function(Error value) error,
+    required TResult Function(Status value) status,
+    required TResult Function(GetTransactions value) transactions,
+    required TResult Function(GetProducts value) products,
+    required TResult Function(EnableProduct value) enableProduct,
+  }) {
+    return enableProduct(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Initial value)? initial,
+    TResult? Function(Error value)? error,
+    TResult? Function(Status value)? status,
+    TResult? Function(GetTransactions value)? transactions,
+    TResult? Function(GetProducts value)? products,
+    TResult? Function(EnableProduct value)? enableProduct,
+  }) {
+    return enableProduct?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Initial value)? initial,
+    TResult Function(Error value)? error,
+    TResult Function(Status value)? status,
+    TResult Function(GetTransactions value)? transactions,
+    TResult Function(GetProducts value)? products,
+    TResult Function(EnableProduct value)? enableProduct,
+    required TResult orElse(),
+  }) {
+    if (enableProduct != null) {
+      return enableProduct(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class EnableProduct implements AddStockTransfersState {
+  const factory EnableProduct({final AddStockTransfersStateData? data}) =
+      _$EnableProduct;
+
+  @override
+  AddStockTransfersStateData? get data;
+  @override
+  @JsonKey(ignore: true)
+  _$$EnableProductCopyWith<_$EnableProduct> get copyWith =>
       throw _privateConstructorUsedError;
 }

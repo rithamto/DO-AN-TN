@@ -24,6 +24,7 @@ mixin _$AddStockAdjustmentStateData {
   Transaction? get transaction => throw _privateConstructorUsedError;
   List<Product> get products => throw _privateConstructorUsedError;
   bool get enableProduct => throw _privateConstructorUsedError;
+  String get sum => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $AddStockAdjustmentStateDataCopyWith<AddStockAdjustmentStateData>
@@ -46,7 +47,8 @@ abstract class $AddStockAdjustmentStateDataCopyWith<$Res> {
       List<Transaction> transactionsDebt,
       Transaction? transaction,
       List<Product> products,
-      bool enableProduct});
+      bool enableProduct,
+      String sum});
 }
 
 /// @nodoc
@@ -71,6 +73,7 @@ class _$AddStockAdjustmentStateDataCopyWithImpl<$Res,
     Object? transaction = freezed,
     Object? products = null,
     Object? enableProduct = null,
+    Object? sum = null,
   }) {
     return _then(_value.copyWith(
       error: null == error
@@ -105,6 +108,10 @@ class _$AddStockAdjustmentStateDataCopyWithImpl<$Res,
           ? _value.enableProduct
           : enableProduct // ignore: cast_nullable_to_non_nullable
               as bool,
+      sum: null == sum
+          ? _value.sum
+          : sum // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -126,7 +133,8 @@ abstract class _$$_AddStockAdjustmentStateDataCopyWith<$Res>
       List<Transaction> transactionsDebt,
       Transaction? transaction,
       List<Product> products,
-      bool enableProduct});
+      bool enableProduct,
+      String sum});
 }
 
 /// @nodoc
@@ -150,6 +158,7 @@ class __$$_AddStockAdjustmentStateDataCopyWithImpl<$Res>
     Object? transaction = freezed,
     Object? products = null,
     Object? enableProduct = null,
+    Object? sum = null,
   }) {
     return _then(_$_AddStockAdjustmentStateData(
       error: null == error
@@ -184,6 +193,10 @@ class __$$_AddStockAdjustmentStateDataCopyWithImpl<$Res>
           ? _value.enableProduct
           : enableProduct // ignore: cast_nullable_to_non_nullable
               as bool,
+      sum: null == sum
+          ? _value.sum
+          : sum // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -199,7 +212,8 @@ class _$_AddStockAdjustmentStateData implements _AddStockAdjustmentStateData {
       final List<Transaction> transactionsDebt = const [],
       this.transaction,
       final List<Product> products = const [],
-      this.enableProduct = false})
+      this.enableProduct = false,
+      this.sum = ''})
       : _transactionsOrder = transactionsOrder,
         _transactionsDebt = transactionsDebt,
         _products = products;
@@ -247,10 +261,13 @@ class _$_AddStockAdjustmentStateData implements _AddStockAdjustmentStateData {
   @override
   @JsonKey()
   final bool enableProduct;
+  @override
+  @JsonKey()
+  final String sum;
 
   @override
   String toString() {
-    return 'AddStockAdjustmentStateData(error: $error, status: $status, payType: $payType, transactionsOrder: $transactionsOrder, transactionsDebt: $transactionsDebt, transaction: $transaction, products: $products, enableProduct: $enableProduct)';
+    return 'AddStockAdjustmentStateData(error: $error, status: $status, payType: $payType, transactionsOrder: $transactionsOrder, transactionsDebt: $transactionsDebt, transaction: $transaction, products: $products, enableProduct: $enableProduct, sum: $sum)';
   }
 
   @override
@@ -269,7 +286,8 @@ class _$_AddStockAdjustmentStateData implements _AddStockAdjustmentStateData {
                 other.transaction == transaction) &&
             const DeepCollectionEquality().equals(other._products, _products) &&
             (identical(other.enableProduct, enableProduct) ||
-                other.enableProduct == enableProduct));
+                other.enableProduct == enableProduct) &&
+            (identical(other.sum, sum) || other.sum == sum));
   }
 
   @override
@@ -282,7 +300,8 @@ class _$_AddStockAdjustmentStateData implements _AddStockAdjustmentStateData {
       const DeepCollectionEquality().hash(_transactionsDebt),
       transaction,
       const DeepCollectionEquality().hash(_products),
-      enableProduct);
+      enableProduct,
+      sum);
 
   @JsonKey(ignore: true)
   @override
@@ -302,7 +321,8 @@ abstract class _AddStockAdjustmentStateData
       final List<Transaction> transactionsDebt,
       final Transaction? transaction,
       final List<Product> products,
-      final bool enableProduct}) = _$_AddStockAdjustmentStateData;
+      final bool enableProduct,
+      final String sum}) = _$_AddStockAdjustmentStateData;
 
   @override
   String get error;
@@ -320,6 +340,8 @@ abstract class _AddStockAdjustmentStateData
   List<Product> get products;
   @override
   bool get enableProduct;
+  @override
+  String get sum;
   @override
   @JsonKey(ignore: true)
   _$$_AddStockAdjustmentStateDataCopyWith<_$_AddStockAdjustmentStateData>

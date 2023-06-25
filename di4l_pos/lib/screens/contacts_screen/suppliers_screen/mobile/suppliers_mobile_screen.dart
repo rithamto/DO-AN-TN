@@ -99,7 +99,7 @@ class _SuppliersScreenState extends State<SuppliersMobileScreen>
                                 // isLoading = true;
                               });
                             }
-                            return null;
+                            return Container();
                           },
                           separatorBuilder: (context, index) =>
                               const SizedBox.shrink(),

@@ -40,12 +40,12 @@ class _LoginScreenState extends State<LoginMobileScreen> with AfterLayoutMixin {
   @override
   FutureOr<void> afterFirstLayout(BuildContext context) {}
 
-  @override
-  void initState() {
-    super.initState();
-    _txtEmail.text = 'restaurantdi4l';
-    _txtPassword.text = 'Abc@123456';
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _txtEmail.text = 'restaurantdi4l';
+  //   _txtPassword.text = 'Abc@123456';
+  // }
 
   @override
   void dispose() {
@@ -68,6 +68,9 @@ class _LoginScreenState extends State<LoginMobileScreen> with AfterLayoutMixin {
               navigator!.pushNamedAndRemoveUntil(
                   RouteGenerator.switchAccount, (route) => false);
             } else {
+              UIHelpers.showSnackBar(
+                message: 'email_or_password_is_incorrect'.tr, type: SnackBarType.ERROR);
+                
               _txtEmail.text = '';
               _txtPassword.text = '';
             }
@@ -88,17 +91,20 @@ class _LoginScreenState extends State<LoginMobileScreen> with AfterLayoutMixin {
                 children: [
                   /// Logo
                   const SizedBox(height: 40),
-                  
-                     Padding(
-                       padding: const EdgeInsets.only(top:40.0, right: 100.0, bottom: 30),
-                       child: Container(
-                        child: Text("welcome_to".tr + " Di4l",
-                        style: TextStyle(fontSize: 45),),
-                        height: 100,
-                        width: 300,
-                       ),
-                     
-                     //Image.asset(
+
+                  Padding(
+                    padding: const EdgeInsets.only(top: 40.0, bottom: 30),
+                    child: Container(
+                      child: const Text(
+                        "Di4L Sell - Quản lý bán hàng",
+                        style: TextStyle(
+                            fontSize: Dimensions.FONT_SIZE_OVER_LARGE),
+                      ),
+                      height: 100,
+                      width: 300,
+                    ),
+
+                    //Image.asset(
                     //   GlobalImages.kAppIcon,
                     //   height: 150,
                     //   width: 150,
@@ -144,11 +150,14 @@ class _LoginScreenState extends State<LoginMobileScreen> with AfterLayoutMixin {
                     constraints: const BoxConstraints.tightFor(
                         height: 44, width: double.infinity),
                     child: ElevatedButton(
-                      onPressed: () => _globalKey.currentContext!
+                      onPressed: () {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        _globalKey.currentContext!
                           .read<LoginCubit>()
                           .login(
                               email: _txtEmail.text,
-                              password: _txtPassword.text),
+                              password: _txtPassword.text);
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: GlobalColors.primaryColor,
                       ),

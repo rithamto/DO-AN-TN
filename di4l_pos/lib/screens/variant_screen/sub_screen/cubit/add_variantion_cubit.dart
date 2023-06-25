@@ -71,12 +71,7 @@ class AddVariantionCubit extends Cubit<AddVariantionState> {
     List<VariantionValue>? editValues,
   }) async {
     try {
-      if (await checkEmpty(
-            name,
-            AddType.UPDATE,
-            editValues,
-          ) !=
-          '') {
+      if (await checkEmpty(name, AddType.UPDATE, editValues) != '') {
         emit(AddVariantionState.error(
             data: state.data!.copyWith(
                 error: await checkEmpty(

@@ -131,7 +131,8 @@ class _warrantiesScreenState extends State<WarrantiesScreen>
                                                       decoration: BoxDecoration(
                                                         color: Colors.grey[300],
                                                         borderRadius:
-                                                            const BorderRadius.all(
+                                                            const BorderRadius
+                                                                    .all(
                                                                 Radius.circular(
                                                                     10.0) //                 <--- border radius here
                                                                 ),
@@ -139,7 +140,8 @@ class _warrantiesScreenState extends State<WarrantiesScreen>
                                                       height: Get.height * 0.06,
                                                       child: Padding(
                                                         padding:
-                                                            const EdgeInsets.all(8.0),
+                                                            const EdgeInsets
+                                                                .all(8.0),
                                                         child: Image.asset(
                                                           "assets/images/food.jpg",
                                                           color: Colors.grey,
@@ -199,7 +201,34 @@ class _warrantiesScreenState extends State<WarrantiesScreen>
                                                   ),
                                                 ],
                                               ),
-                                              onTap: () {},
+                                              onTap: () {
+                                                {
+                                                  showModalBottomSheet(
+                                                    shape: const RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.vertical(
+                                                                top: Radius
+                                                                    .circular(
+                                                                        15.0))),
+                                                    context: context,
+                                                    isScrollControlled: true,
+                                                    isDismissible: true,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return AddWarrantyScreen
+                                                          .provider(
+                                                        addWarrantyType:
+                                                            AddType.UPDATE,
+                                                        warranty: e,
+                                                      );
+                                                    },
+                                                  ).then((value) => _globalKey
+                                                      .currentContext!
+                                                      .read<WarrantiesCubit>()
+                                                      .getWarranties());
+                                                }
+                                                ;
+                                              },
                                             ),
                                           ),
                                         ))

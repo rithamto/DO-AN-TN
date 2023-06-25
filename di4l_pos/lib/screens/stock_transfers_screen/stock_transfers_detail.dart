@@ -139,6 +139,8 @@ class _StockTransferDetailState extends State<StockTransferDetail>
                                   child: ListView.builder(
                                     itemCount: selline.length,
                                     shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     itemBuilder: (context, index) {
                                       return StockTransferProduct(
                                         sellLine: selline.elementAt(index),
@@ -341,7 +343,8 @@ class _StockTransferDetailState extends State<StockTransferDetail>
                                                   padding:
                                                       const EdgeInsets.all(10),
                                                   child: Text(
-                                                    '${subject.additionalNotes}',
+                                                    subject.additionalNotes ??
+                                                        '',
                                                     softWrap: true,
                                                     overflow:
                                                         TextOverflow.visible,
@@ -392,8 +395,11 @@ class _StockTransferDetailState extends State<StockTransferDetail>
                                               Expanded(
                                                 child: ListView.builder(
                                                   itemCount: activitie.length,
+                                                  physics:
+                                                      const NeverScrollableScrollPhysics(),
                                                   shrinkWrap: true,
-                                                  itemBuilder: (context, index) {
+                                                  itemBuilder:
+                                                      (context, index) {
                                                     return StockTransferActivities(
                                                       activities: activitie
                                                           .elementAt(index),

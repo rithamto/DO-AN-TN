@@ -18,6 +18,8 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$StockManageStateData {
   List<ReportStockData> get reportStockManages =>
       throw _privateConstructorUsedError;
+  List<ReportStockData> get reportStockManagesOriginal =>
+      throw _privateConstructorUsedError;
   bool get isOpenSearch => throw _privateConstructorUsedError;
   bool get isCategoryScreen => throw _privateConstructorUsedError;
   StatusType get status => throw _privateConstructorUsedError;
@@ -37,6 +39,7 @@ abstract class $StockManageStateDataCopyWith<$Res> {
   @useResult
   $Res call(
       {List<ReportStockData> reportStockManages,
+      List<ReportStockData> reportStockManagesOriginal,
       bool isOpenSearch,
       bool isCategoryScreen,
       StatusType status,
@@ -59,6 +62,7 @@ class _$StockManageStateDataCopyWithImpl<$Res,
   @override
   $Res call({
     Object? reportStockManages = null,
+    Object? reportStockManagesOriginal = null,
     Object? isOpenSearch = null,
     Object? isCategoryScreen = null,
     Object? status = null,
@@ -69,6 +73,10 @@ class _$StockManageStateDataCopyWithImpl<$Res,
       reportStockManages: null == reportStockManages
           ? _value.reportStockManages
           : reportStockManages // ignore: cast_nullable_to_non_nullable
+              as List<ReportStockData>,
+      reportStockManagesOriginal: null == reportStockManagesOriginal
+          ? _value.reportStockManagesOriginal
+          : reportStockManagesOriginal // ignore: cast_nullable_to_non_nullable
               as List<ReportStockData>,
       isOpenSearch: null == isOpenSearch
           ? _value.isOpenSearch
@@ -104,6 +112,7 @@ abstract class _$$_StockManageStateDataCopyWith<$Res>
   @useResult
   $Res call(
       {List<ReportStockData> reportStockManages,
+      List<ReportStockData> reportStockManagesOriginal,
       bool isOpenSearch,
       bool isCategoryScreen,
       StatusType status,
@@ -123,6 +132,7 @@ class __$$_StockManageStateDataCopyWithImpl<$Res>
   @override
   $Res call({
     Object? reportStockManages = null,
+    Object? reportStockManagesOriginal = null,
     Object? isOpenSearch = null,
     Object? isCategoryScreen = null,
     Object? status = null,
@@ -133,6 +143,10 @@ class __$$_StockManageStateDataCopyWithImpl<$Res>
       reportStockManages: null == reportStockManages
           ? _value._reportStockManages
           : reportStockManages // ignore: cast_nullable_to_non_nullable
+              as List<ReportStockData>,
+      reportStockManagesOriginal: null == reportStockManagesOriginal
+          ? _value._reportStockManagesOriginal
+          : reportStockManagesOriginal // ignore: cast_nullable_to_non_nullable
               as List<ReportStockData>,
       isOpenSearch: null == isOpenSearch
           ? _value.isOpenSearch
@@ -163,12 +177,14 @@ class __$$_StockManageStateDataCopyWithImpl<$Res>
 class _$_StockManageStateData implements _StockManageStateData {
   const _$_StockManageStateData(
       {final List<ReportStockData> reportStockManages = const [],
+      final List<ReportStockData> reportStockManagesOriginal = const [],
       this.isOpenSearch = false,
       this.isCategoryScreen = false,
       this.status = StatusType.init,
       final List<Product> products = const [],
       final List<Product> productsOriginal = const []})
       : _reportStockManages = reportStockManages,
+        _reportStockManagesOriginal = reportStockManagesOriginal,
         _products = products,
         _productsOriginal = productsOriginal;
 
@@ -180,6 +196,16 @@ class _$_StockManageStateData implements _StockManageStateData {
       return _reportStockManages;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_reportStockManages);
+  }
+
+  final List<ReportStockData> _reportStockManagesOriginal;
+  @override
+  @JsonKey()
+  List<ReportStockData> get reportStockManagesOriginal {
+    if (_reportStockManagesOriginal is EqualUnmodifiableListView)
+      return _reportStockManagesOriginal;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_reportStockManagesOriginal);
   }
 
   @override
@@ -212,7 +238,7 @@ class _$_StockManageStateData implements _StockManageStateData {
 
   @override
   String toString() {
-    return 'StockManageStateData(reportStockManages: $reportStockManages, isOpenSearch: $isOpenSearch, isCategoryScreen: $isCategoryScreen, status: $status, products: $products, productsOriginal: $productsOriginal)';
+    return 'StockManageStateData(reportStockManages: $reportStockManages, reportStockManagesOriginal: $reportStockManagesOriginal, isOpenSearch: $isOpenSearch, isCategoryScreen: $isCategoryScreen, status: $status, products: $products, productsOriginal: $productsOriginal)';
   }
 
   @override
@@ -222,6 +248,9 @@ class _$_StockManageStateData implements _StockManageStateData {
             other is _$_StockManageStateData &&
             const DeepCollectionEquality()
                 .equals(other._reportStockManages, _reportStockManages) &&
+            const DeepCollectionEquality().equals(
+                other._reportStockManagesOriginal,
+                _reportStockManagesOriginal) &&
             (identical(other.isOpenSearch, isOpenSearch) ||
                 other.isOpenSearch == isOpenSearch) &&
             (identical(other.isCategoryScreen, isCategoryScreen) ||
@@ -236,6 +265,7 @@ class _$_StockManageStateData implements _StockManageStateData {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_reportStockManages),
+      const DeepCollectionEquality().hash(_reportStockManagesOriginal),
       isOpenSearch,
       isCategoryScreen,
       status,
@@ -253,6 +283,7 @@ class _$_StockManageStateData implements _StockManageStateData {
 abstract class _StockManageStateData implements StockManageStateData {
   const factory _StockManageStateData(
       {final List<ReportStockData> reportStockManages,
+      final List<ReportStockData> reportStockManagesOriginal,
       final bool isOpenSearch,
       final bool isCategoryScreen,
       final StatusType status,
@@ -261,6 +292,8 @@ abstract class _StockManageStateData implements StockManageStateData {
 
   @override
   List<ReportStockData> get reportStockManages;
+  @override
+  List<ReportStockData> get reportStockManagesOriginal;
   @override
   bool get isOpenSearch;
   @override

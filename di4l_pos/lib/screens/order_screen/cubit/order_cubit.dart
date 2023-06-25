@@ -26,6 +26,7 @@ class SalesOrderCubit extends Cubit<SalesOrderState> {
           data: state.data?.copyWith(status: StatusType.loading)));
       final request = GetSellRequest();
       final response = await _dataRepository.getSell(request: request);
+      print(response.toJson());
       emit(SalesOrderState.getSell(
           data: state.data?.copyWith(
               status: StatusType.loaded,

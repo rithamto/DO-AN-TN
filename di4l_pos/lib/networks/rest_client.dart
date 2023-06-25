@@ -2,11 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:di4l_pos/common/global_configs.dart';
+import 'package:di4l_pos/models/add_status_order/request/add_status_order_request.dart';
+import 'package:di4l_pos/models/add_status_order/response/add_status_order_response.dart';
 import 'package:di4l_pos/models/base/response/sucess_response.dart';
 import 'package:di4l_pos/models/branch/add_branch_request.dart';
 import 'package:di4l_pos/models/branch/response/add_brand_response.dart';
 import 'package:di4l_pos/models/branch/response/branch_response.dart';
 import 'package:di4l_pos/models/business_location/response/business_location_response.dart';
+import 'package:di4l_pos/models/cart_table_order/add_order_request.dart';
 import 'package:di4l_pos/models/cash_register/request/add_cash_register_request.dart';
 import 'package:di4l_pos/models/cash_register/request/get_cash_register_request.dart';
 import 'package:di4l_pos/models/cash_register/response/add_cash_register_response.dart';
@@ -22,6 +25,9 @@ import 'package:di4l_pos/models/contacts/response/ledger_response.dart';
 import 'package:di4l_pos/models/customer-group/request/add_customer_group_request.dart';
 import 'package:di4l_pos/models/customer-group/response/add_customer_group_response.dart';
 import 'package:di4l_pos/models/customer-group/response/customer_group_response.dart';
+import 'package:di4l_pos/models/delivery/request/connect_ghtk_request.dart';
+import 'package:di4l_pos/models/delivery/response/delivery_response.dart';
+import 'package:di4l_pos/models/delivery/response/connect_ghtk_response.dart';
 import 'package:di4l_pos/models/kitchen/kitchen_detail_response.dart';
 import 'package:di4l_pos/models/kitchen/kitchen_response.dart';
 import 'package:di4l_pos/models/modifier_set/modifier_set_response.dart';
@@ -46,7 +52,7 @@ import 'package:di4l_pos/models/revenue_expense/response/expense_response.dart';
 import 'package:di4l_pos/models/sell/request/add_sell_request.dart';
 import 'package:di4l_pos/models/sell/request/get_sell_request.dart';
 import 'package:di4l_pos/models/sell/response/sell_response.dart';
-import 'package:di4l_pos/models/shopinfo/request/ShopSettingPUTRq.dart';
+import 'package:di4l_pos/models/shopinfo/request/shopSettingPUTRq.dart';
 import 'package:di4l_pos/models/shopinfo/response/TaxResponse.dart';
 import 'package:di4l_pos/models/stock_adjustment/request/add_stock_adjustment_request.dart';
 import 'package:di4l_pos/models/stock_adjustment/response/add_stock_adjustment_response.dart';
@@ -56,6 +62,8 @@ import 'package:di4l_pos/models/shopinfo/response/Currency.dart';
 import 'package:di4l_pos/models/shopinfo/response/DefaultUnit.dart';
 import 'package:di4l_pos/models/shopinfo/response/ShopSettingRp.dart';
 import 'package:di4l_pos/models/shopinfo/response/UpdateBusinessRp.dart';
+import 'package:di4l_pos/models/stock_transfers/request/add_stock_transfers_request.dart';
+import 'package:di4l_pos/models/stock_transfers/response/add_stock_transfers_response.dart';
 import 'package:di4l_pos/models/stock_transfers/response/stock_transfers_detail_response.dart';
 import 'package:di4l_pos/models/stock_transfers/response/stock_transfers_response.dart';
 import 'package:di4l_pos/models/table/response/table_response.dart';
@@ -79,6 +87,11 @@ import 'package:di4l_pos/models/variants/request/add_variantion_request.dart';
 import 'package:di4l_pos/models/variants/response/variants_response.dart';
 import 'package:di4l_pos/models/warranty/warranty_request.dart';
 import 'package:di4l_pos/models/warranty/warranty_response.dart';
+import 'package:di4l_pos/models/product_stock/request/add_product_stock_request.dart';
+import 'package:di4l_pos/models/product_stock/response/add_product_stock_response.dart';
+import 'package:di4l_pos/models/printer/response/printer_response.dart';
+import 'package:di4l_pos/models/printer/request/add_printer_request.dart';
+import 'package:di4l_pos/models/printer/response/add_printer_response.dart';
 import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:retrofit/retrofit.dart';
@@ -100,6 +113,9 @@ abstract class RestClient {
 
   @GET('/connector/api/business-location')
   Future<BusinessLocationResponse> getBusinessLocation();
+
+  @POST('/connector/api/business-location/activate-deactivate/{id}')
+  Future activeBusiness({@Path('id') required int id});
 
   @POST('/connector/api/business-delete/{id}')
   Future deleteBusiness({@Path('id') required int id});
@@ -224,7 +240,7 @@ abstract class RestClient {
       {@Query('page') int? page,
       @Query("start_date") String? startDate,
       @Query("end_date") String? endDate});
-      
+
   @MultiPart()
   @POST('/connector/api/product')
   Future<AddProductResponse> addProduct({
@@ -445,6 +461,12 @@ abstract class RestClient {
   @GET('/connector/api/table/{tableId}')
   Future<TableModel> getTableWithId({@Path('tableId') required int id});
 
+  @GET('/connector/api/modifier-set')
+  Future<ModifierResponse> getModifiers();
+
+  @POST('/connector/api/sell')
+  Future<SuccessResponse> addOrder({@Body() required AddOrderRequest request});
+
   @GET('/connector/api/currency')
   Future<List<Currency>> getListCurrency();
 
@@ -460,9 +482,6 @@ abstract class RestClient {
   @POST('/connector/api/business/settings/update')
   Future<UpdateBusinessRp> updateInfoBusiness(
       {@Body() required ShopSettingRq request});
-
-  @GET('/connector/api/modifier-set')
-  Future<ModifierResponse> getModifiers();
 
   /// Expense
   ///
@@ -483,7 +502,9 @@ abstract class RestClient {
 
   //Stock adjustments
   @GET('/connector/api/stock-adjustments')
-  Future<StockAdjustmentResponse> getStockAdjustments();
+  Future<StockAdjustmentResponse> getStockAdjustments({
+    @Query('page') int? page,
+  });
 
   @GET('/connector/api/stock-adjustments/detail-stock-adjustments/{id}')
   Future<StockAdjustmentDetailResponse> getStockAdjustmentsDetail({
@@ -500,7 +521,9 @@ abstract class RestClient {
 
   //Stock Transfer
   @GET('/connector/api/stock-transfers')
-  Future<StockTransfersResponse> getStockTransfers();
+  Future<StockTransfersResponse> getStockTransfers({
+    @Query('page') int? page,
+  });
 
   @GET('/connector/api/stock-transfers/detail-stock-transfers/{id}')
   Future<StockTransfersDetailResponse> getStockTransferDetail({
@@ -509,6 +532,10 @@ abstract class RestClient {
 
   @POST('/connector/api/stock-transfers/delete/{id}')
   Future deleteStockTransfer({@Path('id') required int id});
+
+  @POST('/connector/api/stock-transfers-add')
+  Future<AddStockTransfersResponse> addStockTransfers(
+      {@Body() required AddStockTransfersRequest request});
 
   @POST('/connector/api/expense-categories/add')
   Future<AddExpenseCategoryResponse> addExpenseCateogry(
@@ -522,8 +549,8 @@ abstract class RestClient {
 
   @MultiPart()
   @POST('/connector/api/business/settings/update')
-  Future<SuccessResponse> updateLogo({
-    @Part(name: 'logo') File? file,
+  Future<UpdateBusinessRp> updateLogo({
+    @Part(name: 'business_logo', contentType: 'image/jpeg') File? file,
   });
 
   @GET('/connector/api/tax')
@@ -533,4 +560,45 @@ abstract class RestClient {
   Future<GetProfitDayRp> getProfitDay({
     @Query("start_date") String? startDate,
     @Query("end_date") String? endDate});
+  // @GET('/connector/api/customer-group/{id}')
+  // Future<CustomerGroupResponse> getCustomerGroup({@Path('id') required int id});
+
+  @POST('/connector/api/status-order-pos')
+  Future<AddStatusOrderResponse> addStatusOrder(
+      {@Body() required AddStatusOrderRequest request});
+
+  @PUT('/connector/api/status-order-pos/{id}')
+  Future<AddStatusOrderResponse> updateStatusOrder({
+    @Body() required AddStatusOrderRequest request,
+    @Path('id') required int id,
+  });
+
+  @DELETE('/connector/api/status-order-pos/{id}')
+  Future deleteStatusOrder({@Path('id') required int id});
+
+  @POST('/connector/api/opening-stock')
+  Future<AddProductStockResponse> addProductStock({
+    @Body() required AddProductStockRequest request,
+  });
+  @GET('/connector/api/printers')
+  Future<List<Printer>> getPrinters();
+
+  @DELETE('/connector/api/printers/{id}')
+  Future deletePrinter({@Path('id') required int id});
+
+  @POST('/connector/api/printers')
+  Future<AddPrinterResponse> addPrinter(
+      {@Body() required AddPrinterRequest request});
+
+  @PUT('/connector/api/printers/{id}')
+  Future<AddPrinterResponse> updatePrinter(
+      {@Body() required AddPrinterRequest request,
+      @Path('id') required int id});
+
+  @GET('/connector/api/delivery/partner')
+  Future<DeliveryResponse> getDeliveryPartners();
+
+  @POST('/connector/api/delivery/login_ghtk')
+  Future<ConnectGhtkResponse> connectGHTK(
+      {@Body() required ConnectGhtkRequest request});
 }

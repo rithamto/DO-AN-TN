@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$BusinessData {
   List<BusinessLocation> get businesss => throw _privateConstructorUsedError;
   BusinessLocation? get business => throw _privateConstructorUsedError;
+  BusinessLocation? get businessTo => throw _privateConstructorUsedError;
   List<Account> get accounts => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -34,6 +35,7 @@ abstract class $BusinessDataCopyWith<$Res> {
   $Res call(
       {List<BusinessLocation> businesss,
       BusinessLocation? business,
+      BusinessLocation? businessTo,
       List<Account> accounts});
 }
 
@@ -52,6 +54,7 @@ class _$BusinessDataCopyWithImpl<$Res, $Val extends BusinessData>
   $Res call({
     Object? businesss = null,
     Object? business = freezed,
+    Object? businessTo = freezed,
     Object? accounts = null,
   }) {
     return _then(_value.copyWith(
@@ -62,6 +65,10 @@ class _$BusinessDataCopyWithImpl<$Res, $Val extends BusinessData>
       business: freezed == business
           ? _value.business
           : business // ignore: cast_nullable_to_non_nullable
+              as BusinessLocation?,
+      businessTo: freezed == businessTo
+          ? _value.businessTo
+          : businessTo // ignore: cast_nullable_to_non_nullable
               as BusinessLocation?,
       accounts: null == accounts
           ? _value.accounts
@@ -82,6 +89,7 @@ abstract class _$$_BusinessDataCopyWith<$Res>
   $Res call(
       {List<BusinessLocation> businesss,
       BusinessLocation? business,
+      BusinessLocation? businessTo,
       List<Account> accounts});
 }
 
@@ -98,6 +106,7 @@ class __$$_BusinessDataCopyWithImpl<$Res>
   $Res call({
     Object? businesss = null,
     Object? business = freezed,
+    Object? businessTo = freezed,
     Object? accounts = null,
   }) {
     return _then(_$_BusinessData(
@@ -108,6 +117,10 @@ class __$$_BusinessDataCopyWithImpl<$Res>
       business: freezed == business
           ? _value.business
           : business // ignore: cast_nullable_to_non_nullable
+              as BusinessLocation?,
+      businessTo: freezed == businessTo
+          ? _value.businessTo
+          : businessTo // ignore: cast_nullable_to_non_nullable
               as BusinessLocation?,
       accounts: null == accounts
           ? _value._accounts
@@ -123,6 +136,7 @@ class _$_BusinessData with DiagnosticableTreeMixin implements _BusinessData {
   const _$_BusinessData(
       {final List<BusinessLocation> businesss = const [],
       this.business,
+      this.businessTo,
       final List<Account> accounts = const []})
       : _businesss = businesss,
         _accounts = accounts;
@@ -138,6 +152,8 @@ class _$_BusinessData with DiagnosticableTreeMixin implements _BusinessData {
 
   @override
   final BusinessLocation? business;
+  @override
+  final BusinessLocation? businessTo;
   final List<Account> _accounts;
   @override
   @JsonKey()
@@ -149,7 +165,7 @@ class _$_BusinessData with DiagnosticableTreeMixin implements _BusinessData {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'BusinessData(businesss: $businesss, business: $business, accounts: $accounts)';
+    return 'BusinessData(businesss: $businesss, business: $business, businessTo: $businessTo, accounts: $accounts)';
   }
 
   @override
@@ -159,6 +175,7 @@ class _$_BusinessData with DiagnosticableTreeMixin implements _BusinessData {
       ..add(DiagnosticsProperty('type', 'BusinessData'))
       ..add(DiagnosticsProperty('businesss', businesss))
       ..add(DiagnosticsProperty('business', business))
+      ..add(DiagnosticsProperty('businessTo', businessTo))
       ..add(DiagnosticsProperty('accounts', accounts));
   }
 
@@ -171,6 +188,8 @@ class _$_BusinessData with DiagnosticableTreeMixin implements _BusinessData {
                 .equals(other._businesss, _businesss) &&
             (identical(other.business, business) ||
                 other.business == business) &&
+            (identical(other.businessTo, businessTo) ||
+                other.businessTo == businessTo) &&
             const DeepCollectionEquality().equals(other._accounts, _accounts));
   }
 
@@ -179,6 +198,7 @@ class _$_BusinessData with DiagnosticableTreeMixin implements _BusinessData {
       runtimeType,
       const DeepCollectionEquality().hash(_businesss),
       business,
+      businessTo,
       const DeepCollectionEquality().hash(_accounts));
 
   @JsonKey(ignore: true)
@@ -192,12 +212,15 @@ abstract class _BusinessData implements BusinessData {
   const factory _BusinessData(
       {final List<BusinessLocation> businesss,
       final BusinessLocation? business,
+      final BusinessLocation? businessTo,
       final List<Account> accounts}) = _$_BusinessData;
 
   @override
   List<BusinessLocation> get businesss;
   @override
   BusinessLocation? get business;
+  @override
+  BusinessLocation? get businessTo;
   @override
   List<Account> get accounts;
   @override

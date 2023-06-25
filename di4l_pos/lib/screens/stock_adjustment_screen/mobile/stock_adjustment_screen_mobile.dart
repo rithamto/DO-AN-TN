@@ -12,6 +12,7 @@ import 'package:di4l_pos/screens/stock_adjustment_screen/mobile/widget/all_stock
 import 'package:di4l_pos/widgets/data/404_widget.dart';
 import 'package:di4l_pos/widgets/data/app_loading_widget.dart';
 import 'package:di4l_pos/widgets/data/no_data_widget.dart';
+import 'package:di4l_pos/widgets/search_widget_contact.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -34,17 +35,30 @@ class StockAdjustmentScreenMobile extends StatefulWidget {
 class _StockAdjustmentScreenMobileState
     extends State<StockAdjustmentScreenMobile>
     with AfterLayoutMixin<StockAdjustmentScreenMobile> {
-  TextEditingController textController = TextEditingController();
-    final ScrollController _scrollController = ScrollController();
+  final TextEditingController _txtSearch = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+
+  bool _showSearch = false;
 
   @override
   FutureOr<void> afterFirstLayout(BuildContext context) {
     context.read<StockAdjustmentCubit>().getStockAdjustments();
   }
 
+  void setupScrollController(context) {
+    _scrollController.addListener(() {
+      if (_scrollController.position.atEdge) {
+        if (_scrollController.position.pixels != 0) {
+          BlocProvider.of<StockAdjustmentCubit>(context).getStockAdjustments();
+        }
+      }
+    });
+  }
+
   int dropdownValue = 25;
   @override
   Widget build(BuildContext context) {
+    setupScrollController(context);
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black, size: 23),
@@ -62,89 +76,109 @@ class _StockAdjustmentScreenMobileState
           ),
         ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            child: AnimSearchBar(
-              helpText: 'search'.tr,
-              prefixIcon: const Icon(
-                Icons.search_outlined,
-                color: GlobalColors.primaryWebColor,
-                size: 30,
-              ),
-              suffixIcon: const Icon(Icons.close_fullscreen_outlined),
-              width: MediaQuery.of(context).size.width,
-              boxShadow: false,
-              textController: textController,
-              onSuffixTap: () {
-                setState(() {
-                  textController.clear();
-                });
-              },
-              // ignore: avoid_types_as_parameter_names, non_constant_identifier_names
-              onSubmitted: (String) {},
+          IconButton(
+            onPressed: () {
+              setState(() {
+                _showSearch = !_showSearch;
+                _txtSearch.clear();
+              });
+            },
+            icon: Icon(
+              _showSearch ? Icons.clear : Icons.search,
+              color: Colors.black,
             ),
           ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(vertical: 5),
+          //   child: AnimSearchBar(
+          //     helpText: 'search'.tr,
+          //     prefixIcon: const Icon(
+          //       Icons.search_outlined,
+          //       color: GlobalColors.primaryWebColor,
+          //       size: 30,
+          //     ),
+          //     suffixIcon: const Icon(Icons.close_fullscreen_outlined),
+          //     width: MediaQuery.of(context).size.width,
+          //     boxShadow: false,
+          //     textController: textController,
+          //     onSuffixTap: () {
+          //       setState(() {
+          //         textController.clear();
+          //       });
+          //     },
+          //     // ignore: avoid_types_as_parameter_names, non_constant_identifier_names
+          //     onSubmitted: (String) {},
+          //   ),
+          // ),
         ],
       ),
-      backgroundColor: GlobalColors.kDarkWhite,
+      backgroundColor: GlobalColors.bgColor,
       body: Column(
+        mainAxisSize: MainAxisSize.max,
         children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'all_stock_adjustments'.tr,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.bold,
-                    color: GlobalColors.primaryColor,
-                  ),
-                ),
-              ],
+          Visibility(
+            visible: _showSearch,
+            child: SearchWidgetContact(
+              controller: _txtSearch,
+              hintText: 'search'.tr,
+              onChange: (String? value) {
+                context
+                    .read<StockAdjustmentCubit>()
+                    .searchStockAdjustment(searchText: value?.trim() ?? '');
+                setState(() {});
+              },
             ),
           ),
-          BlocBuilder<StockAdjustmentCubit, StockAdjustmentState>(
-            buildWhen: ((previous, current) =>
-                previous.data!.status != current.data!.status),
-            builder: (context, state) {
-              final stockAdjustments = state.data?.stockAdjustments ?? [];
-              switch (state.data!.status) {
-                case StatusType.loading:
-                  return const AppLoadingWidget(
-                    widget: null,
-                    text: 'Loading...',
-                  );
-                case StatusType.loaded:
-                  return stockAdjustments.isNotEmpty
-                      ? Expanded(
-                          child: ListView.builder(
+          Expanded(
+            child: BlocBuilder<StockAdjustmentCubit, StockAdjustmentState>(
+              buildWhen: ((previous, current) =>
+                  previous.data!.status != current.data!.status),
+              builder: (context, state) {
+                final stockAdjustments = state.data?.stockAdjustments ?? [];
+                switch (state.data!.status) {
+                  case StatusType.loading:
+                  //   return const AppLoadingWidget(
+                  //     widget: null,
+                  //     text: 'Loading...',
+                  //   );
+                  case StatusType.loaded:
+                    return stockAdjustments.isNotEmpty
+                        ? ListView.separated(
                             itemCount: stockAdjustments.length,
+                            controller: _scrollController,
                             shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(),
                             itemBuilder: (context, index) {
-                              return AllStockAdJustMentMobile(
-                                stockAdjustmentData:
-                                    stockAdjustments.elementAt(index),
-                                function: () => context
-                                    .read<StockAdjustmentCubit>()
-                                    .deleteStockAdjustment(
-                                        id: stockAdjustments
-                                            .elementAt(index)
-                                            .id!),
-                              );
-                            },
-                          ),
-                        )
-                      : const NoDataWidget();
-                case StatusType.error:
-                  return const Error404Widget();
-                default:
-                  return const SizedBox.shrink();
-              }
-            },
+                              if (index < stockAdjustments.length) {
+                                return AllStockAdJustMentMobile(
+                                  stockAdjustmentData:
+                                      stockAdjustments.elementAt(index),
+                                  function: () => context
+                                      .read<StockAdjustmentCubit>()
+                                      .deleteStockAdjustment(
+                                          id: stockAdjustments
+                                              .elementAt(index)
+                                              .id!),
+                                );
+                              } else {
+                                Future.delayed(const Duration(seconds: 5), () {
+                                  _scrollController.jumpTo(_scrollController
+                                      .position.maxScrollExtent);
+                                });
+                              }
+                            })
+                        : const AppLoadingWidget(
+                            widget: null,
+                            text: 'Loading...',
+                          );
+                  case StatusType.error:
+                    return const Error404Widget();
+                  default:
+                    return const SizedBox.shrink();
+                }
+              },
+            ),
           ),
         ],
       ),
@@ -154,9 +188,20 @@ class _StockAdjustmentScreenMobileState
         text: 'add_stock_adjustment'.tr,
         iconData: Icons.add,
         scrollController: _scrollController,
-        onPress: () => navigator!.pushNamed(
-          RouteGenerator.addStockAdjustmentScreen,
-        ),
+        onPress: () {
+          final currentContext = context;
+          navigator!
+              .pushNamed(RouteGenerator.addStockAdjustmentScreen)
+              .then((value) {
+            // Hành động được thực hiện sau khi trang addStockAdjustmentScreen hoàn thành
+            // ignore: unnecessary_null_comparison
+            if (currentContext != null) {
+              currentContext
+                  .read<StockAdjustmentCubit>()
+                  .loadStockAdjustments();
+            }
+          });
+        },
       ),
     );
   }

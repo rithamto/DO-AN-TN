@@ -12,6 +12,7 @@ import 'package:di4l_pos/screens/stock_transfers_screen/mobile/widget/all_stock_
 import 'package:di4l_pos/widgets/data/404_widget.dart';
 import 'package:di4l_pos/widgets/data/app_loading_widget.dart';
 import 'package:di4l_pos/widgets/data/no_data_widget.dart';
+import 'package:di4l_pos/widgets/search_widget_contact.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -26,25 +27,36 @@ class StockTranfersScreenMobile extends StatefulWidget {
   }
 
   @override
-  _stockTransferscreenMobileState createState() =>
-      _stockTransferscreenMobileState();
+  // ignore: library_private_types_in_public_api
+  _StockTransferscreenMobileState createState() =>
+      _StockTransferscreenMobileState();
 }
 
-class _stockTransferscreenMobileState extends State<StockTranfersScreenMobile>
+class _StockTransferscreenMobileState extends State<StockTranfersScreenMobile>
     with AfterLayoutMixin<StockTranfersScreenMobile> {
   final ScrollController _scrollController = ScrollController();
-  TextEditingController textController = TextEditingController();
-  final GlobalKey<ScaffoldState> _globalKey = GlobalKey();
+  final TextEditingController _txtSearch = TextEditingController();
+
+  bool _showSearch = false;
 
   @override
   FutureOr<void> afterFirstLayout(BuildContext context) {
     context.read<StockTransfersCubit>().getStockTransfers();
   }
 
-  int dropdownValue = 25;
+  void setupScrollController(context) {
+    _scrollController.addListener(() {
+      if (_scrollController.position.atEdge) {
+        if (_scrollController.position.pixels != 0) {
+          BlocProvider.of<StockTransfersCubit>(context).getStockTransfers();
+        }
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
+    setupScrollController(context);
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black, size: 23),
@@ -62,30 +74,49 @@ class _stockTransferscreenMobileState extends State<StockTranfersScreenMobile>
           ),
         ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            child: AnimSearchBar(
-              helpText: 'search'.tr,
-              prefixIcon: const Icon(
-                Icons.search_outlined,
-                color: GlobalColors.primaryWebColor,
-                size: 30,
-              ),
-              suffixIcon: const Icon(Icons.close_fullscreen_outlined),
-              width: MediaQuery.of(context).size.width,
-              boxShadow: false,
-              textController: textController,
-              onSuffixTap: () {
-                setState(() {
-                  textController.clear();
-                });
-              },
-              onSubmitted: (String) {},
+          IconButton(
+            onPressed: () {
+              setState(() {
+                _showSearch = !_showSearch;
+                _txtSearch.clear();
+              });
+            },
+            icon: Icon(
+              _showSearch ? Icons.clear : Icons.search,
+              color: Colors.black,
             ),
           ),
+
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(vertical: 5),
+          //   child: AnimSearchBar(
+          //     helpText: 'search'.tr,
+          //     prefixIcon: const Icon(
+          //       Icons.search_outlined,
+          //       color: GlobalColors.primaryWebColor,
+          //       size: 30,
+          //     ),
+          //     suffixIcon: const Icon(Icons.close_fullscreen_outlined),
+          //     width: MediaQuery.of(context).size.width,
+          //     boxShadow: false,
+          //     textController: textController,
+          //     onSuffixTap: () {
+          //       setState(() {
+          //         textController.clear();
+          //       });
+          //     },
+          //     // ignore: avoid_types_as_parameter_names, non_constant_identifier_names
+          //     onSubmitted: (String? value) async {
+          //       context
+          //           .read<StockTransfersCubit>()
+          //           .searchStockTransfer(searchText: value?.trim() ?? '');
+          //       setState(() {});
+          //     },
+          //   ),
+          // ),
         ],
       ),
-      backgroundColor: GlobalColors.kDarkWhite,
+      backgroundColor: GlobalColors.bgColor,
       body: Column(
         children: [
           Container(
@@ -94,7 +125,7 @@ class _stockTransferscreenMobileState extends State<StockTranfersScreenMobile>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'all_stock_transfers'.tr,
+                  'stock_transfers'.tr,
                   style: const TextStyle(
                     fontSize: 18,
                     fontFamily: 'Roboto',
@@ -132,39 +163,64 @@ class _stockTransferscreenMobileState extends State<StockTranfersScreenMobile>
               ],
             ),
           ),
+          Visibility(
+            visible: _showSearch,
+            child: SearchWidgetContact(
+              controller: _txtSearch,
+              hintText: 'search'.tr,
+              onChange: (String? value) {
+                context
+                    .read<StockTransfersCubit>()
+                    .searchStockTransfer(searchText: value?.trim() ?? '');
+                setState(() {});
+              },
+            ),
+          ),
           BlocBuilder<StockTransfersCubit, StockTransfersState>(
             buildWhen: ((previous, current) =>
                 previous.data!.status != current.data!.status),
             builder: (context, state) {
-              final _stockTransfers = state.data?.stockTransfers ?? [];
+              final stockTransfers = state.data?.stockTransfers ?? [];
               switch (state.data!.status) {
                 case StatusType.loading:
-                  return const AppLoadingWidget(
-                    widget: null,
-                    text: 'Loading...',
-                  );
+                // return const AppLoadingWidget(
+                //   widget: null,
+                //   text: 'Loading...',
+                // );
                 case StatusType.loaded:
-                  return _stockTransfers.isNotEmpty
+                  return stockTransfers.isNotEmpty
                       ? Expanded(
-                          child: ListView.builder(
-                            itemCount: _stockTransfers.length,
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            itemBuilder: (context, index) {
-                              return AllStockTransfersMobile(
-                                stockTransfersData:
-                                    _stockTransfers.elementAt(index),
-                                function: () => context
-                                    .read<StockTransfersCubit>()
-                                    .deleteStockTransfer(
-                                        id: _stockTransfers
-                                            .elementAt(index)
-                                            .id!),
-                              );
-                            },
-                          ),
+                          child: ListView.separated(
+                              controller: _scrollController,
+                              itemCount: stockTransfers.length,
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(),
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                if (index < stockTransfers.length) {
+                                  return AllStockTransfersMobile(
+                                    stockTransfersData:
+                                        stockTransfers.elementAt(index),
+                                    function: () => context
+                                        .read<StockTransfersCubit>()
+                                        .deleteStockTransfer(
+                                            id: stockTransfers
+                                                .elementAt(index)
+                                                .id!),
+                                  );
+                                } else {
+                                  Future.delayed(const Duration(seconds: 5),
+                                      () {
+                                    _scrollController.jumpTo(_scrollController
+                                        .position.maxScrollExtent);
+                                  });
+                                }
+                              }),
                         )
-                      : const NoDataWidget();
+                      : const AppLoadingWidget(
+                          widget: null,
+                          text: 'Loading...',
+                        );
                 case StatusType.error:
                   return const Error404Widget();
                 default:
@@ -180,9 +236,18 @@ class _stockTransferscreenMobileState extends State<StockTranfersScreenMobile>
         text: 'add_stock_transfers'.tr,
         iconData: Icons.add,
         scrollController: _scrollController,
-        onPress: () => navigator!.pushNamed(
-          RouteGenerator.addStockTransfersScreen,
-        ),
+        onPress: () {
+          final currentContext = context;
+          navigator!
+              .pushNamed(RouteGenerator.addStockTransfersScreen)
+              .then((value) {
+            // Hành động được thực hiện sau khi trang addStockTransfersScreen hoàn thành
+            // ignore: unnecessary_null_comparison
+            if (currentContext != null) {
+              currentContext.read<StockTransfersCubit>().loadStockTransfers();
+            }
+          });
+        },
       ),
     );
   }

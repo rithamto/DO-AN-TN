@@ -4,6 +4,7 @@ import 'package:di4l_pos/common/global_colors.dart';
 import 'package:di4l_pos/common/global_images.dart';
 import 'package:di4l_pos/common/global_obs.dart';
 import 'package:di4l_pos/common/global_styles.dart';
+import 'package:di4l_pos/route_generator.dart';
 import 'package:di4l_pos/screens/business_screen/cubit/business_cubit.dart';
 import 'package:di4l_pos/screens/contacts_screen/contact_screen.dart';
 import 'package:di4l_pos/screens/home_screen/cubit/home_cubit.dart';
@@ -145,7 +146,11 @@ class _MainScreenState extends State<MainMobileScreen> with AfterLayoutMixin {
           ),
         ),
         IconButton(
-            onPressed: () {},
+            onPressed: () {
+              navigator!.pushNamed(
+                RouteGenerator.productsStockScreen,
+              );
+            },
             icon: const Icon(
               Icons.chat_bubble_sharp,
               color: Colors.white,

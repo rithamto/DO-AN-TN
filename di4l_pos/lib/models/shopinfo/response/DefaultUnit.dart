@@ -7,7 +7,7 @@ class DefaultUnitRp {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
   }
@@ -30,7 +30,7 @@ class Data {
   int? baseUnitId;
   String? baseUnitMultiplier;
   int? createdBy;
-  Null? deletedAt;
+  dynamic deletedAt;
   String? createdAt;
   String? updatedAt;
   BaseUnit? baseUnit;
@@ -68,19 +68,19 @@ class Data {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['business_id'] = this.businessId;
-    data['actual_name'] = this.actualName;
-    data['short_name'] = this.shortName;
-    data['allow_decimal'] = this.allowDecimal;
-    data['base_unit_id'] = this.baseUnitId;
-    data['base_unit_multiplier'] = this.baseUnitMultiplier;
-    data['created_by'] = this.createdBy;
-    data['deleted_at'] = this.deletedAt;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    if (this.baseUnit != null) {
-      data['base_unit'] = this.baseUnit!.toJson();
+    data['id'] = id;
+    data['business_id'] = businessId;
+    data['actual_name'] = actualName;
+    data['short_name'] = shortName;
+    data['allow_decimal'] = allowDecimal;
+    data['base_unit_id'] = baseUnitId;
+    data['base_unit_multiplier'] = baseUnitMultiplier;
+    data['created_by'] = createdBy;
+    data['deleted_at'] = deletedAt;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    if (baseUnit != null) {
+      data['base_unit'] = baseUnit!.toJson();
     }
     return data;
   }
@@ -92,10 +92,10 @@ class BaseUnit {
   String? actualName;
   String? shortName;
   int? allowDecimal;
-  Null? baseUnitId;
-  Null? baseUnitMultiplier;
+  dynamic baseUnitId;
+  dynamic baseUnitMultiplier;
   int? createdBy;
-  Null? deletedAt;
+  dynamic deletedAt;
   String? createdAt;
   String? updatedAt;
 
@@ -128,17 +128,17 @@ class BaseUnit {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['business_id'] = this.businessId;
-    data['actual_name'] = this.actualName;
-    data['short_name'] = this.shortName;
-    data['allow_decimal'] = this.allowDecimal;
-    data['base_unit_id'] = this.baseUnitId;
-    data['base_unit_multiplier'] = this.baseUnitMultiplier;
-    data['created_by'] = this.createdBy;
-    data['deleted_at'] = this.deletedAt;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    data['id'] = id;
+    data['business_id'] = businessId;
+    data['actual_name'] = actualName;
+    data['short_name'] = shortName;
+    data['allow_decimal'] = allowDecimal;
+    data['base_unit_id'] = baseUnitId;
+    data['base_unit_multiplier'] = baseUnitMultiplier;
+    data['created_by'] = createdBy;
+    data['deleted_at'] = deletedAt;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }

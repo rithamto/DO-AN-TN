@@ -3,13 +3,16 @@ import 'package:di4l_pos/enums/add_debt_value.dart';
 import 'package:di4l_pos/enums/add_type.dart';
 import 'package:di4l_pos/enums/register_type.dart';
 import 'package:di4l_pos/models/branch/response/branch_response.dart';
+import 'package:di4l_pos/models/cart_table_order/cart_model.dart';
 import 'package:di4l_pos/models/category/response/category_response.dart';
 import 'package:di4l_pos/models/contacts/response/contacts_response.dart';
 import 'package:di4l_pos/models/customer-group/response/customer_group_response.dart';
 import 'package:di4l_pos/models/price/response/price_response.dart';
+import 'package:di4l_pos/models/printer/response/printer_response.dart';
 import 'package:di4l_pos/models/products/response/product_response.dart';
 import 'package:di4l_pos/models/sell/response/sell_response.dart';
 import 'package:di4l_pos/models/stock_adjustment/response/stock_adjustment_response.dart';
+import 'package:di4l_pos/models/stock_transfers/response/stock_transfers_response.dart';
 import 'package:di4l_pos/models/unit/response/unit_response.dart';
 import 'package:di4l_pos/models/user/response/profile_response.dart';
 import 'package:di4l_pos/models/variants/response/variants_response.dart';
@@ -36,6 +39,7 @@ import 'package:di4l_pos/screens/contacts_screen/sub_screens/detail_screen/detai
 import 'package:di4l_pos/screens/contacts_screen/sub_screens/detail_screen/orders_screen/detail_order_screen/detail_order_screen.dart';
 import 'package:di4l_pos/screens/contacts_screen/suppliers_screen/suplliers_screen.dart';
 import 'package:di4l_pos/screens/create_order_screen/create_order_screen.dart';
+import 'package:di4l_pos/screens/delivery_screen/delivery_screen.dart';
 import 'package:di4l_pos/screens/detail_debts_screen/detail_ledger_screen.dart';
 import 'package:di4l_pos/screens/detail_debts_screen/add_debt_screen/add_debt_screen.dart';
 
@@ -45,6 +49,7 @@ import 'package:di4l_pos/screens/forgot_passwrod_screen/forgot_password_screen.d
 import 'package:di4l_pos/screens/generate_code_screen/generate_code_screen.dart';
 import 'package:di4l_pos/screens/kitchen_screen/kitchen_screen.dart';
 import 'package:di4l_pos/screens/kitchen_screen/kitchen_detail_order.dart';
+import 'package:di4l_pos/screens/location_screen/location_screen.dart';
 import 'package:di4l_pos/screens/login_screen/login_screen.dart';
 import 'package:di4l_pos/screens/main_screen/main_screen.dart';
 import 'package:di4l_pos/screens/main_screen/mobile/edit_more_screen.dart';
@@ -55,9 +60,6 @@ import 'package:di4l_pos/screens/order_deltail_screen/order_deltail_screen.dart'
 import 'package:di4l_pos/screens/order_screen/order_screen.dart';
 import 'package:di4l_pos/screens/order_screen/sub_screens/add_order_screen/subs/add_order_detail_screen.dart';
 import 'package:di4l_pos/screens/products_screen/sub_screens/select_product%20screen.dart';
-import 'package:di4l_pos/screens/order_table_screen/order_food_screen.dart';
-import 'package:di4l_pos/screens/order_table_screen/order_table_screen.dart';
-import 'package:di4l_pos/screens/order_table_screen/widgets/order_success_food.dart';
 import 'package:di4l_pos/screens/price_screen/add_price_screen/add_price_screen.dart';
 import 'package:di4l_pos/screens/price_screen/price_screen.dart';
 import 'package:di4l_pos/screens/products_screen/products_screen.dart';
@@ -70,7 +72,6 @@ import 'package:di4l_pos/screens/register_screen/register_screen.dart';
 import 'package:di4l_pos/screens/reports_screen/report_screen.dart';
 import 'package:di4l_pos/screens/reports_screen/subscreen/profit_and_loss_screen/profit_and_loss_screen.dart';
 import 'package:di4l_pos/screens/reports_screen/subscreen/stock_screen/stock_screen.dart';
-
 import 'package:di4l_pos/screens/scan_code_screen/scan_code_screen.dart';
 import 'package:di4l_pos/screens/sellOnline_screen/sellOnline_screen.dart';
 import 'package:di4l_pos/screens/sell_return_screen/sell_return_screen.dart';
@@ -85,6 +86,8 @@ import 'package:di4l_pos/screens/stock_transfers_screen/stock_transfers_detail.d
 import 'package:di4l_pos/screens/stock_transfers_screen/stock_transfers_screen.dart';
 import 'package:di4l_pos/screens/switch_account/switch_account_screen.dart';
 import 'package:di4l_pos/screens/table_order_screen/table_order_screen.dart';
+import 'package:di4l_pos/screens/table_order_screen/widgets/order_success_food.dart';
+import 'package:di4l_pos/screens/table_order_screen/widgets/set_food.dart';
 import 'package:di4l_pos/screens/temp_order_screen/temp_order_screen.dart';
 import 'package:di4l_pos/screens/unit_screen/sub_screens/add_unit_screen.dart';
 import 'package:di4l_pos/screens/unit_screen/unit_screen.dart';
@@ -93,8 +96,13 @@ import 'package:di4l_pos/screens/variant_screen/variant_screen.dart';
 import 'package:di4l_pos/screens/warranties_screen/sub_screen/add_warranty_screen.dart';
 import 'package:di4l_pos/screens/warranties_screen/warranties_screen.dart';
 import 'package:di4l_pos/screens/webview_screen/webview_screen.dart';
+import 'package:di4l_pos/screens/printer_screen/printer_screen.dart';
+import 'package:di4l_pos/screens/printer_screen/subscreen/add_printer_screen.dart';
+import 'package:di4l_pos/screens/product_stock_sreen/product_stock_screen.dart';
+import 'package:di4l_pos/screens/product_stock_sreen/subscreen/add_product_stock_screen.dart';
 import 'package:flutter/material.dart';
-
+import 'package:di4l_pos/screens/printer_screen/printer_screen.dart';
+import 'package:di4l_pos/screens/printer_screen/subscreen/add_printer_screen.dart';
 import 'screens/expense_screen/revenue_expense_screen.dart';
 import 'screens/stock_adjustment_screen/stock_adjustment_screen.dart';
 
@@ -152,13 +160,12 @@ class RouteGenerator {
   static const String addVariantionScreen = '/add-variantion-screen';
   static const String editMoreScreen = '/edit_more_screen';
   static const String businessSettingsScreen = '/business-settings-screen';
+  static const String locationSettingsScreen = '/location-settings-screen';
   static const String shopinfoScreen = '/business_screen/sub_screen/shop_info';
   static const String orderScreen = '/order-screen';
   static const String orderDetailScreen = '/order-detail-screen';
   static const String detailOrderScreen = '/detail-order-screen';
-
   static const String updateProfile = '/update-profile-screen';
-
   static const String settingLocantionScreen =
       '/business_screen/sub_screen/location_settings';
   static const String settingDistrictScreen =
@@ -167,25 +174,22 @@ class RouteGenerator {
       '/business_screen/sub_screen/location_settings';
   static const String settingCommuneScreen =
       '/business_screen/sub_screen/location_settings';
-
   static const String kitchenScreen = '/kitchen-screen';
   static const String kitchenDetail = '/kitchen-detail';
   static const String sellOnline = '/sellOnline_screen';
   static const String productSettingScreen = '/product-setting-screen';
   static const String tableOrderScreen = '/table-order-screen';
-  static const String orderFoodScreen = '/order-food-screen';
   static const String orderFoodSuccessScreen = '/order-food-success-screen';
   static const String cartTableOrderScreen = '/cart-food-screen';
   static const String homeTableOrderSreen = '/home-table-order-sreen';
   static const String paymentScreen = '/payment-sreen';
   static const String newOrderDetail = '/new-order-detail';
-  static const String foodDetail = '/food-detail';
+  static const String setFoodScreen = '/set-food-screen';
   static const String reportScreen = '/report-screen';
   static const String stockAdjustmentScreen = '/stock-adjustment-screen';
   static const String addStockAdjustmentScreen = '/add-stock-adjustment-screen';
   static const String stockTransfersScreen = '/stock-transfers-screen';
   static const String addStockTransfersScreen = '/add-stock-transfers-screen';
-  static const String orderTableScreen = '/order-table-screen';
   static const String addOrderScreen = '/add-order-screen';
   static const String addOrderDetailScreen = '/add-order-detail-screen';
   static const String revenueExpensePage = '/revenue_expense_screen';
@@ -194,6 +198,13 @@ class RouteGenerator {
   static const String stockManege = '/stock-manage';
   static const String stockAdjustmentDetail = '/stock-adjustment-detail';
   static const String stockTransferDetail = '/stock-transfer-detail';
+  static const String printerScreen = '/printer-screen';
+  static const String addPrinterScreen = '/add-printer-screen';
+  static const String updatePrinterScreen = '/update-printer-screen';
+  static const String productsStockScreen = '/products-stock-screen';
+  static const String addProductsStockScreen = '/add-products-stock-screen';
+  static const String deliveryScreen = '/delivery-screen';
+  static const String connectGHNScreen = '/connect-ghn-screen';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -613,6 +624,11 @@ class RouteGenerator {
           builder: (context) => BusinessSettingScreen.provider(),
           settings: settings,
         );
+      case locationSettingsScreen:
+        return MaterialPageRoute(
+          builder: (context) => LocationSettingScreen.provider(),
+          settings: settings,
+        );
       case updateProfile:
         final args = settings.arguments as Map<String, dynamic>?;
         final model = args?['PROFILE'] as ProfileResponse?;
@@ -622,7 +638,7 @@ class RouteGenerator {
         );
       case kitchenScreen:
         return MaterialPageRoute(
-          builder: (context) => KitchenScreen(),
+          builder: (context) => const KitchenScreen(),
           settings: settings,
         );
       case kitchenDetail:
@@ -674,18 +690,18 @@ class RouteGenerator {
           settings: settings,
         );
       case addStockTransfersScreen:
+        final args = settings.arguments as Map<String, dynamic>?;
+        final stockTransfersData =
+            args?['STOCK_TRANSFERS_DATA'] as StockTransfersData?;
         return MaterialPageRoute(
-          builder: (context) => AddStockTransfersScreen.provider(),
+          builder: (context) => AddStockTransfersScreen.provider(
+            stockTransfersData: stockTransfersData,
+          ),
           settings: settings,
         );
       case tableOrderScreen:
         return MaterialPageRoute(
           builder: (context) => const TableOrderScreen(),
-          settings: settings,
-        );
-      case orderFoodScreen:
-        return MaterialPageRoute(
-          builder: (context) => OrderFoodScreen.provider(),
           settings: settings,
         );
       case orderFoodSuccessScreen:
@@ -708,9 +724,14 @@ class RouteGenerator {
           builder: (context) => NewOrderDetail.provider(),
           settings: settings,
         );
-      case orderTableScreen:
+      case setFoodScreen:
+        final args = settings.arguments as Map<String, dynamic>?;
+        final product = args?['product'] as Product;
+        final inCart = args?['in_cart'] as bool;
+        final modifierSets = args?['modifier_sets'] as List<ModifierSet>?;
         return MaterialPageRoute(
-          builder: (context) => OrderTableScreen.provider(),
+          builder: (context) => SetFoodScreen.provider(
+              product: product, inCart: inCart, modifierSets: modifierSets),
           settings: settings,
         );
       case addExpense:
@@ -718,6 +739,50 @@ class RouteGenerator {
           builder: (context) => AddExpensePage.provider(),
           settings: settings,
         );
+      case printerScreen:
+        return MaterialPageRoute(
+          builder: (context) => PrinterScreen.provider(),
+          settings: settings,
+        );
+      case addPrinterScreen:
+        final arguments = settings.arguments as Map<String, dynamic>?;
+        final addType = arguments?["ADD_TYPE"] as AddType?;
+        final printer = arguments?["PRINTER"] as Printer?;
+        return MaterialPageRoute(
+          builder: (context) => AddPrinterScreen.provider(
+            addType: addType,
+            printer: printer,
+          ),
+          settings: settings,
+        );
+      case updatePrinterScreen:
+        final arguments = settings.arguments as Map<String, dynamic>?;
+        final addType = arguments?["ADD_TYPE"];
+        final printer = arguments?["PRINTER"] as Printer;
+        return MaterialPageRoute(
+          builder: (context) =>
+              AddPrinterScreen.provider(addType: addType, printer: printer),
+        );
+      case productsStockScreen:
+        return MaterialPageRoute(
+          builder: (context) => ProductsStockScreen.provider(),
+          settings: settings,
+        );
+      case addProductsStockScreen:
+        final args = settings.arguments as Map<String, dynamic>?;
+        final product = args?['PRODUCT'] as Product?;
+        final globalKey = args?['GLOBAL_KEY'] as GlobalKey<ScaffoldState>;
+        return MaterialPageRoute(
+          builder: (context) => AddProductStockScreen.provider(
+              product: product, globalKey: globalKey),
+          settings: settings,
+        );
+      case deliveryScreen:
+        return MaterialPageRoute(
+          builder: (context) => const DeliveryScreen(),
+          settings: settings,
+        );
+
       default:
         return MaterialPageRoute(
           builder: (context) => const NotFoundScreen(),

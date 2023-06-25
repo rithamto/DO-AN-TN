@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:di4l_pos/common/helpers.dart';
 import 'package:di4l_pos/common/ui_helpers.dart';
 import 'package:di4l_pos/enums/status_type.dart';
-import 'package:di4l_pos/get_it.dart';
+import 'package:di4l_pos/get_it.dart'; 
 import 'package:di4l_pos/models/category/request/get_category_request.dart';
 import 'package:di4l_pos/models/category/response/category_response.dart';
 import 'package:di4l_pos/repositories/data_repository.dart';

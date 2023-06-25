@@ -1,9 +1,8 @@
 import 'package:di4l_pos/common/global_constants.dart';
 import 'package:di4l_pos/common/storage/base_prefs.dart';
-import 'package:di4l_pos/models/business_location/response/business_location.dart';
-import 'package:di4l_pos/models/cart_table_order/cart_model.dart';
 import 'package:di4l_pos/models/user/response/token_response.dart';
 import 'package:di4l_pos/models/user/response/user_response.dart';
+import 'package:di4l_pos/models/business_location/response/business_location.dart';
 
 class AppPref extends BasePrefs {
   /// MARK: - Initials;

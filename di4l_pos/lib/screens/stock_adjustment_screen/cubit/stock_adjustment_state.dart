@@ -5,9 +5,11 @@ class StockAdjustmentStateData with _$StockAdjustmentStateData {
   const factory StockAdjustmentStateData({
     @Default(StatusType.init) StatusType status,
     @Default([]) List<StockAdjustmentData> stockAdjustments,
+    @Default([]) List<StockAdjustmentData> stockAdjustmentsOriginal,
     StockAdjustmentData? stockAdjustment,
     StockAdjustment? stockAdjustmentDetail,
     @Default([]) List<Activities> activities,
+    @Default(0) int? page,
   }) = _StockAdjustmentStateData;
 }
 

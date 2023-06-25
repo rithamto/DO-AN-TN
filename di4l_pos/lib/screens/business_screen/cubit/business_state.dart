@@ -5,6 +5,7 @@ class BusinessData with _$BusinessData {
   const factory BusinessData({
     @Default([]) List<BusinessLocation> businesss,
     BusinessLocation? business,
+    BusinessLocation? businessTo,
     @Default([]) List<Account> accounts,
   }) = _BusinessData;
 }

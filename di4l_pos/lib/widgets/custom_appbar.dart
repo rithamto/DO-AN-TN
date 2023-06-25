@@ -2,7 +2,7 @@ import 'package:di4l_pos/common/global_colors.dart';
 import 'package:di4l_pos/common/global_styles.dart';
 import 'package:flutter/material.dart';
 
-class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   /// MARK: - Initials;
   final String? title;
   final List<Widget>? actions;

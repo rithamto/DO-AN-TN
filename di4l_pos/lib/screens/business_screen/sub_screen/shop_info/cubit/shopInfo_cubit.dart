@@ -7,8 +7,8 @@ import 'package:di4l_pos/common/helpers.dart';
 import 'package:di4l_pos/common/ui_helpers.dart';
 import 'package:di4l_pos/enums/status_type.dart';
 import 'package:di4l_pos/get_it.dart';
-import 'package:di4l_pos/models/shopinfo/request/ShopSettingPUTRq.dart' as Rq;
-import 'package:di4l_pos/models/shopinfo/request/ShopSettingPUTRq.dart';
+import 'package:di4l_pos/models/shopinfo/request/shopSettingPUTRq.dart' as Rq;
+import 'package:di4l_pos/models/shopinfo/request/shopSettingPUTRq.dart';
 import 'package:di4l_pos/models/shopinfo/response/Currency.dart';
 import 'package:di4l_pos/models/shopinfo/response/DefaultUnit.dart';
 import 'package:di4l_pos/models/shopinfo/response/ShopSettingRp.dart';
@@ -82,14 +82,14 @@ class ShopInfoCubit extends Cubit<ShopInfoState> {
     int? enableTooltip,
     int? enableRp,
     String? rpName,
-    String? amountForUnitRp,
-    String? minOrderTotalForRp,
-    String? maxRpPerOrder,
-    String? redeemAmountPerUnitRp,
-    String? minOrderTotalForRedeem,
-    String? minRedeemPoint,
-    String? maxRedeemPoint,
-    String? rpExpiryPeriod,
+    dynamic amountForUnitRp,
+    dynamic minOrderTotalForRp,
+    dynamic maxRpPerOrder,
+    dynamic redeemAmountPerUnitRp,
+    dynamic minOrderTotalForRedeem,
+    dynamic minRedeemPoint,
+    dynamic maxRedeemPoint,
+    dynamic rpExpiryPeriod,
     String? rpExpiryType,
     String? domain,
   }) async {
@@ -102,7 +102,7 @@ class ShopInfoCubit extends Cubit<ShopInfoState> {
         name: name,
         currencyId: currencyId,
         startDate: startDate,
-        defaultProfitPercent: defaultProfitPercent.toString(),
+        defaultProfitPercent: defaultProfitPercent,
         currencySymbolPlacement: currencySymbolPlacement,
         timeZone: timeZone,
         fyStartMonth: fyStartMonth,
@@ -173,14 +173,17 @@ class ShopInfoCubit extends Cubit<ShopInfoState> {
             const Duration(seconds: 1), () => navigator!.pop());
         emit(ShopInfoState.status(
             data: state.data!.copyWith(
-                status: StatusType.loaded,
-                error: 'update_business_success'.tr)));
+                status: StatusType.loaded, error: response.message ?? '')));
       } else if (response.success == false) {
         emit(ShopInfoState.status(
             data: state.data!.copyWith(
-                status: StatusType.error, error: 'Something went wrong!')));
+                status: StatusType.error, error: response.message ?? '')));
       }
     } catch (error) {
+      debugPrint('error :${error}');
+      emit(ShopInfoState.status(
+          data: state.data!.copyWith(
+              status: StatusType.error, error: 'Something went wrong!')));
       // Helpers.handleErrorApp(error: error, isShowDialog: true);
     } finally {
       Future.delayed(const Duration(seconds: 2), () => navigator!.pop());
@@ -236,6 +239,7 @@ class ShopInfoCubit extends Cubit<ShopInfoState> {
       emit(ShopInfoState.getshopInfo(
           data: state.data?.copyWith(
         status: StatusType.loaded,
+        smsService: shopInfo.smsSetting!.smsService ?? '',
         shopInfo: shopInfo,
       )));
     } catch (error) {
@@ -298,7 +302,32 @@ class ShopInfoCubit extends Cubit<ShopInfoState> {
 
   Future<void> updateLogo() async {
     final response = await _dataRepository.updateLogo(file: state.data?.image);
-    emit(ShopInfoState.status(
-        data: state.data?.copyWith(status: StatusType.error)));
+    getInfoBussinessSetting();
+    // emit(ShopInfoState.errors(
+    //     data: state.data?.copyWith(error: response.message!)));
+  }
+
+  Future<void> delete(int id) async => UIHelpers.showCustomDialog(
+        context: Get.context!,
+        message: 'message_confirm_delete_customer_group'.tr,
+        onComfirm: () async {
+          try {
+            await _dataRepository.deleteStatusOrder(id: id);
+            getInfoBussinessSetting();
+            await Future.delayed(
+                const Duration(microseconds: 500), () => navigator!.pop());
+          } catch (error) {
+            debugPrint('Delete Status Order: $error');
+          } finally {
+            getInfoBussinessSetting();
+            // Future.delayed(const Duration(seconds: 2), () => navigator!.pop());
+          }
+        },
+        isShowClose: true,
+      );
+
+  void getSmsService(String smsService) {
+    emit(ShopInfoState.getshopInfo(
+        data: state.data!.copyWith(smsService: smsService)));
   }
 }

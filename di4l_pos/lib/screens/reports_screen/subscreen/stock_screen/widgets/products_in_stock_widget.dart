@@ -43,17 +43,13 @@ class ProductsInStock extends StatefulWidget {
   State<ProductsInStock> createState() => _ProductsInStockState();
 }
 
-class _ProductsInStockState extends State<ProductsInStock>
-    with AfterLayoutMixin {
-  @override
-  FutureOr<void> afterFirstLayout(BuildContext context) {
-    context
-        .read<ProductsCubit>()
-        .getProductById(id: widget.reportStockData!.productId!);
-  }
+class _ProductsInStockState extends State<ProductsInStock> {
 
   @override
   Widget build(BuildContext context) {
+    context
+        .read<ProductsCubit>()
+        .getProductById(id: widget.reportStockData!.productId!);
     return BlocBuilder<ProductsCubit, ProductsState>(
       builder: (context, state) {
         final product = state.data?.product;
@@ -138,7 +134,30 @@ class _ProductsInStockState extends State<ProductsInStock>
                               ],
                             ),
                           )
-                        ])
+                        ]),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Row(
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            text: '${widget.reportStockData!.productVariation}: ',
+                            style: GlobalStyles.robotoRegular(context).copyWith(
+                              color: GlobalColors.kGreyTextColor,
+                              fontSize: 16,
+                            ),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: GlobalFormatter.formatString(
+                                  '${widget.reportStockData!.variationName}',
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ],
                 ),
               )

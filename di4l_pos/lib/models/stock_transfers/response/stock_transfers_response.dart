@@ -1,30 +1,106 @@
+// To parse this JSON data, do
+//
+//     final stockTransfersResponse = stockTransfersResponseFromJson(jsonString);
+
 import 'dart:convert';
 
 class StockTransfersResponse {
-  StockTransfersResponse({this.data});
-
+  int? currentPage;
   List<StockTransfersData>? data;
+  String? firstPageUrl;
+  int? from;
+  int? lastPage;
+  String? lastPageUrl;
+  dynamic nextPageUrl;
+  String? path;
+  int? perPage;
+  dynamic prevPageUrl;
+  int? to;
+  int? total;
 
-  StockTransfersResponse copyWith({List<StockTransfersData>? data}) =>
-      StockTransfersResponse(data: data ?? this.data);
+  StockTransfersResponse({
+    this.currentPage,
+    this.data,
+    this.firstPageUrl,
+    this.from,
+    this.lastPage,
+    this.lastPageUrl,
+    this.nextPageUrl,
+    this.path,
+    this.perPage,
+    this.prevPageUrl,
+    this.to,
+    this.total,
+  });
+
+  StockTransfersResponse copyWith({
+    int? currentPage,
+    List<StockTransfersData>? data,
+    String? firstPageUrl,
+    int? from,
+    int? lastPage,
+    String? lastPageUrl,
+    dynamic nextPageUrl,
+    String? path,
+    int? perPage,
+    dynamic prevPageUrl,
+    int? to,
+    int? total,
+  }) =>
+      StockTransfersResponse(
+        currentPage: currentPage ?? this.currentPage,
+        data: data ?? this.data,
+        firstPageUrl: firstPageUrl ?? this.firstPageUrl,
+        from: from ?? this.from,
+        lastPage: lastPage ?? this.lastPage,
+        lastPageUrl: lastPageUrl ?? this.lastPageUrl,
+        nextPageUrl: nextPageUrl ?? this.nextPageUrl,
+        path: path ?? this.path,
+        perPage: perPage ?? this.perPage,
+        prevPageUrl: prevPageUrl ?? this.prevPageUrl,
+        to: to ?? this.to,
+        total: total ?? this.total,
+      );
 
   factory StockTransfersResponse.fromRawJson(String str) =>
       StockTransfersResponse.fromJson(json.decode(str));
 
-  String? toRawJson() => json.encode(toJson());
+  String toRawJson() => json.encode(toJson());
 
-  factory StockTransfersResponse.fromJson(Map<String?, dynamic> json) =>
+  factory StockTransfersResponse.fromJson(Map<String, dynamic> json) =>
       StockTransfersResponse(
+        currentPage: json["current_page"],
         data: json["data"] == null
-            ? null
+            ? []
             : List<StockTransfersData>.from(
-                json["data"].map((x) => StockTransfersData.fromJson(x))),
+                json["data"]!.map((x) => StockTransfersData.fromJson(x))),
+        firstPageUrl: json["first_page_url"],
+        from: json["from"],
+        lastPage: json["last_page"],
+        lastPageUrl: json["last_page_url"],
+        nextPageUrl: json["next_page_url"],
+        path: json["path"],
+        perPage: json["per_page"],
+        prevPageUrl: json["prev_page_url"],
+        to: json["to"],
+        total: json["total"],
       );
 
-  Map<String?, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
+        "current_page": currentPage,
         "data": data == null
-            ? null
+            ? []
             : List<dynamic>.from(data!.map((x) => x.toJson())),
+        "first_page_url": firstPageUrl,
+        "from": from,
+        "last_page": lastPage,
+        "last_page_url": lastPageUrl,
+        "next_page_url": nextPageUrl,
+        "path": path,
+        "per_page": perPage,
+        "prev_page_url": prevPageUrl,
+        "to": to,
+        "total": total,
       };
 }
 
@@ -36,47 +112,77 @@ class StockTransfersData {
   String? locationTo;
   String? finalTotal;
   String? shippingCharges;
-  dynamic additionalNotes;
-  int? dTRowId;
+  String? additionalNotes;
+  int? dtRowId;
   String? status;
 
-  StockTransfersData(
-      {this.id,
-      this.transactionDate,
-      this.refNo,
-      this.locationFrom,
-      this.locationTo,
-      this.finalTotal,
-      this.shippingCharges,
-      this.additionalNotes,
-      this.dTRowId,
-      this.status});
+  StockTransfersData({
+    this.id,
+    this.transactionDate,
+    this.refNo,
+    this.locationFrom,
+    this.locationTo,
+    this.finalTotal,
+    this.shippingCharges,
+    this.additionalNotes,
+    this.dtRowId,
+    this.status,
+  });
 
-  StockTransfersData.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    transactionDate = json['transaction_date'];
-    refNo = json['ref_no'];
-    locationFrom = json['location_from'];
-    locationTo = json['location_to'];
-    finalTotal = json['final_total'];
-    shippingCharges = json['shipping_charges'];
-    additionalNotes = json['additional_notes'];
-    dTRowId = json['DT_RowId'];
-    status = json['status'];
-  }
+  StockTransfersData copyWith({
+    int? id,
+    String? transactionDate,
+    String? refNo,
+    String? locationFrom,
+    String? locationTo,
+    String? finalTotal,
+    String? shippingCharges,
+    String? additionalNotes,
+    int? dtRowId,
+    String? status,
+  }) =>
+      StockTransfersData(
+        id: id ?? this.id,
+        transactionDate: transactionDate ?? this.transactionDate,
+        refNo: refNo ?? this.refNo,
+        locationFrom: locationFrom ?? this.locationFrom,
+        locationTo: locationTo ?? this.locationTo,
+        finalTotal: finalTotal ?? this.finalTotal,
+        shippingCharges: shippingCharges ?? this.shippingCharges,
+        additionalNotes: additionalNotes ?? this.additionalNotes,
+        dtRowId: dtRowId ?? this.dtRowId,
+        status: status ?? this.status,
+      );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['transaction_date'] = transactionDate;
-    data['ref_no'] = refNo;
-    data['location_from'] = locationFrom;
-    data['location_to'] = locationTo;
-    data['final_total'] = finalTotal;
-    data['shipping_charges'] = shippingCharges;
-    data['additional_notes'] = additionalNotes;
-    data['DT_RowId'] = dTRowId;
-    data['status'] = status;
-    return data;
-  }
+  factory StockTransfersData.fromRawJson(String str) =>
+      StockTransfersData.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory StockTransfersData.fromJson(Map<String, dynamic> json) =>
+      StockTransfersData(
+        id: json["id"],
+        transactionDate: json["transaction_date"],
+        refNo: json["ref_no"],
+        locationFrom: json["location_from"],
+        locationTo: json["location_to"],
+        finalTotal: json["final_total"],
+        shippingCharges: json["shipping_charges"],
+        additionalNotes: json["additional_notes"],
+        dtRowId: json["DT_RowId"],
+        status: json["status"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "transaction_date": transactionDate,
+        "ref_no": refNo,
+        "location_from": locationFrom,
+        "location_to": locationTo,
+        "final_total": finalTotal,
+        "shipping_charges": shippingCharges,
+        "additional_notes": additionalNotes,
+        "DT_RowId": dtRowId,
+        "status": status,
+      };
 }

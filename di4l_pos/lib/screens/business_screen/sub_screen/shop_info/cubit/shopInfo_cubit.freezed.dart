@@ -22,10 +22,11 @@ mixin _$ShopInfoData {
   List<Currency> get listCurrency => throw _privateConstructorUsedError;
   List<TaxData> get listTax => throw _privateConstructorUsedError;
   TaxData? get tax => throw _privateConstructorUsedError;
-  Rq.Location? get locations => throw _privateConstructorUsedError;
+  Location? get locations => throw _privateConstructorUsedError;
   ShopSettingRp? get shopInfo => throw _privateConstructorUsedError;
   DefaultUnitRp? get listDFUnit => throw _privateConstructorUsedError;
   File? get image => throw _privateConstructorUsedError;
+  String get smsService => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ShopInfoDataCopyWith<ShopInfoData> get copyWith =>
@@ -45,10 +46,11 @@ abstract class $ShopInfoDataCopyWith<$Res> {
       List<Currency> listCurrency,
       List<TaxData> listTax,
       TaxData? tax,
-      Rq.Location? locations,
+      Location? locations,
       ShopSettingRp? shopInfo,
       DefaultUnitRp? listDFUnit,
-      File? image});
+      File? image,
+      String smsService});
 }
 
 /// @nodoc
@@ -74,6 +76,7 @@ class _$ShopInfoDataCopyWithImpl<$Res, $Val extends ShopInfoData>
     Object? shopInfo = freezed,
     Object? listDFUnit = freezed,
     Object? image = freezed,
+    Object? smsService = null,
   }) {
     return _then(_value.copyWith(
       error: null == error
@@ -103,7 +106,7 @@ class _$ShopInfoDataCopyWithImpl<$Res, $Val extends ShopInfoData>
       locations: freezed == locations
           ? _value.locations
           : locations // ignore: cast_nullable_to_non_nullable
-              as Rq.Location?,
+              as Location?,
       shopInfo: freezed == shopInfo
           ? _value.shopInfo
           : shopInfo // ignore: cast_nullable_to_non_nullable
@@ -116,6 +119,10 @@ class _$ShopInfoDataCopyWithImpl<$Res, $Val extends ShopInfoData>
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
               as File?,
+      smsService: null == smsService
+          ? _value.smsService
+          : smsService // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -135,10 +142,11 @@ abstract class _$$_ShopInfoDataCopyWith<$Res>
       List<Currency> listCurrency,
       List<TaxData> listTax,
       TaxData? tax,
-      Rq.Location? locations,
+      Location? locations,
       ShopSettingRp? shopInfo,
       DefaultUnitRp? listDFUnit,
-      File? image});
+      File? image,
+      String smsService});
 }
 
 /// @nodoc
@@ -162,6 +170,7 @@ class __$$_ShopInfoDataCopyWithImpl<$Res>
     Object? shopInfo = freezed,
     Object? listDFUnit = freezed,
     Object? image = freezed,
+    Object? smsService = null,
   }) {
     return _then(_$_ShopInfoData(
       error: null == error
@@ -191,7 +200,7 @@ class __$$_ShopInfoDataCopyWithImpl<$Res>
       locations: freezed == locations
           ? _value.locations
           : locations // ignore: cast_nullable_to_non_nullable
-              as Rq.Location?,
+              as Location?,
       shopInfo: freezed == shopInfo
           ? _value.shopInfo
           : shopInfo // ignore: cast_nullable_to_non_nullable
@@ -204,6 +213,10 @@ class __$$_ShopInfoDataCopyWithImpl<$Res>
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
               as File?,
+      smsService: null == smsService
+          ? _value.smsService
+          : smsService // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -221,7 +234,8 @@ class _$_ShopInfoData implements _ShopInfoData {
       this.locations,
       this.shopInfo,
       this.listDFUnit,
-      this.image})
+      this.image,
+      this.smsService = ''})
       : _listTimeZone = listTimeZone,
         _listCurrency = listCurrency,
         _listTax = listTax;
@@ -262,17 +276,20 @@ class _$_ShopInfoData implements _ShopInfoData {
   @override
   final TaxData? tax;
   @override
-  final Rq.Location? locations;
+  final Location? locations;
   @override
   final ShopSettingRp? shopInfo;
   @override
   final DefaultUnitRp? listDFUnit;
   @override
   final File? image;
+  @override
+  @JsonKey()
+  final String smsService;
 
   @override
   String toString() {
-    return 'ShopInfoData(error: $error, status: $status, listTimeZone: $listTimeZone, listCurrency: $listCurrency, listTax: $listTax, tax: $tax, locations: $locations, shopInfo: $shopInfo, listDFUnit: $listDFUnit, image: $image)';
+    return 'ShopInfoData(error: $error, status: $status, listTimeZone: $listTimeZone, listCurrency: $listCurrency, listTax: $listTax, tax: $tax, locations: $locations, shopInfo: $shopInfo, listDFUnit: $listDFUnit, image: $image, smsService: $smsService)';
   }
 
   @override
@@ -288,13 +305,14 @@ class _$_ShopInfoData implements _ShopInfoData {
                 .equals(other._listCurrency, _listCurrency) &&
             const DeepCollectionEquality().equals(other._listTax, _listTax) &&
             (identical(other.tax, tax) || other.tax == tax) &&
-            (identical(other.locations, locations) ||
-                other.locations == locations) &&
+            const DeepCollectionEquality().equals(other.locations, locations) &&
             (identical(other.shopInfo, shopInfo) ||
                 other.shopInfo == shopInfo) &&
             (identical(other.listDFUnit, listDFUnit) ||
                 other.listDFUnit == listDFUnit) &&
-            (identical(other.image, image) || other.image == image));
+            (identical(other.image, image) || other.image == image) &&
+            (identical(other.smsService, smsService) ||
+                other.smsService == smsService));
   }
 
   @override
@@ -306,10 +324,11 @@ class _$_ShopInfoData implements _ShopInfoData {
       const DeepCollectionEquality().hash(_listCurrency),
       const DeepCollectionEquality().hash(_listTax),
       tax,
-      locations,
+      const DeepCollectionEquality().hash(locations),
       shopInfo,
       listDFUnit,
-      image);
+      image,
+      smsService);
 
   @JsonKey(ignore: true)
   @override
@@ -326,10 +345,11 @@ abstract class _ShopInfoData implements ShopInfoData {
       final List<Currency> listCurrency,
       final List<TaxData> listTax,
       final TaxData? tax,
-      final Rq.Location? locations,
+      final Location? locations,
       final ShopSettingRp? shopInfo,
       final DefaultUnitRp? listDFUnit,
-      final File? image}) = _$_ShopInfoData;
+      final File? image,
+      final String smsService}) = _$_ShopInfoData;
 
   @override
   String get error;
@@ -344,13 +364,15 @@ abstract class _ShopInfoData implements ShopInfoData {
   @override
   TaxData? get tax;
   @override
-  Rq.Location? get locations;
+  Location? get locations;
   @override
   ShopSettingRp? get shopInfo;
   @override
   DefaultUnitRp? get listDFUnit;
   @override
   File? get image;
+  @override
+  String get smsService;
   @override
   @JsonKey(ignore: true)
   _$$_ShopInfoDataCopyWith<_$_ShopInfoData> get copyWith =>

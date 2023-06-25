@@ -149,7 +149,7 @@ class Ledger {
     String? total,
     String? paymentMethod,
     dynamic debit,
-    dynamic? credit,
+    dynamic credit,
     String? others,
     int? finalTotal,
     int? totalDue,

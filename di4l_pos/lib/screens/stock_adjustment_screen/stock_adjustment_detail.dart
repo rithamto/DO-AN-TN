@@ -121,6 +121,8 @@ class _StockAdjustmentDetailState extends State<StockAdjustmentDetail>
                                 Expanded(
                                   child: ListView.builder(
                                     itemCount: stockAdjustmentLines.length,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     itemBuilder: (context, index) {
                                       return StockAdjustmentProduct(
@@ -269,6 +271,8 @@ class _StockAdjustmentDetailState extends State<StockAdjustmentDetail>
                                             children: [
                                               Expanded(
                                                 child: ListView.builder(
+                                                  physics:
+                                                      const NeverScrollableScrollPhysics(),
                                                   itemCount: activitie.length,
                                                   shrinkWrap: true,
                                                   itemBuilder:

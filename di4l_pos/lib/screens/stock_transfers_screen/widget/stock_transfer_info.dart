@@ -9,18 +9,17 @@ class StockTransferInfo extends StatelessWidget {
   final SellTransfer sellTransfer;
   const StockTransferInfo({
     Key? key,
-    required this.locationDetails, required this.sellTransfer,
+    required this.locationDetails,
+    required this.sellTransfer,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     String transactionDateString = sellTransfer.transactionDate!;
     DateTime transactionDate = DateTime.parse(transactionDateString);
     String formattedDate = DateFormat('dd/MM/yyyy').format(transactionDate);
 
     String? status = sellTransfer.status;
-    String? formatStatus = status?.capitalize!;
 
     return Padding(
       padding: EdgeInsets.all(10),
@@ -159,7 +158,7 @@ class StockTransferInfo extends StatelessWidget {
                 width: 5,
               ),
               Text(
-                '${locationDetails.purchase!.email}',
+                locationDetails.purchase!.email ?? '',
                 style: GlobalStyles.titilliumSemiBold1(context),
               ),
             ],
@@ -213,7 +212,7 @@ class StockTransferInfo extends StatelessWidget {
                 width: 5,
               ),
               Text(
-                "${formatStatus == 'Final' ? 'Completed' : formatStatus}",
+                status == 'final' ? 'completed'.tr : '$status'.tr,
                 style: GlobalStyles.titilliumSemiBold1(context),
               ),
             ],

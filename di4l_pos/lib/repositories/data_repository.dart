@@ -3,12 +3,15 @@ import 'dart:io';
 import 'package:di4l_pos/common/global_configs.dart';
 import 'package:di4l_pos/common/storage/app_prefs.dart';
 import 'package:di4l_pos/get_it.dart';
+import 'package:di4l_pos/models/add_status_order/request/add_status_order_request.dart';
+import 'package:di4l_pos/models/add_status_order/response/add_status_order_response.dart';
 import 'package:di4l_pos/models/base/response/error_response.dart';
 import 'package:di4l_pos/models/base/response/sucess_response.dart';
 import 'package:di4l_pos/models/branch/add_branch_request.dart';
 import 'package:di4l_pos/models/branch/response/add_brand_response.dart';
 import 'package:di4l_pos/models/branch/response/branch_response.dart';
 import 'package:di4l_pos/models/business_location/response/business_location_response.dart';
+import 'package:di4l_pos/models/cart_table_order/add_order_request.dart';
 import 'package:di4l_pos/models/cash_register/request/add_cash_register_request.dart';
 import 'package:di4l_pos/models/cash_register/request/get_cash_register_request.dart';
 import 'package:di4l_pos/models/cash_register/response/add_cash_register_response.dart';
@@ -24,6 +27,9 @@ import 'package:di4l_pos/models/contacts/response/ledger_response.dart';
 import 'package:di4l_pos/models/customer-group/request/add_customer_group_request.dart';
 import 'package:di4l_pos/models/customer-group/response/add_customer_group_response.dart';
 import 'package:di4l_pos/models/customer-group/response/customer_group_response.dart';
+import 'package:di4l_pos/models/delivery/request/connect_ghtk_request.dart';
+import 'package:di4l_pos/models/delivery/response/connect_ghtk_response.dart';
+import 'package:di4l_pos/models/delivery/response/delivery_response.dart';
 import 'package:di4l_pos/models/kitchen/kitchen_detail_response.dart';
 import 'package:di4l_pos/models/kitchen/kitchen_response.dart';
 import 'package:di4l_pos/models/modifier_set/modifier_set_response.dart';
@@ -31,6 +37,8 @@ import 'package:di4l_pos/models/notifications/response/notification_response.dar
 import 'package:di4l_pos/models/price/add_price_request.dart';
 import 'package:di4l_pos/models/price/response/add_price_response.dart';
 import 'package:di4l_pos/models/price/response/price_response.dart';
+import 'package:di4l_pos/models/printer/request/add_printer_request.dart';
+import 'package:di4l_pos/models/printer/response/add_printer_response.dart';
 import 'package:di4l_pos/models/products/request/add_product_request.dart';
 import 'package:di4l_pos/models/products/request/get_products_request.dart';
 import 'package:di4l_pos/models/products/response/add_product_response.dart';
@@ -54,11 +62,13 @@ import 'package:di4l_pos/models/stock_adjustment/request/add_stock_adjustment_re
 import 'package:di4l_pos/models/stock_adjustment/response/add_stock_adjustment_response.dart';
 import 'package:di4l_pos/models/stock_adjustment/response/stock_adjustment_detail_response.dart';
 import 'package:di4l_pos/models/stock_adjustment/response/stock_adjustment_response.dart';
-import 'package:di4l_pos/models/shopinfo/request/ShopSettingPUTRq.dart';
+import 'package:di4l_pos/models/shopinfo/request/shopSettingPUTRq.dart';
 import 'package:di4l_pos/models/shopinfo/response/Currency.dart';
 import 'package:di4l_pos/models/shopinfo/response/DefaultUnit.dart';
 import 'package:di4l_pos/models/shopinfo/response/ShopSettingRp.dart';
 import 'package:di4l_pos/models/shopinfo/response/UpdateBusinessRp.dart';
+import 'package:di4l_pos/models/stock_transfers/request/add_stock_transfers_request.dart';
+import 'package:di4l_pos/models/stock_transfers/response/add_stock_transfers_response.dart';
 import 'package:di4l_pos/models/stock_transfers/response/stock_transfers_detail_response.dart';
 import 'package:di4l_pos/models/stock_transfers/response/stock_transfers_response.dart';
 import 'package:di4l_pos/models/transaction/response/transaction_response.dart';
@@ -81,11 +91,15 @@ import 'package:di4l_pos/models/variants/request/add_variantion_request.dart';
 import 'package:di4l_pos/models/variants/response/variants_response.dart';
 import 'package:di4l_pos/models/warranty/warranty_request.dart';
 import 'package:di4l_pos/models/warranty/warranty_response.dart';
+import 'package:di4l_pos/models/product_stock/request/add_product_stock_request.dart';
+import 'package:di4l_pos/models/product_stock/response/add_product_stock_response.dart';
+import 'package:di4l_pos/models/printer/response/printer_response.dart';
 import 'package:di4l_pos/networks/rest_client.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:di4l_pos/models/table/response/table_response.dart';
+import 'package:di4l_pos/models/printer/response/printer_response.dart';
 
 @lazySingleton
 class DataRepository implements RestClient {
@@ -536,6 +550,11 @@ class DataRepository implements RestClient {
   }
 
   @override
+  Future activeBusiness({required int id}) {
+    return _client!.activeBusiness(id: id);
+  }
+
+  @override
   Future deleteBusiness({required int id}) {
     return _client!.deleteBusiness(id: id);
   }
@@ -621,6 +640,11 @@ class DataRepository implements RestClient {
   }
 
   @override
+  Future<SuccessResponse> addOrder({required AddOrderRequest request}) {
+    return _client!.addOrder(request: request);
+  }
+
+  @override
   Future<List<String>> getListTimeZone() {
     return _client!.getListTimeZone();
   }
@@ -671,8 +695,8 @@ class DataRepository implements RestClient {
 
   // Stock adjustments
   @override
-  Future<StockAdjustmentResponse> getStockAdjustments() {
-    return _client!.getStockAdjustments();
+  Future<StockAdjustmentResponse> getStockAdjustments({int? page}) {
+    return _client!.getStockAdjustments(page: page);
   }
 
   @override
@@ -694,8 +718,14 @@ class DataRepository implements RestClient {
 
   // stock transfer
   @override
-  Future<StockTransfersResponse> getStockTransfers() {
-    return _client!.getStockTransfers();
+  Future<StockTransfersResponse> getStockTransfers({int? page}) {
+    return _client!.getStockTransfers(page: page);
+  }
+
+  @override
+  Future<AddStockTransfersResponse> addStockTransfers(
+      {required AddStockTransfersRequest request}) {
+    return _client!.addStockTransfers(request: request);
   }
 
   @override
@@ -716,7 +746,7 @@ class DataRepository implements RestClient {
   }
 
   @override
-  Future<SuccessResponse> updateLogo({File? file}) {
+  Future<UpdateBusinessRp> updateLogo({File? file}) {
     return _client!.updateLogo(file: file);
   }
 
@@ -724,14 +754,76 @@ class DataRepository implements RestClient {
   Future<TaxResponse> getTax() {
     return _client!.getTax();
   }
+
   
   @override
   Future<GetProfitDayRp> getProfitDay({String? startDate, String? endDate}) {
     return _client!.getProfitDay(startDate: startDate, endDate: endDate);
   }
   
+
+  // @override
+  // Future<CustomerGroupResponse> getCustomerGroup({required int id}) {
+  //   return _client!.getCustomerGroup(id: id);
+  // }
+
+  @override
+  Future<AddStatusOrderResponse> addStatusOrder(
+      {required AddStatusOrderRequest request}) {
+    return _client!.addStatusOrder(request: request);
+  }
+
+  @override
+  Future<AddStatusOrderResponse> updateStatusOrder(
+      {required AddStatusOrderRequest request, required int id}) {
+    return _client!.updateStatusOrder(request: request, id: id);
+  }
+
+  @override
+  Future deleteStatusOrder({required int id}) {
+    return _client!.deleteStatusOrder(id: id);
+  }
+
+  @override
+  Future<AddProductStockResponse> addProductStock(
+      {required AddProductStockRequest request}) {
+    return _client!.addProductStock(request: request);
+  }
+
   @override
   Future<ReportStockResponse> getReportStockManage() {
     return _client!.getReportStockManage();
+  }
+
+  @override
+  Future<List<Printer>> getPrinters() {
+    return _client!.getPrinters();
+  }
+
+  @override
+  Future deletePrinter({required int id}) {
+    return _client!.deletePrinter(id: id);
+  }
+
+  @override
+  Future<AddPrinterResponse> addPrinter({required AddPrinterRequest request}) {
+    return _client!.addPrinter(request: request);
+  }
+
+  @override
+  Future<AddPrinterResponse> updatePrinter(
+      {required AddPrinterRequest request, required int id}) {
+    return _client!.updatePrinter(request: request, id: id);
+  }
+
+  @override
+  Future<DeliveryResponse> getDeliveryPartners() {
+    return _client!.getDeliveryPartners();
+  }
+
+  @override
+  Future<ConnectGhtkResponse> connectGHTK(
+      {required ConnectGhtkRequest request}) {
+    return _client!.connectGHTK(request: request);
   }
 }

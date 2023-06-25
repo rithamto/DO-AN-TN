@@ -7,7 +7,7 @@ import 'package:di4l_pos/common/text_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class CustomAppBarWithIcon extends StatelessWidget with PreferredSizeWidget {
+class CustomAppBarWithIcon extends StatelessWidget implements PreferredSizeWidget {
   /// MARK: - Initials;
   final String? avatar;
   final String? title;

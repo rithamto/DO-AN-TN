@@ -11,6 +11,7 @@ class AddStockAdjustmentStateData with _$AddStockAdjustmentStateData {
     Transaction? transaction,
     @Default([]) List<Product> products,
     @Default(false) bool enableProduct,
+    @Default('') String sum,
   }) = _AddStockAdjustmentStateData;
 }
 

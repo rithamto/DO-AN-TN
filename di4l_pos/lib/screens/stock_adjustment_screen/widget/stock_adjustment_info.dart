@@ -13,7 +13,6 @@ class StockAdjustmentInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     String transactionDateString = stockAdjustment.transactionDate!;
     DateTime transactionDate = DateTime.parse(transactionDateString);
     String formattedDate = DateFormat('dd/MM/yyyy').format(transactionDate);
@@ -151,7 +150,7 @@ class StockAdjustmentInfo extends StatelessWidget {
                 width: 5,
               ),
               Text(
-                '${stockAdjustment.additionalNotes}',
+                stockAdjustment.additionalNotes ?? '',
                 style: GlobalStyles.titilliumSemiBold1(context),
               ),
             ],

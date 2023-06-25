@@ -35,6 +35,7 @@ class MainCubit extends Cubit<MainState> {
           RouteGenerator.tableOrderScreen),
       Item(GlobalImages.stock, 'stock_transfers'.tr,
           RouteGenerator.stockTransfersScreen),
+      Item(GlobalImages.delivery, 'delivery', RouteGenerator.deliveryScreen),
     ];
     final _menus =
         menu != '' ? MenuData.fromRawJson(menu!) : MenuData(items: menuDefault);

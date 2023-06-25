@@ -13,12 +13,10 @@ class StockTransferActivities extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     String? description = activities.description;
     String? formattedDescription = description?.capitalize!;
 
     String? status = activities.properties!.attributes!.status;
-    String? formatStatus = status?.capitalize!;
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -137,12 +135,16 @@ class StockTransferActivities extends StatelessWidget {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
-                      color: GlobalColors.appBar4,
+                      color: status == 'final'
+                          ? GlobalColors.primaryColor
+                          : (status == 'in_transit'
+                              ? Color(0xffFFCC00)
+                              : GlobalColors.debtColor),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(5),
                       child: Text(
-                        "${formatStatus == 'Final' ? 'Completed' : formatStatus}",
+                        status == 'final' ? 'completed'.tr : '$status'.tr,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 14,

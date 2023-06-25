@@ -26,6 +26,7 @@ class CustomTextField extends StatelessWidget {
   final String? errorText;
   final Widget? suffixIcon;
   final int? maxLength;
+  final Function(String?)? onchanged;
   CustomTextField({
     Key? key,
     this.redLabel,
@@ -45,14 +46,15 @@ class CustomTextField extends StatelessWidget {
     this.readOnly = false,
     this.suffixIcon,
     this.errorText,
-     this.maxLength,
+    this.maxLength,
+    this.onchanged,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Theme(
       data: ThemeData(primarySwatch: Colors.green),
-      child: TextFormField(       
+      child: TextFormField(
         key: key,
         scrollPadding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -66,14 +68,17 @@ class CustomTextField extends StatelessWidget {
         textInputAction: textInputAction,
         readOnly: readOnly,
         maxLength: maxLength,
-        style: const TextStyle(fontSize: Dimensions.FONT_SIZE_DEFAULT,),
+        onChanged: (value) => onchanged!(value),
+        style: const TextStyle(
+          fontSize: Dimensions.FONT_SIZE_DEFAULT,
+        ),
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.only(bottom: 0.0),
           fillColor: GlobalColors.primaryColor,
           floatingLabelBehavior: FloatingLabelBehavior.always,
           hintText: hintText ?? '',
           enabled: isEnable,
-          
+
           hintStyle: TextStyle(
             height: 1,
             color: Colors.grey[400],
@@ -88,7 +93,6 @@ class CustomTextField extends StatelessWidget {
                   Text(
                     hintLabel ?? "",
                     style: GlobalStyles.titilliumBold(context),
-                    
                     textScaleFactor: 1.5,
                   ),
                   Text(

@@ -146,7 +146,7 @@ class _buildAllOrder extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
+    // final Size size = MediaQuery.of(context).size;
     return InkWell(
       onTap: () => onPressed(sellData),
       child: Container(
@@ -183,7 +183,8 @@ class _buildAllOrder extends StatelessWidget {
                               ? Colors.amber.shade100
                               : Colors.green.shade100,
                           child: Text(
-                            sellData.paymentStatus!.toUpperCase() ?? '',
+                            sellData.paymentStatus!.toUpperCase(),
+                            // sellData.paymentStatus!.tr,
                             style: GlobalStyles.robotoRegular(context).copyWith(
                               fontSize: 14,
                               color: !sellData.paymentStatus!.contains("paid")

@@ -1,3 +1,5 @@
+import 'package:di4l_pos/models/unit/response/unit_response.dart';
+
 class AddStockAdjustmentRequest {
   String? refNo;
   String? adjustmentType;
@@ -62,7 +64,7 @@ class ProductsRequest {
   String? lotNoLineId;
   int? productId;
   int? variationId;
-  String? enableStock;
+  int? enableStock;
   String? quantity;
   dynamic baseUnitMultiplier;
   int? productUnitId;

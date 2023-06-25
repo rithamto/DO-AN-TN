@@ -158,11 +158,42 @@ class _AddCategoryScreenNState extends State<AddCategoryScreenN>
                       const SizedBox(
                         width: Dimensions.PADDING_SIZE_SMALL,
                       ),
+                      widget.addCategoryType == AddType.UPDATE
+                          ? Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Container(
+                                  width: 87,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      context
+                                          .read<CategoryCubit>()
+                                          .deleteCategory(
+                                              id: widget.categoryModel!.id!);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: GlobalColors.blackColor,
+                                    ),
+                                    child: Text("delete".tr,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        )),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : const SizedBox(
+                              width: Dimensions.PADDING_SIZE_SMALL,
+                            ),
+                      const SizedBox(
+                        width: Dimensions.PADDING_SIZE_SMALL,
+                      ),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: GlobalColors.primaryColor
-                              // This is what you need!
-                              ),
+                            backgroundColor: GlobalColors.primaryColor,
+                            // This is what you need!
+                          ),
                           onPressed: () async {
                             if (_txtCategoryName.text.isEmpty) {
                               context.read<AddCategoryCubit>().nameCheck(true);
@@ -190,7 +221,7 @@ class _AddCategoryScreenNState extends State<AddCategoryScreenN>
                           },
                           child: Text(widget.addCategoryType == AddType.NEW
                               ? "create".tr
-                              : "update".tr))
+                              : "update".tr)),
                     ],
                   ),
                   state.data!.nameCheck

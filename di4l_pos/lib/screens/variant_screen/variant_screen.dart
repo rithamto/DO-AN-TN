@@ -82,7 +82,7 @@ class _VariantScreenState extends State<VariantScreen> with AfterLayoutMixin {
                                               children: [
                                                 SlidableAction(
                                                   backgroundColor:
-                                                      GlobalColors.appBar2,
+                                                      GlobalColors.primaryColor,
                                                   foregroundColor: Colors.white,
                                                   icon: Icons.edit,
                                                   label: 'edit'.tr,
@@ -194,7 +194,36 @@ class _VariantScreenState extends State<VariantScreen> with AfterLayoutMixin {
                                                   ),
                                                 ],
                                               ),
-                                              onTap: () {},
+                                              onTap: () {
+                                                {
+                                                  showModalBottomSheet(
+                                                    shape: const RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.vertical(
+                                                                top: Radius
+                                                                    .circular(
+                                                                        15.0))),
+                                                    context: context,
+                                                    isScrollControlled: true,
+                                                    isDismissible: true,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return AddVariantionScreen
+                                                          .provider(
+                                                              addVariantionType:
+                                                                  AddType
+                                                                      .UPDATE,
+                                                              globalKey:
+                                                                  _globalKey,
+                                                              variant: e);
+                                                    },
+                                                  ).then((value) => _globalKey
+                                                      .currentContext!
+                                                      .read<VariantCubit>()
+                                                      .getVariants());
+                                                }
+                                                ;
+                                              },
                                             ),
                                           ),
                                         ))

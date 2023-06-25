@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:di4l_pos/common/dimensions.dart';
 import 'package:di4l_pos/common/global_colors.dart';
 import 'package:di4l_pos/common/global_styles.dart';
 import 'package:di4l_pos/enums/select_model_ad_stock_adjustment.dart';
 import 'package:di4l_pos/enums/status_type.dart';
+import 'package:di4l_pos/models/products/response/product_response.dart';
 import 'package:di4l_pos/screens/products_screen/cubit/products_cubit.dart';
 import 'package:di4l_pos/widgets/custom_button/custom_button.dart';
 import 'package:di4l_pos/widgets/data/app_loading_widget.dart';
@@ -11,30 +13,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-// ignore: prefer_generic_function_type_aliases
-typedef void CategoryCallback(item);
+import '../../../widgets/error_image_widget.dart';
 
-// ignore: must_be_immutable
+// ignore: prefer_generic_function_type_aliases
+typedef void CategoryCallback(List<Product> selectedItems);
+
 class SelectProductDialogWidget extends StatefulWidget {
-  SelectProductDialogWidget({
-    // required this.categories,
-    this.item,
-    required this.ontap,
+  const SelectProductDialogWidget({
+    required this.onTap,
     Key? key,
-    required this.isShowbutton,
+    required this.isShowButton,
     required this.selectModeAddStockAdjustment,
   }) : super(key: key);
-  // ignore: prefer_typing_uninitialized_variables
-  var item;
-  final CategoryCallback ontap;
-  final bool isShowbutton;
+
+  final CategoryCallback onTap;
+  final bool isShowButton;
   final SelectModeAddStockAdjustment selectModeAddStockAdjustment;
+
   @override
   State<SelectProductDialogWidget> createState() =>
-      _SelectProductDialogWidget();
+      _SelectProductDialogWidgetState();
 }
 
-class _SelectProductDialogWidget extends State<SelectProductDialogWidget> {
+class _SelectProductDialogWidgetState extends State<SelectProductDialogWidget> {
+  List<Product> selectedItems = [];
+
   @override
   void initState() {
     super.initState();
@@ -50,11 +53,10 @@ class _SelectProductDialogWidget extends State<SelectProductDialogWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return _product();
+    return _buildProduct();
   }
 
-  Widget _product() {
-    var item = widget.item;
+  Widget _buildProduct() {
     return Container(
       height: Get.height * 0.95,
       width: Get.width,
@@ -101,124 +103,120 @@ class _SelectProductDialogWidget extends State<SelectProductDialogWidget> {
             child: SizedBox(
               height: Get.height * 0.75,
               child: BlocBuilder<ProductsCubit, ProductsState>(
-                  builder: (context, state) {
-                if (state.data!.status == StatusType.loading) {
-                  return const AppLoadingWidget(
-                      widget: null, text: 'Loading...');
-                } else {
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: state.data!.products.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(
-                            bottom: Dimensions.PADDING_SIZE_SMALL),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: state.data!.productSelected ==
-                                    state.data!.products.elementAt(index)
-                                ? Colors.grey[300]
-                                : Colors.transparent,
-                            border: Border.all(
-                              width: 1,
-                              color: Colors.grey,
-                            ),
-                            borderRadius: const BorderRadius.all(
-                                Radius.circular(
-                                    5.0) //                 <--- border radius here
+                builder: (context, state) {
+                  if (state.data!.status == StatusType.loading) {
+                    return const AppLoadingWidget(
+                        widget: null, text: 'Loading...');
+                  } else {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: state.data!.products.length,
+                      itemBuilder: (context, index) {
+                        final product = state.data!.products.elementAt(index);
+                        final isSelected = selectedItems.contains(product);
+
+                        return Padding(
+                          padding: const EdgeInsets.only(
+                              bottom: Dimensions.PADDING_SIZE_SMALL),
+                          child: InkWell(
+                            onTap: () {
+                              setState(() {
+                                if (isSelected) {
+                                  selectedItems.remove(product);
+                                } else {
+                                  selectedItems.add(product);
+                                }
+                              });
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: isSelected
+                                    ? Colors.grey[300]
+                                    : Colors.transparent,
+                                border: Border.all(
+                                  width: 1,
+                                  color: Colors.grey,
                                 ),
-                          ),
-                          child: Column(
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  item == state.data!.products[index]
-                                      ? context
-                                          .read<ProductsCubit>()
-                                          .productSelected(null)
-                                      : context
-                                          .read<ProductsCubit>()
-                                          .productSelected(
-                                              state.data!.products[index]);
-                                  item = state.data!.products[index];
-                                },
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                width: 1,
-                                                color: Colors.grey,
-                                              ),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(
-                                                      5.0) //                 <--- border radius here
-                                                  ),
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(5.0)),
+                              ),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              width: 1,
+                                              color: Colors.grey,
                                             ),
-                                            width: Get.width * 0.13,
-                                            height: Get.width * 0.13,
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(
-                                                  Dimensions.MARGIN_SIZE_SMALL),
-                                              child: SizedBox(
-                                                width: Get.width * 0.07,
-                                                child: Image.asset(
-                                                  "assets/images/food.jpg",
-                                                  color: Colors.grey,
-                                                ),
-                                              ),
-                                            ),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(5.0)),
+                                          ),
+                                          width: Get.width * 0.13,
+                                          height: Get.width * 0.13,
+                                          child: CachedNetworkImage(
+                                            width: Get.width * 0.15,
+                                            height: Get.width * 0.15,
+                                            fit: BoxFit.cover,
+                                            imageUrl: state.data!.products
+                                                    .elementAt(index)
+                                                    .imageUrl ??
+                                                '',
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    const ErrorWidgetImage(),
                                           ),
                                         ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              state.data!.products
-                                                  .elementAt(index)
-                                                  .name
-                                                  .toString(),
-                                            ),
-                                            SizedBox(
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(product.name.toString()),
+                                          SizedBox(
                                               height: Dimensions
-                                                  .PADDING_SIZE_EXTRA_SMALL,
-                                            ),
-                                            Text(
-                                              state.data!.products
-                                                  .elementAt(index)
-                                                  .alertQuantity
-                                                  .toString(),
-                                              style:
-                                                  GlobalStyles.titilliumRegular(
-                                                      context),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                   
-                                  ],
-                                ),
+                                                  .PADDING_SIZE_EXTRA_SMALL),
+                                          Row(
+                                            children: [
+                                              Text('quantity'.tr),
+                                              const Text(': '),
+                                              Text(
+                                                (product.productVariations!
+                                                            .elementAt(0)!
+                                                            .variations!
+                                                            .elementAt(0)!
+                                                            .variationLocationDetails!
+                                                            .elementAt(0)
+                                                            .qtyAvailable
+                                                            ?.toString() ??
+                                                        '')
+                                                    .split('.')
+                                                    .first,
+                                                style: const TextStyle(
+                                                    fontSize: 14),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
-                              
-                            ],
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                  );
-                }
-              }),
+                        );
+                      },
+                    );
+                  }
+                },
+              ),
             ),
           ),
-          widget.isShowbutton
+          widget.isShowButton
               ? Container(
                   alignment: Alignment.center,
                   height: MediaQuery.of(context).size.height * 0.1,
@@ -231,28 +229,28 @@ class _SelectProductDialogWidget extends State<SelectProductDialogWidget> {
                         color: Colors.white,
                         label: "back".tr,
                         style: TextStyle(
-                            color: GlobalColors.primaryColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: Dimensions.FONT_SIZE_LARGE),
+                          color: GlobalColors.primaryColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: Dimensions.FONT_SIZE_LARGE,
+                        ),
                         borderColor: GlobalColors.primaryColor,
                         onPressed: () {
                           Navigator.pop(context);
                         },
                       ),
-                      SizedBox(
-                        width: Dimensions.PADDING_SIZE_EXTRA_SMALL,
-                      ),
+                      SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                       CustomButton(
                         type: ButtonType.BUTTON_TEXT,
                         color: GlobalColors.primaryColor,
                         label: "save".tr,
                         style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: Dimensions.FONT_SIZE_LARGE),
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: Dimensions.FONT_SIZE_LARGE,
+                        ),
                         borderColor: GlobalColors.primaryColor,
                         onPressed: () {
-                          widget.ontap(item);
+                          widget.onTap(selectedItems);
                           Navigator.pop(context);
                         },
                       ),

@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:get/get.dart';
+import 'package:tiengviet/tiengviet.dart';
 
 part 'stock_transfers_state.dart';
 part 'stock_transfers_cubit.freezed.dart';
@@ -20,19 +21,76 @@ class StockTransfersCubit extends Cubit<StockTransfersState> {
       : super(
             const StockTransfersState.initial(data: StockTransfersStateData()));
 
-  Future<void> getStockTransfers() async {
+  Future<void> loadStockTransfers() async {
+    int page = 1;
     try {
       emit(Status(data: state.data?.copyWith(status: StatusType.loading)));
-      final _responses = await _dataRepository.getStockTransfers();
+      final _responses = await _dataRepository.getStockTransfers(page: page);
       emit(GetStockTransfers(
           data: state.data?.copyWith(
-        status: StatusType.loaded,
-        stockTransfers: _responses.data ?? [],
-      )));
-      print(_responses.data);
+              status: StatusType.loaded,
+              stockTransfers: _responses.data ?? [],
+              stockTransfersOriginal: _responses.data ?? [])));
+
+      // print(_responses.data);
     } catch (error) {
       emit(Status(data: state.data?.copyWith(status: StatusType.error)));
       Helpers.handleErrorApp(error: error);
+    }
+  }
+
+  Future<void> getStockTransfers() async {
+    List<StockTransfersData> _stockTransfers = [...state.data!.stockTransfers];
+    int page = state.data!.page! + 1;
+    try {
+      emit(Status(data: state.data?.copyWith(status: StatusType.loading)));
+      final _responses = await _dataRepository.getStockTransfers(page: page);
+      emit(GetStockTransfers(
+          data: state.data?.copyWith(
+              page: _responses.currentPage,
+              status: StatusType.loaded,
+              stockTransfers: _responses.data ?? [],
+              stockTransfersOriginal: _responses.data ?? [])));
+      emit(Status(data: state.data?.copyWith(status: StatusType.loading)));
+      _stockTransfers.addAll(state.data!.stockTransfers);
+      emit(GetStockTransfers(
+          data: state.data?.copyWith(
+              status: StatusType.loaded,
+              stockTransfers: _stockTransfers,
+              stockTransfersOriginal: _stockTransfers)));
+      // print(_responses.data);
+    } catch (error) {
+      emit(Status(data: state.data?.copyWith(status: StatusType.error)));
+      Helpers.handleErrorApp(error: error);
+    }
+  }
+
+  Future<void> searchStockTransfer({required String searchText}) async {
+    List<StockTransfersData> _stockTransfersOriginal = [
+      ...state.data!.stockTransfersOriginal
+    ];
+    emit(Status(data: state.data?.copyWith(status: StatusType.loading)));
+    if (searchText.isEmpty) {
+      emit(GetStockTransfers(
+          data: state.data?.copyWith(
+              status: StatusType.loaded,
+              stockTransfers: _stockTransfersOriginal)));
+    } else {
+      final searchTextVN = TiengViet.parse(searchText.toLowerCase());
+      final _stockTransferItems = _stockTransfersOriginal
+          .where((StockTransfersData element) =>
+              (element.transactionDate!.toLowerCase().contains(searchTextVN)) ||
+              (element.refNo!.toLowerCase().contains(searchTextVN)) ||
+              (element.locationFrom!.toLowerCase().contains(searchTextVN)) ||
+              (element.locationTo!.toLowerCase().contains(searchTextVN)) ||
+              (element.finalTotal!.toLowerCase().contains(searchTextVN)) ||
+              (element.shippingCharges!.toLowerCase().contains(searchTextVN)) ||
+              (element.additionalNotes!.toLowerCase().contains(searchTextVN)) ||
+              (element.status!.toLowerCase().contains(searchTextVN)))
+          .toList();
+      emit(GetStockTransfers(
+          data: state.data?.copyWith(
+              status: StatusType.loaded, stockTransfers: _stockTransferItems)));
     }
   }
 
@@ -76,7 +134,7 @@ class StockTransfersCubit extends Cubit<StockTransfersState> {
           await _dataRepository.deleteStockTransfer(id: id);
           await Future.delayed(const Duration(microseconds: 200), () {
             navigator!.pop();
-            getStockTransfers();
+            loadStockTransfers();
           });
         } catch (error) {
           debugPrint('Delete Stock Transfer Error: $error');

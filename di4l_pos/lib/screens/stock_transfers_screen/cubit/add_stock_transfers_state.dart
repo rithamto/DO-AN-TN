@@ -10,6 +10,7 @@ class AddStockTransfersStateData with _$AddStockTransfersStateData {
     @Default([]) List<Transaction> transactionsDebt,
     Transaction? transaction,
     @Default([]) List<Product> products,
+    @Default(false) bool enableProduct,
   }) = _AddStockTransfersStateData;
 }
 
@@ -25,4 +26,6 @@ class AddStockTransfersState with _$AddStockTransfersState {
       {AddStockTransfersStateData? data}) = GetTransactions;
   const factory AddStockTransfersState.products(
       {AddStockTransfersStateData? data}) = GetProducts;
+  const factory AddStockTransfersState.enableProduct(
+      {AddStockTransfersStateData? data}) = EnableProduct;
 }

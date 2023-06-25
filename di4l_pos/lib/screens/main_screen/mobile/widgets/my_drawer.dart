@@ -102,6 +102,19 @@ class MyDrawar extends StatelessWidget {
               ),
             ),
           ),
+          InkWell(
+            onTap: () =>
+                navigator!.pushNamed(RouteGenerator.locationSettingsScreen),
+            child: ListTile(
+              minLeadingWidth: 5,
+              leading: const Icon(Icons.room_preferences_outlined,
+                  color: GlobalColors.primaryColor),
+              title: Text(
+                'business_location_prefix'.tr,
+                style: GlobalStyles.robotoRegular(context),
+              ),
+            ),
+          ),
           // ListTile(
           //   minLeadingWidth: 5,
           //   leading: const Icon(Icons.credit_score,
@@ -207,45 +220,63 @@ class MyDrawar extends StatelessWidget {
               height: Get.height * 0.78,
               child: SingleChildScrollView(
                 child: Column(
-                  children: List.generate(state.data!.accounts.length, (index) {
-                    if (state.data!.accounts[index].getName() !=
-                        state.data!.business?.name) {
-                      return InkWell(
-                        onTap: () => context
-                            .read<BusinessCubit>()
-                            .postSwitchAccount(
-                                id: state.data!.accounts[index].userId!),
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 40,
-                              width: 40,
-                              child: ClipRRect(
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(20.0)),
-                                child: CachedNetworkImage(
-                                  imageUrl: state.data!.accounts[index].bLogo(),
-                                  errorWidget: (context, url, error) =>
-                                      const ErrorWidgetImage(),
+                  children: [
+                    Column(
+                      children: List.generate(state.data!.accounts.length, (index) {
+                        if (state.data!.accounts[index].getName() !=
+                            state.data!.business?.name) {
+                          return InkWell(
+                            onTap: () => context
+                                .read<BusinessCubit>()
+                                .postSwitchAccount(
+                                    id: state.data!.accounts[index].userId!),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 40,
+                                  width: 40,
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(20.0)),
+                                    child: CachedNetworkImage(
+                                      imageUrl: state.data!.accounts[index].bLogo(),
+                                      errorWidget: (context, url, error) =>
+                                          const ErrorWidgetImage(),
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                const SizedBox(height: 5),
+                                FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(
+                                    state.data!.accounts[index].getName(),
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(fontSize: 10),
+                                  ),
+                                )
+                              ],
                             ),
-                            const SizedBox(height: 5),
-                            FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: Text(
-                                state.data!.accounts[index].getName(),
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(fontSize: 10),
-                              ),
-                            )
-                          ],
-                        ),
-                      );
-                    } else {
-                      return const SizedBox.shrink();
-                    }
-                  }),
+                          );
+                        } else {
+                          return const SizedBox.shrink();
+                        }
+                      }),
+                    ),
+                    const SizedBox(height: 5),
+                    ElevatedButton(
+                      onPressed: () {
+                        BlocProvider.of<BusinessCubit>(context).changedAccount();
+                      },
+                      child: Icon(Icons.add, color: Colors.white),
+                      style: ElevatedButton.styleFrom(
+                        shape: CircleBorder(),
+                        padding: EdgeInsets.all(10),
+                        backgroundColor: GlobalColors.primaryColor, // <-- Button color
+                        foregroundColor: Colors.red,
+                          // <-- Splash color
+                      ),
+                    )
+                  ],
                 ),
               ),
             );

@@ -205,6 +205,32 @@ class _AddWarrantyScreenState extends State<AddWarrantyScreen>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      widget.addWarrantyType == AddType.UPDATE
+                          ? CustomButton(
+                              type: ButtonType.BUTTON_TEXT,
+                              color: Colors.white,
+                              label: "delete".tr,
+                              style: const TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: Dimensions.FONT_SIZE_LARGE),
+                              borderColor: Colors.red,
+                              onPressed: () {},
+                            )
+                          : CustomButton(
+                              type: ButtonType.BUTTON_TEXT,
+                              color: Colors.white,
+                              label: "add_more".tr,
+                              style: const TextStyle(
+                                  color: GlobalColors.primaryColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: Dimensions.FONT_SIZE_LARGE),
+                              borderColor: GlobalColors.primaryColor,
+                              onPressed: () async {},
+                            ),
+                      const SizedBox(
+                        width: Dimensions.PADDING_SIZE_SMALL,
+                      ),
                       CustomButton(
                         type: ButtonType.BUTTON_TEXT,
                         color: GlobalColors.primaryColor,

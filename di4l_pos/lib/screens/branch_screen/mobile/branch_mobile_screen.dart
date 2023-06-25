@@ -147,7 +147,8 @@ class _BranchScreenState extends State<BranchMobileScreen>
                                                       decoration: BoxDecoration(
                                                         color: Colors.grey[300],
                                                         borderRadius:
-                                                            const BorderRadius.all(
+                                                            const BorderRadius
+                                                                    .all(
                                                                 Radius.circular(
                                                                     10.0) //                 <--- border radius here
                                                                 ),
@@ -155,7 +156,8 @@ class _BranchScreenState extends State<BranchMobileScreen>
                                                       height: Get.height * 0.06,
                                                       child: Padding(
                                                         padding:
-                                                            const EdgeInsets.all(8.0),
+                                                            const EdgeInsets
+                                                                .all(8.0),
                                                         child: Image.asset(
                                                           "assets/images/food.jpg",
                                                           color: Colors.grey,
@@ -203,7 +205,33 @@ class _BranchScreenState extends State<BranchMobileScreen>
                                                   ),
                                                 ],
                                               ),
-                                              onTap: () {},
+                                              onTap: () {
+                                                {
+                                                  showModalBottomSheet(
+                                                    shape: const RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.vertical(
+                                                                top: Radius
+                                                                    .circular(
+                                                                        15.0))),
+                                                    context: context,
+                                                    isScrollControlled: true,
+                                                    isDismissible: true,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return AddBranchScreen
+                                                          .provider(
+                                                              addBranchType:
+                                                                  AddType
+                                                                      .UPDATE,
+                                                              branch: e);
+                                                    },
+                                                  ).then((value) => _globalKey
+                                                      .currentContext!
+                                                      .read<BranchCubit>()
+                                                      .getBranch());
+                                                }
+                                              },
                                             ),
                                           ),
                                         ))

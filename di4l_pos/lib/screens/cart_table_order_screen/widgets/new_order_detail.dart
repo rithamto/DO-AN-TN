@@ -2,12 +2,11 @@ import 'dart:async';
 import 'package:after_layout/after_layout.dart';
 import 'package:di4l_pos/common/dimensions.dart';
 import 'package:di4l_pos/enums/status_type.dart';
-import 'package:di4l_pos/screens/cart_table_order_screen/cubit/table_order_cubit.dart';
-import 'package:di4l_pos/screens/order_table_screen/widgets/custom_divider.dart';
-import 'package:di4l_pos/screens/order_table_screen/widgets/note_order.dart';
-import 'package:di4l_pos/screens/order_table_screen/widgets/price_with_type.dart';
+import 'package:di4l_pos/screens/order_screen/cubit/order_cubit.dart';
+import 'package:di4l_pos/screens/table_order_screen/widgets/custom_divider.dart';
 import 'package:di4l_pos/screens/products_screen/cubit/products_cubit.dart';
-import 'package:di4l_pos/screens/table_order_screen/widgets/cart_button.dart';
+import 'package:di4l_pos/screens/table_order_screen/cubit/table_order_cubit.dart';
+import 'package:di4l_pos/screens/table_order_screen/widgets/price_with_type.dart';
 import 'package:di4l_pos/widgets/data/404_widget.dart';
 import 'package:di4l_pos/widgets/data/app_loading_widget.dart';
 import 'package:di4l_pos/widgets/data/no_data_widget.dart';
@@ -15,8 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:di4l_pos/common/global_styles.dart';
-
-import '../../order_screen/cubit/order_cubit.dart';
 
 class NewOrderDetail extends StatefulWidget {
   static MultiBlocProvider provider() {
@@ -427,10 +424,10 @@ class _NewOrderDetailState extends State<NewOrderDetail> with AfterLayoutMixin {
                                             height:
                                                 Dimensions.PADDING_SIZE_DEFAULT,
                                           ),
-                                          NoteOrder(
-                                            text: sellData[indexSell]
-                                                .additionalNotes,
-                                          ),
+                                          // NoteOrder(
+                                          //   text: sellData[indexSell]
+                                          //       .additionalNotes,
+                                          // ),
                                           const SizedBox(
                                             height:
                                                 Dimensions.PADDING_SIZE_LARGE,

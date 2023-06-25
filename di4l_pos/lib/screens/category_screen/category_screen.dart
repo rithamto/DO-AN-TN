@@ -115,12 +115,13 @@ class _CategoryScreenState extends State<CategoryScreen> with AfterLayoutMixin {
                                             label: 'edit'.tr,
                                             onPressed: (BuildContext context) {
                                               showModalBottomSheet(
-                                                shape: const RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.vertical(
-                                                            top:
-                                                                Radius.circular(
-                                                                    15.0))),
+                                                shape:
+                                                    const RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.vertical(
+                                                                top: Radius
+                                                                    .circular(
+                                                                        15.0))),
                                                 context: context,
                                                 isScrollControlled: true,
                                                 isDismissible: true,
@@ -138,7 +139,7 @@ class _CategoryScreenState extends State<CategoryScreen> with AfterLayoutMixin {
                                           ),
                                           SlidableAction(
                                             backgroundColor:
-                                                GlobalColors.bgOrange,
+                                                GlobalColors.blackColor,
                                             foregroundColor: Colors.white,
                                             icon: Icons.delete,
                                             label: 'delete'.tr,
@@ -159,14 +160,16 @@ class _CategoryScreenState extends State<CategoryScreen> with AfterLayoutMixin {
                                               child: Container(
                                                 decoration: BoxDecoration(
                                                   color: Colors.grey[300],
-                                                  borderRadius: const BorderRadius.all(
+                                                  borderRadius: const BorderRadius
+                                                          .all(
                                                       Radius.circular(
                                                           10.0) //                 <--- border radius here
                                                       ),
                                                 ),
                                                 height: Get.height * 0.06,
                                                 child: Padding(
-                                                  padding: const EdgeInsets.all(8.0),
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
                                                   child: Image.asset(
                                                     "assets/images/food.jpg",
                                                     color: Colors.grey,
@@ -186,7 +189,31 @@ class _CategoryScreenState extends State<CategoryScreen> with AfterLayoutMixin {
                                             ),
                                           ],
                                         ),
-                                        onTap: () {},
+                                        onTap: () {
+                                          {
+                                            showModalBottomSheet(
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.vertical(
+                                                              top: Radius
+                                                                  .circular(
+                                                                      15.0))),
+                                              context: context,
+                                              isScrollControlled: true,
+                                              isDismissible: true,
+                                              builder: (BuildContext context) {
+                                                return AddCategoryScreenN
+                                                    .provider(
+                                                        addCategoryType:
+                                                            AddType.UPDATE,
+                                                        globalKey: _globalKey,
+                                                        categoryModel: e);
+                                              },
+                                            );
+                                          }
+                                          ;
+                                        },
                                       ),
                                     ),
                                   ))

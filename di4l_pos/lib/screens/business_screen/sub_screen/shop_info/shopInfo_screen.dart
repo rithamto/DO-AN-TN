@@ -5,16 +5,24 @@ import 'package:after_layout/after_layout.dart' as after_layout;
 import 'package:di4l_pos/common/dimensions.dart';
 import 'package:di4l_pos/common/global_formatter.dart';
 import 'package:di4l_pos/common/global_images.dart';
-import 'package:di4l_pos/models/shopinfo/request/ShopSettingPUTRq.dart';
+import 'package:di4l_pos/common/ui_helpers.dart';
+import 'package:di4l_pos/enums/add_type.dart';
+import 'package:di4l_pos/models/shopinfo/request/shopSettingPUTRq.dart';
+// import 'package:di4l_pos/models/shopinfo/request/ShopSettingPUTRq.dart';
 import 'package:di4l_pos/models/shopinfo/response/Currency.dart';
 import 'package:di4l_pos/models/shopinfo/response/DefaultUnit.dart';
+import 'package:di4l_pos/models/shopinfo/response/ShopSettingRp.dart' as Rp;
+// import 'package:di4l_pos/models/shopinfo/response/ShopSettingRp.dart';
 import 'package:di4l_pos/models/shopinfo/response/TaxResponse.dart';
+import 'package:di4l_pos/route_generator.dart';
+import 'package:di4l_pos/screens/business_screen/sub_screen/add_status_order/add_status_order_screen.dart';
 import 'package:di4l_pos/screens/business_screen/widget/CurencyPicker.dart';
 import 'package:di4l_pos/screens/business_screen/widget/CustomDropMenu.dart';
 import 'package:di4l_pos/screens/business_screen/widget/DefaultUnitPicker.dart';
 import 'package:di4l_pos/screens/business_screen/widget/TImeZonePicker.dart';
 import 'package:di4l_pos/screens/business_screen/widget/card_list_business_custom_widget.dart';
 import 'package:di4l_pos/screens/business_screen/widget/datePicker.dart';
+import 'package:di4l_pos/screens/business_screen/widget/status_order_widget.dart';
 import 'package:di4l_pos/widgets/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -49,7 +57,7 @@ class ShopInfoScreen extends StatefulWidget {
 class _ShopInfoScreenState extends State<ShopInfoScreen>
     with after_layout.AfterLayoutMixin {
   String? logoUrl, FYSM = "Tháng 1";
-  String? SCA, ARM, SIAM, PSL, QIPL, QFPL;
+  String? SCA, ARM, SIAM, PSL, QIPL, QFPL, SMSS;
   String? EnProductEx, onProductEx, DefaultUnit;
   int? idDefaultUnit, intFYSM;
   CommonSettings? commonSettings;
@@ -100,6 +108,14 @@ class _ShopInfoScreenState extends State<ShopInfoScreen>
   TextEditingController timeEmail = TextEditingController();
   //sms setting
   TextEditingController smsURL = TextEditingController();
+  TextEditingController nexmoKey = TextEditingController();
+  TextEditingController nexmoSecret = TextEditingController();
+  TextEditingController nexmoFrom = TextEditingController();
+  TextEditingController twilioSID = TextEditingController();
+  TextEditingController twilioToken = TextEditingController();
+  TextEditingController twilioFrom = TextEditingController();
+  TextEditingController speedSMSToken = TextEditingController();
+  TextEditingController speedFrom = TextEditingController();
   TextEditingController sendParameter = TextEditingController();
   TextEditingController msgParameter = TextEditingController();
   TextEditingController timeSms = TextEditingController();
@@ -289,7 +305,7 @@ class _ShopInfoScreenState extends State<ShopInfoScreen>
       listSMSS = [
         "nexmo",
         "twilio",
-        "speedSMS",
+        "speed",
         "other",
       ],
       listMethod = [
@@ -301,6 +317,7 @@ class _ShopInfoScreenState extends State<ShopInfoScreen>
         "year",
       ],
       listCurrencyPos = ["before", "after"];
+
   @override
   FutureOr<void> afterFirstLayout(BuildContext context) {
     context.read<ShopInfoCubit>().getInfoBussinessSetting();
@@ -323,14 +340,30 @@ class _ShopInfoScreenState extends State<ShopInfoScreen>
   bool _isShowCustomLabels = false;
   bool _isShowEcommerceApiKey = false;
   bool _isShowCustomDomain = false;
+  bool _isShowStatusOrder = false;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: GlobalColors.bgColor,
-      appBar: buildAppBar(context),
-      body: buildBody(),
-      bottomNavigationBar: buildSaveButton(context),
+    return BlocListener<ShopInfoCubit, ShopInfoState>(
+      listener: (context, state) {
+        if (state.data!.error != '') {
+          if (state.data!.error.contains('Required')) {
+            UIHelpers.showSnackBar(
+                message: state.data!.error, type: SnackBarType.ERROR);
+          } else {
+            UIHelpers.showDialogDefaultBloc(
+              status: state.data!.status,
+              text: state.data!.error,
+            );
+          }
+        }
+      },
+      child: Scaffold(
+        backgroundColor: GlobalColors.bgColor,
+        appBar: buildAppBar(context),
+        body: buildBody(),
+        bottomNavigationBar: buildSaveButton(context),
+      ),
     );
   }
 
@@ -521,18 +554,18 @@ class _ShopInfoScreenState extends State<ShopInfoScreen>
               },
               widget: buildCustomLabels()),
           // ecommerce_api_key
-          InfoBusinessWidget(
-              iconLeading: Icons.key_outlined,
-              title: 'ecommerce_api_key'.tr,
-              visible: _isShowEcommerceApiKey,
-              onTap: () {
-                setState(
-                  () {
-                    _isShowEcommerceApiKey = !_isShowEcommerceApiKey;
-                  },
-                );
-              },
-              widget: buildEcommerce()),
+          // InfoBusinessWidget(
+          //     iconLeading: Icons.key_outlined,
+          //     title: 'ecommerce_api_key'.tr,
+          //     visible: _isShowEcommerceApiKey,
+          //     onTap: () {
+          //       setState(
+          //         () {
+          //           _isShowEcommerceApiKey = !_isShowEcommerceApiKey;
+          //         },
+          //       );
+          //     },
+          //     widget: buildEcommerce()),
           //custom_domain
           InfoBusinessWidget(
               iconLeading: Icons.public_outlined,
@@ -546,6 +579,22 @@ class _ShopInfoScreenState extends State<ShopInfoScreen>
                 );
               },
               widget: buildCustomDomain()),
+          //Status Order
+          InfoBusinessWidget(
+              iconLeading: Icons.key_outlined,
+              title: 'status_order'.tr,
+              visible: _isShowStatusOrder,
+              onTap: () {
+                setState(
+                  () {
+                    _isShowStatusOrder = !_isShowStatusOrder;
+                  },
+                );
+              },
+              widget: buildStatusOrder()),
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 20),
+          )
         ],
       ),
     );
@@ -632,7 +681,7 @@ class _ShopInfoScreenState extends State<ShopInfoScreen>
                         currencyId: info.business?.currencyId,
                         startDate: info.business?.startDate ?? "",
                         defaultProfitPercent:
-                            info.business?.defaultProfitPercent ?? 1,
+                            info.business?.defaultProfitPercent,
                         currencySymbolPlacement:
                             info.business?.currencySymbolPlacement ?? "",
                         timeZone: info.business?.timezone ?? "",
@@ -684,13 +733,13 @@ class _ShopInfoScreenState extends State<ShopInfoScreen>
                                     ? 0
                                     : 1),
                         posSettings: PosSettings(
-                            enableMsp:
-                                info.sale?.salePriceIsMinimumSalePrice == false
-                                    ? 0
-                                    : 1,
+                            enableMsp: info.sale?.salePriceIsMinimumSalePrice == false
+                                ? 0
+                                : 1,
                             allowOverselling:
                                 info.sale?.allowOverselling == false ? 0 : 1,
-                            enableSalesOrder: info.sale?.enableSalesOrder == false ? 0 : 1,
+                            enableSalesOrder:
+                                info.sale?.enableSalesOrder == false ? 0 : 1,
                             isPayTermRequired: info.sale?.isPayTermRequired == false ? 0 : 1,
                             isCommissionAgentRequired: info.sale?.commissionAgent!.isCommissionAgentRequired == false ? 0 : 1,
                             enablePaymentLink: info.sale?.paymentLink!.enablePaymentLink == false ? 0 : 1,
@@ -745,7 +794,7 @@ class _ShopInfoScreenState extends State<ShopInfoScreen>
                           mailFromAddress: info.emailSetting?.mailFromAddress,
                           mailFromName: info.emailSetting?.mailFromName,
                         ),
-                        smsSettings: SmsSettings(smsStartLesson: info.smsSetting?.smsStartLesson, url: info.smsSetting?.smsSettingsUrl, sendToParamName: info.smsSetting?.sendToParamName, msgParamName: info.smsSetting?.msgParamName, requestMethod: info.smsSetting!.requestMethod, header1: info.smsSetting?.smsSettingsHeaderKey1, headerVal1: info.smsSetting?.smsSettingsHeaderVal1, header2: info.smsSetting?.smsSettingsHeaderKey2, headerVal2: info.smsSetting?.smsSettingsHeaderVal2, header3: info.smsSetting?.smsSettingsHeaderKey3, headerVal3: info.smsSetting?.smsSettingsHeaderVal3, param1: info.smsSetting?.smsSettingsParamKey1, paramVal1: info.smsSetting?.smsSettingsParamVal1, param2: info.smsSetting?.smsSettingsParamKey2, paramVal2: info.smsSetting?.smsSettingsParamVal2, param3: info.smsSetting?.smsSettingsParamKey3, paramVal3: info.smsSetting?.smsSettingsParamVal3, param4: info.smsSetting?.smsSettingsParamKey4, paramVal4: info.smsSetting?.smsSettingsParamVal4, param5: info.smsSetting?.smsSettingsParamKey5, paramVal5: info.smsSetting?.smsSettingsParamVal5, param6: info.smsSetting?.smsSettingsParamKey6, paramVal6: info.smsSetting?.smsSettingsParamVal6, param7: info.smsSetting?.smsSettingsParamKey7, paramVal7: info.smsSetting?.smsSettingsParamVal7, param8: info.smsSetting?.smsSettingsParamKey8, paramVal8: info.smsSetting?.smsSettingsParamVal8, param9: info.smsSetting?.smsSettingsParamKey9, paramVal9: info.smsSetting?.smsSettingsParamVal9, param10: info.smsSetting?.smsSettingsParamKey10, paramVal10: info.smsSetting?.smsSettingsParamVal10),
+                        smsSettings: SmsSettings(smsService: state.data!.smsService, smsStartLesson: info.smsSetting?.smsStartLesson, nexmoSecret: info.smsSetting?.nexmoSecret, nexmoKey: info.smsSetting?.nexmoKey, nexmoFrom: info.smsSetting?.nexmoFrom, twilioSid: info.smsSetting?.twilioSid, twilioToken: info.smsSetting?.twilioToken, twilioFrom: info.smsSetting?.twilioFrom, speedToken: info.smsSetting?.speedToken, speedFrom: info.smsSetting?.speedFrom, url: info.smsSetting?.smsSettingsUrl, sendToParamName: info.smsSetting?.sendToParamName, msgParamName: info.smsSetting?.msgParamName, requestMethod: info.smsSetting!.requestMethod, header1: info.smsSetting?.smsSettingsHeaderKey1, headerVal1: info.smsSetting?.smsSettingsHeaderVal1, header2: info.smsSetting?.smsSettingsHeaderKey2, headerVal2: info.smsSetting?.smsSettingsHeaderVal2, header3: info.smsSetting?.smsSettingsHeaderKey3, headerVal3: info.smsSetting?.smsSettingsHeaderVal3, param1: info.smsSetting?.smsSettingsParamKey1, paramVal1: info.smsSetting?.smsSettingsParamVal1, param2: info.smsSetting?.smsSettingsParamKey2, paramVal2: info.smsSetting?.smsSettingsParamVal2, param3: info.smsSetting?.smsSettingsParamKey3, paramVal3: info.smsSetting?.smsSettingsParamVal3, param4: info.smsSetting?.smsSettingsParamKey4, paramVal4: info.smsSetting?.smsSettingsParamVal4, param5: info.smsSetting?.smsSettingsParamKey5, paramVal5: info.smsSetting?.smsSettingsParamVal5, param6: info.smsSetting?.smsSettingsParamKey6, paramVal6: info.smsSetting?.smsSettingsParamVal6, param7: info.smsSetting?.smsSettingsParamKey7, paramVal7: info.smsSetting?.smsSettingsParamVal7, param8: info.smsSetting?.smsSettingsParamKey8, paramVal8: info.smsSetting?.smsSettingsParamVal8, param9: info.smsSetting?.smsSettingsParamKey9, paramVal9: info.smsSetting?.smsSettingsParamVal9, param10: info.smsSetting?.smsSettingsParamKey10, paramVal10: info.smsSetting?.smsSettingsParamVal10),
                         enableRp: info.rewardPointSetting!.enableRewardPoint == false ? 0 : 1,
                         rpName: info.rewardPointSetting!.rewardPointName,
                         amountForUnitRp: info.rewardPointSetting!.earningPointsSetting!.amountForUnitRewardPoint,
@@ -1040,11 +1089,81 @@ class _ShopInfoScreenState extends State<ShopInfoScreen>
         }));
   }
 
+  BlocBuilder<ShopInfoCubit, ShopInfoState> buildStatusOrder() {
+    return BlocBuilder<ShopInfoCubit, ShopInfoState>(
+      builder: (context, state) {
+        final listStatusOrder = state.data!.shopInfo!.statusOrder ?? [];
+        return Container(
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('STT'),
+                  Text('status_order'.tr),
+                  IconButton(
+                    onPressed: () => showModalBottomSheet(
+                      context: context,
+                      builder: (context) => AddStatusOrder.provider(
+                        addStatusOrderType: AddType.NEW,
+                      ),
+                    ).whenComplete(() => context
+                        .read<ShopInfoCubit>()
+                        .getInfoBussinessSetting()),
+                    icon: Icon(Icons.add),
+                    color: GlobalColors.primaryColor,
+                  )
+                ],
+              ),
+              ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return StatusOrderWidget(
+                      index: index + 1,
+                      statusOrder: listStatusOrder.elementAt(index),
+                      onPressed: (Rp.StatusOrder? statusOrder) =>
+                          showModalBottomSheet(
+                                  context: context,
+                                  builder: ((context) =>
+                                      AddStatusOrder.provider(
+                                          addStatusOrderType: AddType.UPDATE,
+                                          statusOrderModel: statusOrder))
+                                  // AddStatusOrder.provider(addStatusOrderType: AddType.UPDATE,statusOrderModel: statusOrder)
+                                  // navigator!
+                                  //     .pushNamed(
+                                  //   RouteGenerator.addStatusOrderScreen,
+                                  //   arguments: {
+                                  //     'ADD_STATUS_ORDER':
+                                  //         AddType.UPDATE,
+                                  //     'STATUS_ORDER_MODEL': statusOrder,
+                                  //   },
+                                  // )
+                                  )
+                              .whenComplete(() => context
+                                  .read<ShopInfoCubit>()
+                                  .getInfoBussinessSetting()),
+                      onDelete: () => context
+                          .read<ShopInfoCubit>()
+                          .delete(listStatusOrder.elementAt(index).id!));
+                },
+                separatorBuilder: (context, index) => const SizedBox.shrink(),
+                itemCount: listStatusOrder.length,
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   //build CustomDomain
   BlocBuilder<ShopInfoCubit, ShopInfoState> buildCustomDomain() {
     return BlocBuilder<ShopInfoCubit, ShopInfoState>(
       builder: (context, state) {
         final domainInfo = state.data!.shopInfo!.customDomain;
+        final statusDomain = state.data!.shopInfo!.statusCustomDomain;
         customDomain.text = domainInfo!;
         return Container(
           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -1057,6 +1176,30 @@ class _ShopInfoScreenState extends State<ShopInfoScreen>
                 controller: customDomain,
                 hintText: 'example.com',
               ),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                children: [
+                  Icon(
+                      statusDomain == 'Waiting'
+                          ? Icons.warning_amber_outlined
+                          : Icons.check,
+                      color: (statusDomain == 'Waiting')
+                          ? Colors.amber
+                          : GlobalColors.primaryColor),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    statusDomain == 'Waiting' ? 'waiting'.tr : 'approved'.tr,
+                    style: TextStyle(
+                        color: (statusDomain == 'Waiting')
+                            ? Colors.amber
+                            : GlobalColors.primaryColor),
+                  ),
+                ],
+              )
             ],
           ),
         );
@@ -2766,6 +2909,14 @@ class _ShopInfoScreenState extends State<ShopInfoScreen>
         final smsInfo = state.data!.shopInfo?.smsSetting;
         timeSms.text = smsInfo?.smsStartLesson ?? '';
         smsURL.text = smsInfo?.smsSettingsUrl ?? '';
+        nexmoSecret.text = smsInfo?.nexmoSecret ?? '';
+        nexmoKey.text = smsInfo?.nexmoKey ?? '';
+        nexmoFrom.text = smsInfo?.nexmoFrom ?? '';
+        twilioSID.text = smsInfo?.twilioSid ?? '';
+        twilioToken.text = smsInfo?.twilioToken ?? '';
+        twilioFrom.text = smsInfo?.twilioFrom ?? '';
+        speedSMSToken.text = smsInfo?.speedToken ?? '';
+        speedFrom.text = smsInfo?.speedFrom ?? '';
         sendParameter.text = smsInfo?.sendToParamName == null
             ? ''
             : '${smsInfo?.sendToParamName}';
@@ -2849,25 +3000,64 @@ class _ShopInfoScreenState extends State<ShopInfoScreen>
         parameter10Val.text = smsInfo?.smsSettingsParamVal10 == null
             ? ''
             : '${smsInfo?.smsSettingsParamVal10}';
+
+        // switch (smsInfo?.smsService) {
+        //   case 'nexmo':
+        //     SMSS = "nexmo";
+        //     break;
+        //   case "twilio":
+        //     SMSS = "twilio";
+        //     break;
+        //   case "speed":
+        //     SMSS = "speedSMS";
+        //     break;
+        //   case "other":
+        //     SMSS = "other";
+        //     break;
+        // }
         return Container(
           margin: const EdgeInsets.symmetric(horizontal: 10),
           child: Column(
             children: [
-              CustomDropdown(
-                title: "sms_service".tr,
-                hint: 'Please Selected',
-                info: smsInfo?.smsService.toString(),
-                headIcon: const Icon(
-                  Icons.mail_outline,
-                  color: Color(0xff434345),
-                ),
-                footIcon:
-                    const Icon(Icons.arrow_drop_down, color: Color(0xff434345)),
-                listItem: listSMSS,
-                onChanged: (String? T) {
-                  // listInfoBussiness?.accountingMethod = T!;
-                },
+              const SizedBox(
+                height: 10,
               ),
+              CustomDropDown(
+                labelText: "sms_service".tr,
+                value: state.data!.smsService,
+                items: listSMSS,
+                onChanged: (dynamic value) =>
+                    context.read<ShopInfoCubit>().getSmsService(value),
+              ),
+              // CustomDropdown(
+              //   title: "sms_service".tr,
+              //   hint: 'Please Selected',
+              //   info: SMSS!,
+              //   headIcon: const Icon(
+              //     Icons.mail_outline,
+              //     color: Color(0xff434345),
+              //   ),
+              //   footIcon:
+              //       const Icon(Icons.arrow_drop_down, color: Color(0xff434345)),
+              //   listItem: listSMSS,
+              //   onChanged: (String? T) {
+              //     SMSS = T!;
+              //     switch (SMSS) {
+              //       case 'nexmo':
+              //         smsInfo?.smsService = "nexmo";
+              //         break;
+              //       case "twilio":
+              //         smsInfo?.smsService = "twilio";
+              //         break;
+              //       case "speedSMS":
+              //         smsInfo?.smsService = "speed";
+              //         break;
+              //       case "other":
+              //         smsInfo?.smsService = "other";
+              //         break;
+              //     }
+              //   },
+              // ),
               CustomTextFormField(
                 controller: timeSms,
                 icon: Icons.abc_outlined,
@@ -2876,400 +3066,484 @@ class _ShopInfoScreenState extends State<ShopInfoScreen>
                 title: 'sms_start_lesson'.tr,
                 // hintText: '0.00',
               ),
-              CustomTextFormField(
-                controller: smsURL,
-                onChanged: (value) => smsInfo?.smsSettingsUrl = value,
-                icon: Icons.abc_outlined,
-                hintText: 'sms_settings_url'.tr,
-                title: 'sms_settings_url'.tr,
-                // hintText: '0.00',
-              ),
-              CustomTextFormField(
-                controller: sendParameter,
-                onChanged: (value) => smsInfo?.sendToParamName = value,
-                icon: Icons.abc_outlined,
-                hintText: 'send_to_param_name'.tr,
-                title: 'send_to_param_name'.tr,
-                // hintText: '0.00',
-              ),
-              CustomTextFormField(
-                controller: msgParameter,
-                onChanged: (value) => smsInfo?.msgParamName = value,
-                icon: Icons.abc_outlined,
-                hintText: 'msg_param_name'.tr,
-                title: 'msg_param_name'.tr,
-                // hintText: '0.00',
-              ),
-              CustomDropdown(
-                title: "request_method".tr,
-                hint: 'Please Selected',
-                info: smsInfo?.requestMethod == 'get'
-                    ? listMethod[0]
-                    : listMethod[1],
-                headIcon: const Icon(
-                  Icons.mail_outline,
-                  color: Color(0xff434345),
+              if (state.data!.smsService == 'nexmo')
+                Column(
+                  children: [
+                    CustomTextFormField(
+                      controller: nexmoKey,
+                      onChanged: (value) => smsInfo?.nexmoKey = value,
+                      icon: Icons.abc_outlined,
+                      hintText: 'nexmo_key'.tr,
+                      title: 'nexmo_key'.tr,
+                      // hintText: '0.00',
+                    ),
+                    CustomTextFormField(
+                      controller: nexmoSecret,
+                      onChanged: (value) => smsInfo?.nexmoSecret = value,
+                      icon: Icons.abc_outlined,
+                      hintText: 'nexmo_secret'.tr,
+                      title: 'nexmo_secret'.tr,
+                      // hintText: '0.00',
+                    ),
+                    CustomTextFormField(
+                      controller: nexmoFrom,
+                      onChanged: (value) => smsInfo?.nexmoFrom = value,
+                      icon: Icons.abc_outlined,
+                      hintText: 'nexmo_from'.tr,
+                      title: 'nexmo_from'.tr,
+                      // hintText: '0.00',
+                    ),
+                  ],
                 ),
-                footIcon:
-                    const Icon(Icons.arrow_drop_down, color: Color(0xff434345)),
-                listItem: listMethod,
-                onChanged: (String? T) {
-                  smsInfo?.requestMethod = T!;
-                },
-              ),
-              const Divider(),
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomTextFormField(
-                      onChanged: (value) =>
-                          smsInfo?.smsSettingsHeaderKey1 = value,
-                      controller: header1Key,
-                      hintText: 'sms_settings_header_key1'.tr,
-                      title: 'sms_settings_header_key1'.tr,
+              if (state.data!.smsService == 'twilio')
+                Column(
+                  children: [
+                    CustomTextFormField(
+                      controller: twilioSID,
+                      onChanged: (value) => smsInfo?.twilioSid = value,
+                      icon: Icons.abc_outlined,
+                      hintText: 'twilio_sid'.tr,
+                      title: 'twilio_sid'.tr,
                       // hintText: '0.00',
                     ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: CustomTextFormField(
-                      onChanged: (value) =>
-                          smsInfo?.smsSettingsHeaderVal1 = value,
-                      controller: header1Val,
-                      hintText: 'sms_settings_header_val1'.tr,
-                      title: 'sms_settings_header_val1'.tr,
+                    CustomTextFormField(
+                      controller: twilioToken,
+                      onChanged: (value) => smsInfo?.twilioToken = value,
+                      icon: Icons.abc_outlined,
+                      hintText: 'twilio_token'.tr,
+                      title: 'twilio_token'.tr,
                       // hintText: '0.00',
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomTextFormField(
-                      controller: header2Key,
-                      onChanged: (value) =>
-                          smsInfo?.smsSettingsHeaderKey2 = value,
-                      hintText: 'sms_settings_header_key2'.tr,
-                      title: 'sms_settings_header_key2'.tr,
+                    CustomTextFormField(
+                      controller: twilioFrom,
+                      onChanged: (value) => smsInfo?.twilioFrom = value,
+                      icon: Icons.abc_outlined,
+                      hintText: 'twilio_from'.tr,
+                      title: 'twilio_from'.tr,
                       // hintText: '0.00',
                     ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: CustomTextFormField(
-                      controller: header2Val,
-                      onChanged: (value) =>
-                          smsInfo?.smsSettingsHeaderVal2 = value,
-                      hintText: 'sms_settings_header_val2'.tr,
-                      title: 'sms_settings_header_val2'.tr,
+                  ],
+                ),
+              if (state.data!.smsService == 'speed')
+                Column(
+                  children: [
+                    CustomTextFormField(
+                      controller: speedSMSToken,
+                      onChanged: (value) => smsInfo?.speedToken = value,
+                      icon: Icons.abc_outlined,
+                      hintText: 'speed_token'.tr,
+                      title: 'speed_token'.tr,
                       // hintText: '0.00',
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomTextFormField(
-                      controller: header3Key,
-                      onChanged: (value) =>
-                          smsInfo?.smsSettingsHeaderKey3 = value,
-                      hintText: 'sms_settings_header_key3'.tr,
-                      title: 'sms_settings_header_key3'.tr,
+                    CustomTextFormField(
+                      controller: speedFrom,
+                      onChanged: (value) => smsInfo?.speedFrom = value,
+                      icon: Icons.abc_outlined,
+                      hintText: 'speed_from'.tr,
+                      title: 'speed_from'.tr,
                       // hintText: '0.00',
                     ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: CustomTextFormField(
-                      controller: header3Val,
-                      onChanged: (value) =>
-                          smsInfo?.smsSettingsHeaderVal3 = value,
-                      hintText: 'sms_settings_header_val3'.tr,
-                      title: 'sms_settings_header_val3'.tr,
+                  ],
+                ),
+              if (state.data!.smsService == 'other')
+                Column(
+                  children: [
+                    CustomTextFormField(
+                      controller: smsURL,
+                      onChanged: (value) => smsInfo?.smsSettingsUrl = value,
+                      icon: Icons.abc_outlined,
+                      hintText: 'sms_settings_url'.tr,
+                      title: 'sms_settings_url'.tr,
                       // hintText: '0.00',
                     ),
-                  ),
-                ],
-              ),
-              const Divider(),
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomTextFormField(
-                      controller: parameter1Key,
-                      onChanged: (value) =>
-                          smsInfo?.smsSettingsParamKey1 = value,
-                      hintText: 'sms_settings_param_key1'.tr,
-                      title: 'sms_settings_param_key1'.tr,
+                    CustomTextFormField(
+                      controller: sendParameter,
+                      onChanged: (value) => smsInfo?.sendToParamName = value,
+                      icon: Icons.abc_outlined,
+                      hintText: 'send_to_param_name'.tr,
+                      title: 'send_to_param_name'.tr,
                       // hintText: '0.00',
                     ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: CustomTextFormField(
-                      controller: parameter1Val,
-                      onChanged: (value) =>
-                          smsInfo?.smsSettingsParamVal1 = value,
-                      hintText: 'sms_settings_param_val1'.tr,
-                      title: 'sms_settings_param_val1'.tr,
+                    CustomTextFormField(
+                      controller: msgParameter,
+                      onChanged: (value) => smsInfo?.msgParamName = value,
+                      icon: Icons.abc_outlined,
+                      hintText: 'msg_param_name'.tr,
+                      title: 'msg_param_name'.tr,
                       // hintText: '0.00',
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomTextFormField(
-                      controller: parameter2Key,
-                      onChanged: (value) =>
-                          smsInfo?.smsSettingsParamKey2 = value,
-                      hintText: 'sms_settings_param_key2'.tr,
-                      title: 'sms_settings_param_key2'.tr,
-                      // hintText: '0.00',
+                    CustomDropdown(
+                      title: "request_method".tr,
+                      hint: 'Please Selected',
+                      info: smsInfo?.requestMethod == 'get'
+                          ? listMethod[0]
+                          : listMethod[1],
+                      headIcon: const Icon(
+                        Icons.mail_outline,
+                        color: Color(0xff434345),
+                      ),
+                      footIcon: const Icon(Icons.arrow_drop_down,
+                          color: Color(0xff434345)),
+                      listItem: listMethod,
+                      onChanged: (String? T) {
+                        smsInfo?.requestMethod = T!;
+                      },
                     ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: CustomTextFormField(
-                      controller: parameter2Val,
-                      onChanged: (value) =>
-                          smsInfo?.smsSettingsParamVal2 = value,
-                      hintText: 'sms_settings_param_val2'.tr,
-                      title: 'sms_settings_param_val2'.tr,
-                      // hintText: '0.00',
+                    const Divider(),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomTextFormField(
+                            onChanged: (value) =>
+                                smsInfo?.smsSettingsHeaderKey1 = value,
+                            controller: header1Key,
+                            hintText: 'sms_settings_header_key1'.tr,
+                            title: 'sms_settings_header_key1'.tr,
+                            // hintText: '0.00',
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: CustomTextFormField(
+                            onChanged: (value) =>
+                                smsInfo?.smsSettingsHeaderVal1 = value,
+                            controller: header1Val,
+                            hintText: 'sms_settings_header_val1'.tr,
+                            title: 'sms_settings_header_val1'.tr,
+                            // hintText: '0.00',
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomTextFormField(
-                      controller: parameter3Key,
-                      onChanged: (value) =>
-                          smsInfo?.smsSettingsParamKey3 = value,
-                      hintText: 'sms_settings_param_key3'.tr,
-                      title: 'sms_settings_param_key3'.tr,
-                      // hintText: '0.00',
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: header2Key,
+                            onChanged: (value) =>
+                                smsInfo?.smsSettingsHeaderKey2 = value,
+                            hintText: 'sms_settings_header_key2'.tr,
+                            title: 'sms_settings_header_key2'.tr,
+                            // hintText: '0.00',
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: header2Val,
+                            onChanged: (value) =>
+                                smsInfo?.smsSettingsHeaderVal2 = value,
+                            hintText: 'sms_settings_header_val2'.tr,
+                            title: 'sms_settings_header_val2'.tr,
+                            // hintText: '0.00',
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: CustomTextFormField(
-                      controller: parameter3Val,
-                      onChanged: (value) =>
-                          smsInfo?.smsSettingsParamVal3 = value,
-                      hintText: 'sms_settings_param_val3'.tr,
-                      title: 'sms_settings_param_val3'.tr,
-                      // hintText: '0.00',
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: header3Key,
+                            onChanged: (value) =>
+                                smsInfo?.smsSettingsHeaderKey3 = value,
+                            hintText: 'sms_settings_header_key3'.tr,
+                            title: 'sms_settings_header_key3'.tr,
+                            // hintText: '0.00',
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: header3Val,
+                            onChanged: (value) =>
+                                smsInfo?.smsSettingsHeaderVal3 = value,
+                            hintText: 'sms_settings_header_val3'.tr,
+                            title: 'sms_settings_header_val3'.tr,
+                            // hintText: '0.00',
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomTextFormField(
-                      controller: parameter4Key,
-                      onChanged: (value) =>
-                          smsInfo?.smsSettingsParamKey4 = value,
-                      hintText: 'sms_settings_param_key4'.tr,
-                      title: 'sms_settings_param_key4'.tr,
-                      // hintText: '0.00',
+                    const Divider(),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: parameter1Key,
+                            onChanged: (value) =>
+                                smsInfo?.smsSettingsParamKey1 = value,
+                            hintText: 'sms_settings_param_key1'.tr,
+                            title: 'sms_settings_param_key1'.tr,
+                            // hintText: '0.00',
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: parameter1Val,
+                            onChanged: (value) =>
+                                smsInfo?.smsSettingsParamVal1 = value,
+                            hintText: 'sms_settings_param_val1'.tr,
+                            title: 'sms_settings_param_val1'.tr,
+                            // hintText: '0.00',
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: CustomTextFormField(
-                      controller: parameter4Val,
-                      onChanged: (value) =>
-                          smsInfo?.smsSettingsParamVal4 = value,
-                      hintText: 'sms_settings_param_val4'.tr,
-                      title: 'sms_settings_param_val4'.tr,
-                      // hintText: '0.00',
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: parameter2Key,
+                            onChanged: (value) =>
+                                smsInfo?.smsSettingsParamKey2 = value,
+                            hintText: 'sms_settings_param_key2'.tr,
+                            title: 'sms_settings_param_key2'.tr,
+                            // hintText: '0.00',
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: parameter2Val,
+                            onChanged: (value) =>
+                                smsInfo?.smsSettingsParamVal2 = value,
+                            hintText: 'sms_settings_param_val2'.tr,
+                            title: 'sms_settings_param_val2'.tr,
+                            // hintText: '0.00',
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomTextFormField(
-                      controller: parameter5Key,
-                      onChanged: (value) =>
-                          smsInfo?.smsSettingsParamKey5 = value,
-                      hintText: 'sms_settings_param_key5'.tr,
-                      title: 'sms_settings_param_key5'.tr,
-                      // hintText: '0.00',
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: parameter3Key,
+                            onChanged: (value) =>
+                                smsInfo?.smsSettingsParamKey3 = value,
+                            hintText: 'sms_settings_param_key3'.tr,
+                            title: 'sms_settings_param_key3'.tr,
+                            // hintText: '0.00',
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: parameter3Val,
+                            onChanged: (value) =>
+                                smsInfo?.smsSettingsParamVal3 = value,
+                            hintText: 'sms_settings_param_val3'.tr,
+                            title: 'sms_settings_param_val3'.tr,
+                            // hintText: '0.00',
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: CustomTextFormField(
-                      controller: parameter5Val,
-                      onChanged: (value) =>
-                          smsInfo?.smsSettingsParamVal5 = value,
-                      hintText: 'sms_settings_param_val5'.tr,
-                      title: 'sms_settings_param_val5'.tr,
-                      // hintText: '0.00',
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: parameter4Key,
+                            onChanged: (value) =>
+                                smsInfo?.smsSettingsParamKey4 = value,
+                            hintText: 'sms_settings_param_key4'.tr,
+                            title: 'sms_settings_param_key4'.tr,
+                            // hintText: '0.00',
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: parameter4Val,
+                            onChanged: (value) =>
+                                smsInfo?.smsSettingsParamVal4 = value,
+                            hintText: 'sms_settings_param_val4'.tr,
+                            title: 'sms_settings_param_val4'.tr,
+                            // hintText: '0.00',
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomTextFormField(
-                      controller: parameter6Key,
-                      onChanged: (value) =>
-                          smsInfo?.smsSettingsParamKey6 = value,
-                      hintText: 'sms_settings_param_key6'.tr,
-                      title: 'sms_settings_param_key6'.tr,
-                      // hintText: '0.00',
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: parameter5Key,
+                            onChanged: (value) =>
+                                smsInfo?.smsSettingsParamKey5 = value,
+                            hintText: 'sms_settings_param_key5'.tr,
+                            title: 'sms_settings_param_key5'.tr,
+                            // hintText: '0.00',
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: parameter5Val,
+                            onChanged: (value) =>
+                                smsInfo?.smsSettingsParamVal5 = value,
+                            hintText: 'sms_settings_param_val5'.tr,
+                            title: 'sms_settings_param_val5'.tr,
+                            // hintText: '0.00',
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: CustomTextFormField(
-                      controller: parameter6Val,
-                      onChanged: (value) =>
-                          smsInfo?.smsSettingsParamVal6 = value,
-                      hintText: 'sms_settings_param_val6'.tr,
-                      title: 'sms_settings_param_val6'.tr,
-                      // hintText: '0.00',
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: parameter6Key,
+                            onChanged: (value) =>
+                                smsInfo?.smsSettingsParamKey6 = value,
+                            hintText: 'sms_settings_param_key6'.tr,
+                            title: 'sms_settings_param_key6'.tr,
+                            // hintText: '0.00',
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: parameter6Val,
+                            onChanged: (value) =>
+                                smsInfo?.smsSettingsParamVal6 = value,
+                            hintText: 'sms_settings_param_val6'.tr,
+                            title: 'sms_settings_param_val6'.tr,
+                            // hintText: '0.00',
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomTextFormField(
-                      controller: parameter7Key,
-                      onChanged: (value) =>
-                          smsInfo?.smsSettingsParamKey7 = value,
-                      hintText: 'sms_settings_param_key7'.tr,
-                      title: 'sms_settings_param_key7'.tr,
-                      // hintText: '0.00',
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: parameter7Key,
+                            onChanged: (value) =>
+                                smsInfo?.smsSettingsParamKey7 = value,
+                            hintText: 'sms_settings_param_key7'.tr,
+                            title: 'sms_settings_param_key7'.tr,
+                            // hintText: '0.00',
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: parameter7Val,
+                            onChanged: (value) =>
+                                smsInfo?.smsSettingsParamVal7 = value,
+                            hintText: 'sms_settings_param_val7'.tr,
+                            title: 'sms_settings_param_val7'.tr,
+                            // hintText: '0.00',
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: CustomTextFormField(
-                      controller: parameter7Val,
-                      onChanged: (value) =>
-                          smsInfo?.smsSettingsParamVal7 = value,
-                      hintText: 'sms_settings_param_val7'.tr,
-                      title: 'sms_settings_param_val7'.tr,
-                      // hintText: '0.00',
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: parameter8Key,
+                            onChanged: (value) =>
+                                smsInfo?.smsSettingsParamKey8 = value,
+                            hintText: 'sms_settings_param_key8'.tr,
+                            title: 'sms_settings_param_key8'.tr,
+                            // hintText: '0.00',
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: parameter8Val,
+                            onChanged: (value) =>
+                                smsInfo?.smsSettingsParamVal8 = value,
+                            hintText: 'sms_settings_param_val8'.tr,
+                            title: 'sms_settings_param_val8'.tr,
+                            // hintText: '0.00',
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomTextFormField(
-                      controller: parameter8Key,
-                      onChanged: (value) =>
-                          smsInfo?.smsSettingsParamKey8 = value,
-                      hintText: 'sms_settings_param_key8'.tr,
-                      title: 'sms_settings_param_key8'.tr,
-                      // hintText: '0.00',
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: parameter9Key,
+                            onChanged: (value) =>
+                                smsInfo?.smsSettingsParamKey9 = value,
+                            hintText: 'sms_settings_param_key9'.tr,
+                            title: 'sms_settings_param_key9'.tr,
+                            // hintText: '0.00',
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: parameter9Val,
+                            onChanged: (value) =>
+                                smsInfo?.smsSettingsParamVal9 = value,
+                            hintText: 'sms_settings_param_val9'.tr,
+                            title: 'sms_settings_param_val9'.tr,
+                            // hintText: '0.00',
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: CustomTextFormField(
-                      controller: parameter8Val,
-                      onChanged: (value) =>
-                          smsInfo?.smsSettingsParamVal8 = value,
-                      hintText: 'sms_settings_param_val8'.tr,
-                      title: 'sms_settings_param_val8'.tr,
-                      // hintText: '0.00',
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: parameter10Key,
+                            onChanged: (value) =>
+                                smsInfo?.smsSettingsParamKey10 = value,
+                            hintText: 'sms_settings_param_key10'.tr,
+                            title: 'sms_settings_param_key10'.tr,
+                            // hintText: '0.00',
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: parameter10Val,
+                            onChanged: (value) =>
+                                smsInfo?.smsSettingsParamVal10 = value,
+                            hintText: 'sms_settings_param_val10'.tr,
+                            title: 'sms_settings_param_val10'.tr,
+                            // hintText: '0.00',
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomTextFormField(
-                      controller: parameter9Key,
-                      onChanged: (value) =>
-                          smsInfo?.smsSettingsParamKey9 = value,
-                      hintText: 'sms_settings_param_key9'.tr,
-                      title: 'sms_settings_param_key9'.tr,
-                      // hintText: '0.00',
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: CustomTextFormField(
-                      controller: parameter9Val,
-                      onChanged: (value) =>
-                          smsInfo?.smsSettingsParamVal9 = value,
-                      hintText: 'sms_settings_param_val9'.tr,
-                      title: 'sms_settings_param_val9'.tr,
-                      // hintText: '0.00',
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomTextFormField(
-                      controller: parameter10Key,
-                      onChanged: (value) =>
-                          smsInfo?.smsSettingsParamKey10 = value,
-                      hintText: 'sms_settings_param_key10'.tr,
-                      title: 'sms_settings_param_key10'.tr,
-                      // hintText: '0.00',
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: CustomTextFormField(
-                      controller: parameter10Val,
-                      onChanged: (value) =>
-                          smsInfo?.smsSettingsParamVal10 = value,
-                      hintText: 'sms_settings_param_val10'.tr,
-                      title: 'sms_settings_param_val10'.tr,
-                      // hintText: '0.00',
-                    ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
             ],
           ),
         );
@@ -5391,6 +5665,10 @@ class _ShopInfoScreenState extends State<ShopInfoScreen>
                 await BlocProvider.of<ShopInfoCubit>(context).updateLogo();
               },
             ),
+            SizedBox(
+                width: 100,
+                height: 100,
+                child: Image.network('${listInfoBussiness?.logo}')),
             CustomDropdown(
               title: "FYSM".tr,
               hint: 'Please Selected',

@@ -4,6 +4,7 @@ part of 'stock_manage_cubit.dart';
 class StockManageStateData with _$StockManageStateData {
   const factory StockManageStateData({
     @Default([]) List<ReportStockData> reportStockManages,
+    @Default([]) List<ReportStockData> reportStockManagesOriginal,
     @Default(false) bool isOpenSearch,
     @Default(false) bool isCategoryScreen,
     @Default(StatusType.init) StatusType status,

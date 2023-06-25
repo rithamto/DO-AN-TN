@@ -5,12 +5,14 @@ import 'package:di4l_pos/common/dimensions.dart';
 import 'package:di4l_pos/common/global_formatter.dart';
 import 'package:di4l_pos/enums/add_type.dart';
 import 'package:di4l_pos/models/unit/response/unit_response.dart';
+import 'package:di4l_pos/screens/expense_screen/cubit/expense_cubit.dart';
 import 'package:di4l_pos/screens/unit_screen/cubit/unit_cubit.dart';
 import 'package:di4l_pos/screens/unit_screen/sub_screens/cubit/add_unit_cubit.dart';
 import 'package:di4l_pos/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import '../unit_screen.dart';
 
 import '../../../common/global_colors.dart';
 import '../../../common/global_styles.dart';
@@ -23,7 +25,6 @@ class AddUnitScreen extends StatefulWidget {
   final AddType? addUnitType;
   final Unit? unit;
   final GlobalKey<ScaffoldState>? globalKey;
-
   static MultiBlocProvider provider(
       {AddType? addUnitType, Unit? unit, GlobalKey<ScaffoldState>? globalKey}) {
     return MultiBlocProvider(
@@ -141,7 +142,7 @@ class _AddUnitScreenState extends State<AddUnitScreen> with AfterLayoutMixin {
                           alignment: Alignment.centerRight,
                           child: IconButton(
                             onPressed: () => Navigator.pop(context),
-                            icon:const Icon(Icons.close_outlined),
+                            icon: const Icon(Icons.close_outlined),
                           ),
                         )
                       ],
@@ -353,6 +354,37 @@ class _AddUnitScreenState extends State<AddUnitScreen> with AfterLayoutMixin {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        widget.addUnitType == AddType.UPDATE
+                            ? CustomButton(
+                                type: ButtonType.BUTTON_TEXT,
+                                color: Colors.white,
+                                label: "delete".tr,
+                                style: const TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: Dimensions.FONT_SIZE_LARGE),
+                                borderColor: Colors.red,
+                                onPressed: () {
+                                  context
+                                      .read<UnitCubit>()
+                                      .deleteUnit(id: widget.unit!.id!);
+                                },
+                              )
+                            : CustomButton(
+                                type: ButtonType.BUTTON_TEXT,
+                                color: Colors.white,
+                                label: "add_more".tr,
+                                style: const TextStyle(
+                                    color: GlobalColors.primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: Dimensions.FONT_SIZE_LARGE),
+                                borderColor: GlobalColors.primaryColor,
+                                onPressed: () async {},
+                              ),
+                        //
+                        const SizedBox(
+                          width: Dimensions.PADDING_SIZE_SMALL,
+                        ),
                         CustomButton(
                           type: ButtonType.BUTTON_TEXT,
                           color: GlobalColors.primaryColor,

@@ -21,6 +21,8 @@ class ShopSettingRp {
   CustomLabel? customLabel;
   EcommerceApiKey? ecommerceApiKey;
   String? customDomain;
+  String? statusCustomDomain;
+  List<StatusOrder>? statusOrder;
 
   ShopSettingRp({
     this.business,
@@ -39,6 +41,8 @@ class ShopSettingRp {
     this.customLabel,
     this.ecommerceApiKey,
     this.customDomain,
+    this.statusCustomDomain,
+    this.statusOrder,
   });
 
   ShopSettingRp copyWith({
@@ -58,6 +62,8 @@ class ShopSettingRp {
     CustomLabel? customLabel,
     EcommerceApiKey? ecommerceApiKey,
     String? customDomain,
+    String? statusCustomDomain,
+    List<StatusOrder>? statusOrder,
   }) =>
       ShopSettingRp(
         business: business ?? this.business,
@@ -76,6 +82,8 @@ class ShopSettingRp {
         customLabel: customLabel ?? this.customLabel,
         ecommerceApiKey: ecommerceApiKey ?? this.ecommerceApiKey,
         customDomain: customDomain ?? this.customDomain,
+        statusCustomDomain: statusCustomDomain ?? this.statusCustomDomain,
+        statusOrder: statusOrder ?? this.statusOrder,
       );
 
   factory ShopSettingRp.fromRawJson(String str) =>
@@ -120,6 +128,11 @@ class ShopSettingRp {
             ? null
             : EcommerceApiKey.fromJson(json["ecommerce_api_key"]),
         customDomain: json["custom_domain"],
+        statusCustomDomain: json["status_custom_domain"],
+        statusOrder: json["status_order"] == null
+            ? []
+            : List<StatusOrder>.from(
+                json["status_order"]!.map((x) => StatusOrder.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -139,6 +152,10 @@ class ShopSettingRp {
         "custom_label": customLabel?.toJson(),
         "ecommerce_api_key": ecommerceApiKey?.toJson(),
         "custom_domain": customDomain,
+        "status_custom_domain": statusCustomDomain,
+        "status_order": statusOrder == null
+            ? []
+            : List<dynamic>.from(statusOrder!.map((x) => x.toJson())),
       };
 }
 
@@ -2184,7 +2201,7 @@ class RedeemPointsSetting {
 
 class Sale {
   String? defaultSalesDiscount;
-  dynamic defaultSalesTax;
+  int? defaultSalesTax;
   String? sellPriceTax;
   int? salesItemAdditionMethod;
   dynamic amountRoundingMethod;
@@ -2211,7 +2228,7 @@ class Sale {
 
   Sale copyWith({
     String? defaultSalesDiscount,
-    dynamic defaultSalesTax,
+    int? defaultSalesTax,
     String? sellPriceTax,
     int? salesItemAdditionMethod,
     dynamic amountRoundingMethod,
@@ -2379,6 +2396,8 @@ class SmsSetting {
   dynamic twilioSid;
   dynamic twilioToken;
   dynamic twilioFrom;
+  String? speedToken;
+  String? speedFrom;
   dynamic smsSettingsUrl;
   String? sendToParamName;
   String? msgParamName;
@@ -2419,6 +2438,8 @@ class SmsSetting {
     this.twilioSid,
     this.twilioToken,
     this.twilioFrom,
+    this.speedToken,
+    this.speedFrom,
     this.smsSettingsUrl,
     this.sendToParamName,
     this.msgParamName,
@@ -2460,6 +2481,8 @@ class SmsSetting {
     dynamic twilioSid,
     dynamic twilioToken,
     dynamic twilioFrom,
+    String? speedToken,
+    String? speedFrom,
     dynamic smsSettingsUrl,
     String? sendToParamName,
     String? msgParamName,
@@ -2500,6 +2523,8 @@ class SmsSetting {
         twilioSid: twilioSid ?? this.twilioSid,
         twilioToken: twilioToken ?? this.twilioToken,
         twilioFrom: twilioFrom ?? this.twilioFrom,
+        speedToken: speedToken ?? this.speedToken,
+        speedFrom: speedFrom ?? this.speedFrom,
         smsSettingsUrl: smsSettingsUrl ?? this.smsSettingsUrl,
         sendToParamName: sendToParamName ?? this.sendToParamName,
         msgParamName: msgParamName ?? this.msgParamName,
@@ -2554,6 +2579,8 @@ class SmsSetting {
         twilioSid: json["twilio_sid"],
         twilioToken: json["twilio_token"],
         twilioFrom: json["twilio_from"],
+        speedToken: json["speed_token"],
+        speedFrom: json["speed_from"],
         smsSettingsUrl: json["sms_settings_url"],
         sendToParamName: json["send_to_param_name"],
         msgParamName: json["msg_param_name"],
@@ -2595,6 +2622,8 @@ class SmsSetting {
         "twilio_sid": twilioSid,
         "twilio_token": twilioToken,
         "twilio_from": twilioFrom,
+        "speed_token": speedToken,
+        "speed_from": speedFrom,
         "sms_settings_url": smsSettingsUrl,
         "send_to_param_name": sendToParamName,
         "msg_param_name": msgParamName,
@@ -2625,6 +2654,58 @@ class SmsSetting {
         "sms_settings_param_val9": smsSettingsParamVal9,
         "sms_settings_param_key10": smsSettingsParamKey10,
         "sms_settings_param_val10": smsSettingsParamVal10,
+      };
+}
+
+class StatusOrder {
+  int? id;
+  int? businessId;
+  String? value;
+  String? createdAt;
+  String? updatedAt;
+
+  StatusOrder({
+    this.id,
+    this.businessId,
+    this.value,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  StatusOrder copyWith({
+    int? id,
+    int? businessId,
+    String? value,
+    String? createdAt,
+    String? updatedAt,
+  }) =>
+      StatusOrder(
+        id: id ?? this.id,
+        businessId: businessId ?? this.businessId,
+        value: value ?? this.value,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+      );
+
+  factory StatusOrder.fromRawJson(String str) =>
+      StatusOrder.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory StatusOrder.fromJson(Map<String, dynamic> json) => StatusOrder(
+        id: json["id"],
+        businessId: json["business_id"],
+        value: json["value"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "business_id": businessId,
+        "value": value,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
       };
 }
 

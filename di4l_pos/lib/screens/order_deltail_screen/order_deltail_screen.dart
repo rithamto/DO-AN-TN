@@ -154,8 +154,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                       padding: const EdgeInsets.all(3),
                                       color: Colors.amber.shade100,
                                       child: Text(
-                                        widget.sellData.paymentStatus!
-                                            .toUpperCase(),
+                                        widget.sellData.paymentStatus!.tr,
                                         style:
                                             GlobalStyles.robotoRegular(context)
                                                 .copyWith(
@@ -215,7 +214,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                   border: Border.all(color: Colors.grey),
                                 ),
                                 child: Text(
-                                  'Copy invoice URL'.tr,
+                                  'Copy_invoice_URL'.tr,
                                   style: GlobalStyles.normalStyle.copyWith(
                                     fontSize: 14,
                                     color: GlobalColors.bgButton,
@@ -226,7 +225,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                           ],
                         ),
                         Text(
-                          widget.sellData.paymentStatus ?? 'customer_name'.tr,
+                          widget.sellData.paymentStatus!.tr,
                           style: GlobalStyles.robotoRegular(context).copyWith(
                             fontSize: 14,
                             color: GlobalColors.errorColor,
@@ -371,7 +370,9 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                 CustomRowText(
                                   title: 'gross_product'.tr,
                                   value: GlobalFormatter.formatNumber(
-                                      source: '${widget.sellData.finalTotal}'),
+                                      source:
+                                          // '${widget.sellData.finalTotal}'),
+                                          '${widget.sellData.sellLines![index].quantity}'),
                                   textColor: GlobalColors.kGreyTextColor,
                                 ),
                                 CustomRowText(
@@ -385,21 +386,20 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                   title: 'shipping_charges'.tr,
                                   value: GlobalFormatter.formatNumber(
                                       source:
-                                          '${widget.sellData.sellLines![index].unitPrice}'),
+                                          '${widget.sellData.shippingCharges}'),
                                   textColor: GlobalColors.kGreyTextColor,
                                 ),
                                 CustomRowText(
                                   title: 'discount_amount'.tr,
                                   value: GlobalFormatter.formatNumber(
                                       source:
-                                          '${widget.sellData.sellLines![index].unitPrice}'),
+                                          '${widget.sellData.discountAmount}'),
                                   textColor: GlobalColors.kGreyTextColor,
                                 ),
                                 CustomRowText(
                                   title: 'total_amount'.tr,
                                   value: GlobalFormatter.formatNumber(
-                                      source:
-                                          '${widget.sellData.sellLines![index].unitPrice}'),
+                                      source: '${widget.sellData.finalTotal}'),
                                   textColor: GlobalColors.kGreyTextColor,
                                   textColorNumber: GlobalColors.errorColor,
                                 ),

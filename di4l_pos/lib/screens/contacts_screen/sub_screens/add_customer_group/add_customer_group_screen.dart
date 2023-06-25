@@ -256,27 +256,27 @@ class _AddCustomerGroupScreenState extends State<AddCustomerGroupScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            side: const BorderSide(
-                                color: GlobalColors.primaryColor),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            backgroundColor: GlobalColors.primaryColor,
-                            fixedSize: Size(Get.width - 50, 45)),
-                        onPressed: () {
-                          _globalKey.currentContext!
-                              .read<AddCustomerGroupCubit>()
-                              .addCustomerGroup(
-                                name: _txtName.text.trim(),
-                                amount: _txtAmount.text.trim(),
-                                sellingPriceGroupId: _priceGroupId,
-                              );
-                        },
-                        child: const Text(
-                          'Tạo mới',
-                          style:
-                              TextStyle(fontSize: Dimensions.FONT_SIZE_LARGE),
-                        ))
+                      style: ElevatedButton.styleFrom(
+                          side: const BorderSide(
+                              color: GlobalColors.primaryColor),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          backgroundColor: GlobalColors.primaryColor,
+                          fixedSize: Size(Get.width - 50, 45)),
+                      onPressed: () {
+                        _globalKey.currentContext!
+                            .read<AddCustomerGroupCubit>()
+                            .addCustomerGroup(
+                              name: _txtName.text.trim(),
+                              amount: _txtAmount.text.trim(),
+                              sellingPriceGroupId: _priceGroupId,
+                            );
+                      },
+                      child: const Text(
+                        'Tạo mới',
+                        style: TextStyle(fontSize: Dimensions.FONT_SIZE_LARGE),
+                      ),
+                    )
                   ],
                 ),
               ),

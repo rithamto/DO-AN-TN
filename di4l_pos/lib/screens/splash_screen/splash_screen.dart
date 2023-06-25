@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> with AfterLayoutMixin {
 
   @override
   FutureOr<void> afterFirstLayout(BuildContext context) async {
-    final isSkip = await _appPrefs.isSkipOnboard();
+    // final isSkip = await _appPrefs.isSkipOnboard();
     final hasLoggedIn = await _appPrefs.hasLoggedIn();
     if (GetPlatform.isWeb) {
       if (hasLoggedIn) {
@@ -48,15 +48,15 @@ class _SplashScreenState extends State<SplashScreen> with AfterLayoutMixin {
               (route) => false,
             );
           } else {
-            if (isSkip) {
-              navigator!.pushNamedAndRemoveUntil(
-                  RouteGenerator.loginScreen, (route) => false);
-            } else {
-              navigator!.pushNamedAndRemoveUntil(
-                RouteGenerator.onboardScreen,
-                (route) => false,
-              );
-            }
+            // if (isSkip) {
+            navigator!.pushNamedAndRemoveUntil(
+                RouteGenerator.loginScreen, (route) => false);
+            // } else {
+            //   navigator!.pushNamedAndRemoveUntil(
+            //     RouteGenerator.onboardScreen,
+            //     (route) => false,
+            //   );
+            // }
           }
         },
       );
@@ -66,14 +66,11 @@ class _SplashScreenState extends State<SplashScreen> with AfterLayoutMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Image.asset(
-          GlobalImages.logoApp,
-          width: 200,
-          height: 200,
-          fit: BoxFit.contain,
-        ),
-      ),
-    );
+        body: SafeArea(
+            child: Image.asset(
+      GlobalImages.splashScreen,
+      width: MediaQuery.of(context).size.width,
+      fit: BoxFit.fill,
+    )));
   }
 }

@@ -26,11 +26,6 @@ class GlobalColors {
   static const Color greyColor = Color.fromARGB(255, 199, 207, 218);
   static const Color greenWhiteColor = Color.fromRGBO(181, 221, 197, 1);
   static const Color redColor = Color.fromARGB(255, 209, 61, 66);
-
-
-
-
-
   static Color buttonborder = HexColor('#eaeaec');
   static Color kGreenTextColor = HexColor('#0d873e');
 
@@ -41,7 +36,6 @@ class GlobalColors {
   static const Color appBar2 = Color(0xff0046d0);
   static const Color appBar3 = Color(0xff008bd0);
   static const Color appBar4 = Color(0xff00aed0);
-
   static Color getTextTitle(BuildContext context) {
     return Get.isDarkMode ? const Color(0xFFFFFFFF) : const Color(0xFF000743);
   }

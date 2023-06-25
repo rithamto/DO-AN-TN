@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
@@ -28,10 +30,11 @@ class CartCubit extends Cubit<CartState> {
       emit(CartState.addCart(
           data: state.data?.copyWith(
         status: StatusType.loaded,
-        listItemProduct: tableOrder.productsInCart,
+        listItemProduct: tableOrder.productsInCart.value,
       )));
-
-      await _appPrefs.saveCart(cartLines: ItemProduct.encode(tableOrder.productsInCart));
+      // await _appPrefs.removeCart();
+      // await _appPrefs.saveCart(
+      //     cartLines: ItemProduct.encode(tableOrder.productsInCart.value));
     } catch (error) {
       emit(
         CartState.status(
@@ -51,9 +54,11 @@ class CartCubit extends Cubit<CartState> {
       emit(CartState.getCart(
           data: state.data?.copyWith(
         status: StatusType.loaded,
-        listItemProduct: tableOrder.productsInCart,
+        listItemProduct: tableOrder.productsInCart.value,
       )));
-      await _appPrefs.saveCart(cartLines: ItemProduct.encode(tableOrder.productsInCart));
+      // await _appPrefs.removeCart();
+      // await _appPrefs.saveCart(
+      //     cartLines: ItemProduct.encode(tableOrder.productsInCart.value));
     } catch (error) {
       emit(
         CartState.status(
@@ -74,9 +79,11 @@ class CartCubit extends Cubit<CartState> {
       emit(CartState.removeProductAt(
           data: state.data?.copyWith(
         status: StatusType.loaded,
-        listItemProduct: tableOrder.productsInCart,
+        listItemProduct: tableOrder.productsInCart.value,
       )));
-      await _appPrefs.saveCart(cartLines: ItemProduct.encode(tableOrder.productsInCart));
+      // await _appPrefs.removeCart();
+      // await _appPrefs.saveCart(
+      //     cartLines: ItemProduct.encode(tableOrder.productsInCart.value));
     } catch (error) {
       emit(CartState.status(
           data: state.data?.copyWith(status: StatusType.error)));
@@ -90,15 +97,14 @@ class CartCubit extends Cubit<CartState> {
     try {
       emit(CartState.status(
           data: state.data?.copyWith(status: StatusType.loading)));
-      tableOrder.productsInCart.value = [];
-      tableOrder.amountCart.value = 0;
-      tableOrder.totalAmount.value = 0;
+      tableOrder.productsInCart
+          .removeRange(0, tableOrder.productsInCart.length);
       emit(CartState.removeAll(
           data: state.data?.copyWith(
         status: StatusType.loaded,
-        listItemProduct: tableOrder.productsInCart,
+        listItemProduct: tableOrder.productsInCart.value,
       )));
-      await _appPrefs.saveCart(cartLines: ItemProduct.encode(tableOrder.productsInCart));
+      await _appPrefs.removeCart();
     } catch (error) {
       emit(CartState.status(
           data: state.data?.copyWith(status: StatusType.error)));

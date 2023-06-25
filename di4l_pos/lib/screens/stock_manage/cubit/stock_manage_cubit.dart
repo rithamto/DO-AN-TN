@@ -24,10 +24,18 @@ class StockManageCubit extends Cubit<StockManageState> {
   Future<void> getReportStockManages() async {
     try {
       UIHelpers.showLoading();
-      final _response = await _dataRepository.getReportStockManage();
-      emit(StockManageState.getReportStockManages(
-          data:
-              state.data?.copyWith(reportStockManages: _response.data ?? [])));
+      emit(StockManageState.status(
+          data: state.data?.copyWith(status: StatusType.loading)));
+      final stockResponse = await _dataRepository.getReportStockManage();
+      emit(
+        StockManageState.getReportStockManages(
+          data: state.data?.copyWith(
+            reportStockManages: stockResponse.data ?? [],
+            reportStockManagesOriginal: stockResponse.data ?? [],
+            status: StatusType.loaded,
+          ),
+        ),
+      );
     } catch (error) {
       Helpers.handleErrorApp(error: error);
     } finally {
@@ -35,23 +43,32 @@ class StockManageCubit extends Cubit<StockManageState> {
     }
   }
 
-  Future<void> searchProduct({required String searchText}) async {
-    List<Product> productOriginal = [...state.data!.productsOriginal];
+  Future<void> searchProductStockReports({required String searchText}) async {
+    List<ReportStockData> reportStockOriginal = [
+      ...state.data!.reportStockManagesOriginal
+    ];
     emit(StockManageState.status(
         data: state.data?.copyWith(status: StatusType.loading)));
     if (searchText.isEmpty) {
-      emit(StockManageState.getReportStockManages(
+      emit(
+        StockManageState.getReportStockManages(
           data: state.data?.copyWith(
-              products: productOriginal, status: StatusType.loaded)));
+            reportStockManages: reportStockOriginal,
+            status: StatusType.loaded,
+          ),
+        ),
+      );
     } else {
       final searchTextVN = TiengViet.parse(searchText.toLowerCase());
-      final products = productOriginal
-          .where((Product element) =>
-              element.name!.toLowerCase().contains(searchTextVN))
+      final reportStockData = reportStockOriginal
+          .where(
+            (ReportStockData element) =>
+                element.product!.toLowerCase().contains(searchTextVN),
+          )
           .toList();
       emit(StockManageState.getReportStockManages(
-          data: state.data
-              ?.copyWith(products: products, status: StatusType.loaded)));
+          data: state.data?.copyWith(
+              reportStockManages: reportStockData, status: StatusType.loaded)));
     }
   }
 

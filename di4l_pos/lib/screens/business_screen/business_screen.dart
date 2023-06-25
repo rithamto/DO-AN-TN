@@ -160,6 +160,9 @@ class _BusinessSettingScreenState extends State<BusinessSettingScreen> {
                 customListTitle(
                   img: Icons.print,
                   title: 'printerSetting'.tr,
+                  onTap: () {
+                    navigator!.pushNamed(RouteGenerator.printerScreen);
+                  },
                 ),
                 // customListTitle(
                 //   img: Icons.cloud_upload,

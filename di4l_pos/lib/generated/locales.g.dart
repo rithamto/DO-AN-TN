@@ -12,6 +12,7 @@ class AppTranslation {
 class LocaleKeys {
   LocaleKeys._();
   static const welcome = 'welcome';
+  static const Copy_invoice_URL = 'Copy_invoice_URL';
   static const welcome_to = 'welcome_to';
   static const skip = 'skip';
   static const next = 'next';
@@ -500,6 +501,8 @@ class LocaleKeys {
   static const item_amount = 'item_amount';
   static const confirm = 'confirm';
   static const total_item = 'total_item';
+  static const no_description = 'no_description';
+  static const please_select_customer = 'please_select_customer';
   static const kitchen = 'kitchen';
   static const placed_at = 'placed_at';
   static const order_status = 'order_status';
@@ -587,6 +590,7 @@ class LocaleKeys {
   static const customerList = 'customerList';
   static const review_report = 'review_report';
   static const locationList = 'locationList';
+  static const location_lst = 'location_lst';
   static const message_confirm_delete_stockadjustment =
       'message_confirm_delete_stockadjustment';
   static const delete_stockadjustment_success =
@@ -893,6 +897,69 @@ class LocaleKeys {
   static const enter_minute = 'enter_minute';
   static const post = 'post';
   static const get = 'get';
+  static const status_order = 'status_order';
+  static const waiting = 'waiting';
+  static const approved = 'approved';
+  static const add_status_order = 'add_status_order';
+  static const Update_status_order = 'Update_status_order';
+  static const nexmo_key = 'nexmo_key';
+  static const nexmo_secret = 'nexmo_secret';
+  static const nexmo_from = 'nexmo_from';
+  static const twilio_sid = 'twilio_sid';
+  static const twilio_token = 'twilio_token';
+  static const twilio_from = 'twilio_from';
+  static const speed_token = 'speed_token';
+  static const speed_from = 'speed_from';
+  static const pending = 'pending';
+  static const in_transit = 'in_transit';
+  static const completed = 'completed';
+  static const add_stock_transfer_success = 'add_stock_transfer_success';
+  static const add_product_stock_success = 'add_product_stock_success';
+  static const leftover_quantity = 'leftover_quantity';
+  static const price_before_tax = 'price_before_tax';
+  static const total_price_before_tax = 'total_price_before_tax';
+  static const add_product_in_stock = 'add_product_in_stock';
+  static const normal = 'normal';
+  static const abnormal = 'abnormal';
+  static const manage_printer = 'manage_printer';
+  static const add_printer = 'add_printer';
+  static const printer_name = 'printer_name';
+  static const ip_address = 'ip_address';
+  static const char_per_line = 'char_per_line';
+  static const port = 'port';
+  static const connection_type = 'connection_type';
+  static const capability_profile = 'capability_profile';
+  static const add_printer_success = 'add_printer_success';
+  static const printer_updated_successfully = 'printer_updated_successfully';
+  static const some_field_is_empty = 'some_field_is_empty';
+  static const not_a_valid_number = 'not_a_valid_number';
+  static const not_a_valid_ip_address = 'not_a_valid_ip_address';
+  static const email_or_password_is_incorrect =
+      'email_or_password_is_incorrect';
+  static const delivery = 'delivery';
+  static const shipping_partner = 'shipping_partner';
+  static const text_intro_start = 'text_intro_start';
+  static const text_intro_end = 'text_intro_end';
+  static const text_intro_1 = 'text_intro_1';
+  static const text_intro_2 = 'text_intro_2';
+  static const text_intro_3 = 'text_intro_3';
+  static const not_connected_yet = 'not_connected_yet';
+  static const connected = 'connected';
+  static const text_partner = 'text_partner';
+  static const support_information = 'support_information';
+  static const connection_use = 'connection_use';
+  static const learn_more_about = 'learn_more_about';
+  static const account_token = 'account_token';
+  static const here = 'here';
+  static const see_instructions_to_get_token = 'see_instructions_to_get_token';
+  static const unit_code = 'unit_code';
+  static const partner_connection = 'partner_connection';
+  static const text_note = 'text_note';
+  static const text_note_1 = 'text_note_1';
+  static const choose_store = 'choose_store';
+  static const set_up_store_address = 'set_up_store_address';
+  static const account_information = 'account_information';
+  static const disconnect = 'disconnect';
   static const waiting_for_comfirmation = 'waiting_for_comfirmation';
   static const on_product_expiry = 'on_product_expiry';
   static const addIteamExpiry = 'addIteamExpiry';
@@ -942,6 +1009,7 @@ class LocaleKeys {
 class Locales {
   static const en = {
     'welcome': 'Welcome',
+    'Copy_invoice_URL': 'Copy invoice URL',
     'welcome_to': 'Welcome to',
     'skip': 'Skip',
     'next': 'Next',
@@ -1432,6 +1500,8 @@ class Locales {
     'item_amount': 'Food amount',
     'confirm': 'Order\'s confirm',
     'total_item': 'Total',
+    'no_description': 'No description.',
+    'please_select_customer': 'Please select customer.',
     'kitchen': 'Kitchen',
     'placed_at': 'Placed at',
     'order_status': 'Order Status',
@@ -1519,6 +1589,7 @@ class Locales {
     'customerList': 'Customer list',
     'review_report': 'Profit loss',
     'locationList': 'Location list',
+    'location_lst': 'List location',
     'message_confirm_delete_stockadjustment':
         'Are you sure, do you want Delete Stock Adjustment?',
     'delete_stockadjustment_success': 'Delete stock adjusment sucess',
@@ -1797,6 +1868,73 @@ class Locales {
     'enter_minute': 'Enter minute',
     'post': 'POST',
     'get': 'GET',
+    'status_order': 'Status Order',
+    'waiting': 'Waiting',
+    'approved': 'Approved',
+    'add_status_order': 'Add Status Order',
+    'Update_status_order': 'Update Status Order',
+    'nexmo_key': 'Nexmo Key',
+    'nexmo_secret': 'Nexmo Secret',
+    'nexmo_from': 'Nexmo From',
+    'twilio_sid': 'Twilio Account SID',
+    'twilio_token': 'Twilio Access Token',
+    'twilio_from': 'Twilio From',
+    'speed_token': 'Speed Access Token',
+    'speed_from': 'Speed From',
+    'pending': 'Pending',
+    'in_transit': 'In Transit',
+    'completed': 'Completed',
+    'add_stock_transfer_success': 'Add stock transfer success',
+    'add_product_stock_success': 'Add product to stock success',
+    'leftover_quantity': 'Leftover Quantity',
+    'price_before_tax': 'Price (Before tax)',
+    'total_price_before_tax': 'Total price (Before tax)',
+    'add_product_in_stock': 'Add product in stock',
+    'normal': 'Normal',
+    'abnormal': 'Abnormal',
+    'manage_printer': 'Manage printer',
+    'add_printer': 'Add printer',
+    'printer_name': 'Printer name',
+    'ip_address': 'IP address',
+    'char_per_line': 'Character per line',
+    'port': 'Port',
+    'connection_type': 'Connection type',
+    'capability_profile': 'Capability profile',
+    'add_printer_success': 'Add printer success',
+    'printer_updated_successfully': 'Printer updated successfully',
+    'some_field_is_empty': 'Some field is empty',
+    'not_a_valid_number': 'Not a valid number',
+    'not_a_valid_ip_address': 'Not a valid IP address',
+    'email_or_password_is_incorrect': 'Email or password is incorrect',
+    'delivery': 'Delivery',
+    'shipping_partner': 'Shipping Partner',
+    'text_intro_start': 'Di4LSell Express connects two-way with',
+    'text_intro_end': 'partner to help stores',
+    'text_intro_1':
+        'Automatically push order information, collection money... to partners.',
+    'text_intro_2':
+        'The delivery person will go through the store to collect the goods without you needing to contact..',
+    'text_intro_3': 'Quick update and order journey details.',
+    'not_connected_yet': 'Not connected yet',
+    'connected': 'Connected',
+    'text_partner':
+        'Professional delivery and collection solutions with more than 130 Post Offices spread across all parts of the country.',
+    'support_information': 'Support Information',
+    'connection_use': 'Instructions for connection and use',
+    'learn_more_about': 'Learn more about ',
+    'account_token': 'Account token ',
+    'here': 'Here',
+    'see_instructions_to_get_token': 'See instructions to get token',
+    'unit_code': 'Unit Code',
+    'partner_connection': 'Partner connection',
+    'text_note':
+        'If you have multiple stores (Pick up locations), you need to create additional corresponding stores on your account Giao hàng tiết kiệm to connect with Di4LSell Express. . See instructions for creating a store on ',
+    'text_note_1':
+        'Please link the Di4LSell Express branch with the warehouse on the system ',
+    'choose_store': 'Choose a store to connect',
+    'set_up_store_address': 'Set up store address',
+    'account_information': 'Account Information',
+    'disconnect': 'Disconnect',
   };
   static const vi = {
     'all': 'Tất cả',
@@ -2138,6 +2276,7 @@ class Locales {
     'transaction_date': 'Ngày giao dịch',
     'invoice_no': 'Hóa đơn số',
     'customer_name': 'Tên khách hàng',
+    'Copy_invoice_URL': 'Sao chép URL',
     'contact_number': 'Liên hệ',
     'location': 'Địa điểm',
     'payment_status': 'Tình trạng thanh toán',
@@ -2289,7 +2428,7 @@ class Locales {
     'general_information': 'Thông tin chung',
     'product_setting': 'Cài đặt sản phẩm',
     'table_order': 'Đặt món',
-    'items_price_food': 'Tổng cộng',
+    'items_price_food': 'Tổng tiền tạm tính',
     'discount_food': 'Giảm giá',
     'vat_tax_food': 'Thuế',
     'addons_food': 'Món thêm',
@@ -2325,6 +2464,8 @@ class Locales {
     'item_amount': 'Tổng số món',
     'confirm': 'Xác nhận đơn hàng',
     'total_item': 'Thành tiền',
+    'no_description': 'Không có mô tả.',
+    'please_select_customer': 'Hãy chọn khách hàng đặt đơn.',
     'create_transction': 'Tạo giao dịch thu chi',
     'kitchen': 'Phòng bếp',
     'placed_at': 'Đặt tại',
@@ -2511,6 +2652,7 @@ class Locales {
     'sell_payment': 'Thanh toán bán hàng',
     'expense_payment': 'Thanh toán chi phí',
     'business_location_prefix': 'Cài đặt chi nhánh',
+    'location_lst': 'Danh sách chi nhánh',
     'username_prefix': 'Tên đăng nhập',
     'subscription_prefix': 'Mã đăng ký',
     'draft_prefix': 'Nháp',
@@ -2696,5 +2838,71 @@ class Locales {
     'enter_minute': 'Enter minute',
     'post': 'POST',
     'get': 'GET',
+    'status_order': 'Trạng thái đơn hàng',
+    'waiting': 'Đang chờ duyệt',
+    'approved': 'Đã phê duyệt',
+    'add_status_order': 'Thêm trạng thái',
+    'Update_status_order': 'Cập nhật trạng thái',
+    'nexmo_key': 'Nexmo Key',
+    'nexmo_secret': 'Nexmo Secret',
+    'nexmo_from': 'Nexmo From',
+    'twilio_sid': 'Twilio Account SID',
+    'twilio_token': 'Twilio Access Token',
+    'twilio_from': 'Twilio From',
+    'speed_token': 'Speed Access Token',
+    'speed_from': 'Speed From',
+    'pending': 'Đang xử lý',
+    'in_transit': 'Đang chuyển tuyến',
+    'completed': 'Đã hoàn thành',
+    'add_stock_transfer_success': 'Thêm chuyển kho thành công',
+    'add_product_stock_success': 'Thêm hàng vào kho thành công',
+    'leftover_quantity': 'Số lượng còn lại',
+    'price_before_tax': 'Đơn giá (trước thuế)',
+    'total_price_before_tax': 'Tổng từng sản phẩm (trước thuế)',
+    'add_product_in_stock': 'Thêm hàng vào kho',
+    'normal': 'Bình thường',
+    'abnormal': 'Đột xuất',
+    'manage_printer': 'Quản lý máy in',
+    'add_printer': 'Thêm máy in',
+    'printer_name': 'Tên máy in',
+    'ip_address': 'Địa chỉ IP',
+    'char_per_line': 'Ký tự trên mỗi dòng',
+    'port': 'Cổng',
+    'connection_type': 'Kiểu kết nối',
+    'capability_profile': 'Tính năng máy in',
+    'add_printer_success': 'Thêm máy in thành công',
+    'printer_updated_successfully': 'Cập nhật máy in thành công',
+    'some_field_is_empty': '1 vài trường còn trống',
+    'not_a_valid_number': 'Không phải là số',
+    'not_a_valid_ip_address': 'Địa chỉ IP không hợp lệ',
+    'email_or_password_is_incorrect': 'Email hoặc mật khẩu không đúng',
+    'delivery': 'Vận chuyển',
+    'shipping_partner': 'Đối tác vận chuyển',
+    'text_intro_start': 'Di4L Sell Express kết nối 2 chiều với đối tác ',
+    'text_intro_end': 'giúp cửa hàng:',
+    'text_intro_1':
+        'Tự động đẩy thông tin đơn hàng, tiền thu hộ... sang đối tác.',
+    'text_intro_2': 'Shipper sẽ qua cửa hàng gom đơn mà bạn không cần liên hệ.',
+    'text_intro_3': 'Cập nhật nhanh chóng phí và chi tiết lịch trình đơn.',
+    'not_connected_yet': 'Chưa kết nối',
+    'connected': 'Đã kết nối',
+    'text_partner':
+        'Giải pháp giao hàng, thu hộ chuyên nghiệp với hơn 130 Bưu cục trải dài khắp mọi miền của đất nước.',
+    'support_information': 'Thông tin hỗ trợ',
+    'connection_use': 'Hướng dẫn kết nối và sử dụng',
+    'learn_more_about': 'Tìm hiểu thêm về ',
+    'here': 'Tại đây',
+    'see_instructions_to_get_token': 'Xem hướng dẫn lấy mã token ',
+    'unit_code': 'Mã đơn vị',
+    'partner_connection': 'Kết nối đối tác',
+    'account_token': 'Token tài khoản ',
+    'text_note':
+        'Nếu bạn có nhiều cửa hàng (Địa điểm lấy hàng), bạn cần tạo thêm các cửa hàng tương ứng trên tài khoản Giao hàng tiết kiệm để kết nối với Di4LSell Express. . Xem hướng dẫn tạo cửa hàng trên ',
+    'text_note_1':
+        'Vui lòng liên kết chi nhánh Di4LSell Express với kho hàng trên hệ thống ',
+    'choose_store': 'Chọn cửa hàng liên kết',
+    'set_up_store_address': 'Thiết lập địa chỉ',
+    'account_information': 'Thông tin tài khoản',
+    'disconnect': 'Ngừng kết nối',
   };
 }

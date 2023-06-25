@@ -28,6 +28,7 @@ class LoginCubit extends Cubit<LoginState> {
   /// Login
   void login({required String email, required String password}) async {
     try {
+      UIHelpers.showLoading();
       emit(LoginState.getError(data: state.data!.copyWith(error: '')));
       if (email.isEmpty) {
         emit(LoginState.getError(
@@ -42,6 +43,7 @@ class LoginCubit extends Cubit<LoginState> {
           emit(LoginState.getError(
               data: state.data!.copyWith(error: 'Success')));
           await _appPrefs.saveToken(tokenJson: response.toRawJson());
+          print(response.toRawJson());
         } else {
           emit(LoginState.getError(
               data: state.data!.copyWith(error: response.message)));
@@ -97,8 +99,7 @@ class LoginCubit extends Cubit<LoginState> {
           id: apple.email,
           email: apple.email,
           name: '${apple.givenName} ${apple.familyName}');
-      final tokenResponse =
-          await _dataRepository.loginSocial(request: request);
+      final tokenResponse = await _dataRepository.loginSocial(request: request);
       if (tokenResponse.success == true) {
         await _appPrefs.saveToken(tokenJson: tokenResponse.toRawJson());
         navigator!.pushNamedAndRemoveUntil(

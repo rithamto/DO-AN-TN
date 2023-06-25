@@ -22,7 +22,7 @@ class _TableOrderScreenState extends State<TableOrderScreen>
   @override
   FutureOr<void> afterFirstLayout(BuildContext context) async {
     tableOrder.productsInCart.value =
-        ItemProduct.decode(await _appPrefs.getCart() ?? "");
+        ItemProduct.decode((await _appPrefs.getCart()) ?? "");
     tableOrder.noteOrder.value = await _appPrefs.getNote() ?? "";
     tableOrder.selectedTable.value = await _appPrefs.getTable() ?? "";
     tableOrder.amountCart.value = 0;

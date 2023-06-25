@@ -29,8 +29,8 @@ class ByWeek extends StatefulWidget {
 
 class _ByWeekState extends State<ByWeek> with AfterLayoutMixin {
   // final ScrollController _scrollController = ScrollController();
-  final TextEditingController _txtDateStart = TextEditingController();
-  final TextEditingController _txtDateEnd = TextEditingController();
+  final TextEditingController _txtDateStart = TextEditingController(text: "");
+  final TextEditingController _txtDateEnd = TextEditingController(text: "");
   List<String> buttonList = [
     "today".tr,
     "yesterday".tr,
@@ -59,48 +59,56 @@ class _ByWeekState extends State<ByWeek> with AfterLayoutMixin {
     // var now = DateTime.now();
     // var today = DateFormat('yyyy-MM-dd').format(now);
     // context.read<SellReportCubit>().getProfitDay(formattedDate, today);
-    context.read<SellReportCubit>().getProfitDay("2021-04-17", "2023-04-17");
+    context.read<SellReportCubit>().getProfitDay(_txtDateStart.text, _txtDateEnd.text);
   }
-
-  // void setupScrollController(context) {
-  //   _scrollController.addListener(() {
-  //     if (_scrollController.position.atEdge) {
-  //       if (_scrollController.position.pixels != 0) {
-  //         BlocProvider.of<SellReportCubit>(context).getOrders();
-  //       }
-  //     }
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
     //  setupScrollController(context);
     return Scaffold(
         backgroundColor: GlobalColors.bgColor,
-        body: Container(
-          margin: const EdgeInsets.symmetric(vertical: 5),
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
           child: Column(
             children: [
               buildFilter(),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('orders'.tr),
-                    Text('order_details'.tr),
-                    Text('total_sale'.tr)
-                  ],
-                ),
-              ),
+              buildChart(),  
             ],
           ),
-        ),
-        bottomNavigationBar: buildBottomNavigationBar());
+          ),
+      );
   }
 
-  BlocBuilder<SellReportCubit, SellReportState> buildBottomNavigationBar() {
+  double count(List<double> lst){
+    for(var i = 0; i <= lst.length - 1; i = i + 1){
+      if(lst[i] < 0){
+        lst[i] = -lst[i];
+      }
+    }
+    return findMax(lst)/findMin(lst);
+  }
+
+  double findMax(List<double> lst){
+    double MAX = lst[0];
+    for(var i = 0; i <= lst.length - 1; i = i + 1){
+      if(MAX < lst[i]){
+        MAX = lst[i];
+      }
+    }
+    return MAX;
+  }
+
+  double findMin(List<double> lst){
+    double MIN = lst[0];
+    for(var i = 0; i <= lst.length - 1; i = i + 1){
+      if(MIN > lst[i]){
+        MIN = lst[i];
+      }
+    }
+    return MIN;
+  }
+
+  BlocBuilder<SellReportCubit, SellReportState> buildChart() {
     return BlocBuilder<SellReportCubit, SellReportState>(
       builder: (context, state) {
         final profitDay = state.data!.profitDay;
@@ -111,7 +119,10 @@ class _ByWeekState extends State<ByWeek> with AfterLayoutMixin {
         final friday = double.parse(profitDay?.friday ?? "0");
         final saturday = double.parse(profitDay?.saturday ?? "0");
         final sunday = double.parse(profitDay?.sunday ?? "0");
+        var lst = [monday, tuesday, wednesday, thursday, friday, saturday, sunday];
         return Container(
+          width: double.infinity,
+          height: 600,
           child: BarChart(
             BarChartData(
               barTouchData: barTouchData,
@@ -127,6 +138,7 @@ class _ByWeekState extends State<ByWeek> with AfterLayoutMixin {
                       gradient: _barsGradient,
                     )
                   ],
+                  groupVertically: true,
                   showingTooltipIndicators: [0],
                 ),
                 BarChartGroupData(
@@ -138,6 +150,7 @@ class _ByWeekState extends State<ByWeek> with AfterLayoutMixin {
                       gradient: _barsGradient,
                     )
                   ],
+                  groupVertically: true,
                   showingTooltipIndicators: [0],
                 ),
                 BarChartGroupData(
@@ -149,6 +162,7 @@ class _ByWeekState extends State<ByWeek> with AfterLayoutMixin {
                       gradient: _barsGradient,
                     )
                   ],
+                  groupVertically: true,
                   showingTooltipIndicators: [0],
                 ),
                 BarChartGroupData(
@@ -160,6 +174,7 @@ class _ByWeekState extends State<ByWeek> with AfterLayoutMixin {
                       gradient: _barsGradient,
                     )
                   ],
+                  groupVertically: true,
                   showingTooltipIndicators: [0],
                 ),
                 BarChartGroupData(
@@ -171,6 +186,7 @@ class _ByWeekState extends State<ByWeek> with AfterLayoutMixin {
                       gradient: _barsGradient,
                     )
                   ],
+                  groupVertically: true,
                   showingTooltipIndicators: [0],
                 ),
                 BarChartGroupData(
@@ -182,25 +198,26 @@ class _ByWeekState extends State<ByWeek> with AfterLayoutMixin {
                       gradient: _barsGradient,
                     )
                   ],
+                  groupVertically: true,
                   showingTooltipIndicators: [0],
                 ),
                 BarChartGroupData(
                   x: 6,
                   barRods: [
-                    BarChartRodData(
-
+                    BarChartRodData(                                    
                       color: GlobalColors.primaryColor,
                       toY: sunday,
                       gradient: _barsGradient,
                     )
                   ],
+                  groupVertically: true,
                   showingTooltipIndicators: [0],
                 ),
               ],
               gridData: FlGridData(show: false),
               alignment: BarChartAlignment.spaceAround,
-              maxY: 500000,
-              minY: -500000
+              maxY: findMax(lst) * 1.2,
+              minY: findMin(lst) * 1.2
             ),
           ),
         );
@@ -212,7 +229,8 @@ class _ByWeekState extends State<ByWeek> with AfterLayoutMixin {
     return Container(
         width: double.infinity,
         color: Colors.white,
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        margin: const EdgeInsets.only(top: 5, bottom: 100),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -220,9 +238,6 @@ class _ByWeekState extends State<ByWeek> with AfterLayoutMixin {
               height: 40,
               width: 40,
               child: TextButton(
-                // style: TextButton.styleFrom(
-                //   backgroundColor: Colors.grey.withOpacity(0.5),
-                // ),
                 child: const Icon(
                   Icons.calendar_month_outlined,
                   color: Colors.black,
@@ -496,46 +511,45 @@ class _ByWeekState extends State<ByWeek> with AfterLayoutMixin {
               DateFormat('yyyy-MM-dd').format(DateTime(now.year + 1, 1, 0));
 
           if (value == 'all') {
+            setState(() {            
             _txtDateStart.text = '';
             _txtDateEnd.text = '';
-            setState(() {
               titleButton = "all".tr;
             });
-          } else if (value == 'today') {
+          } else if (value == 'today'){
+            setState(() { 
             _txtDateStart.text = today;
             _txtDateEnd.text = today;
-
-            setState(() {
               titleButton = "today".tr;
             });
-          } else if (value == 'yesterday') {
+          } else if (value == 'yesterday'){
+            setState(() { 
             _txtDateStart.text = yesterday;
             _txtDateEnd.text = yesterday;
-            setState(() {
               titleButton = "yesterday".tr;
             });
           } else if (value == 'this_month') {
+            setState(() {
             _txtDateStart.text = thisMonthStart;
             _txtDateEnd.text = thisMonthEnd;
-            setState(() {
               titleButton = "this_month".tr;
             });
           } else if (value == 'last_month') {
+            setState(() {
             _txtDateStart.text = lastMonthStart;
             _txtDateEnd.text = lastMonthEnd;
-            setState(() {
               titleButton = "last_month".tr;
             });
           } else if (value == 'last_30_days') {
+            setState(() {
             _txtDateStart.text = last30Day;
             _txtDateEnd.text = today;
-            setState(() {
               titleButton = "last_30_days".tr;
             });
           } else if (value == 'this_year') {
+            setState(() {
             _txtDateStart.text = thisYearStart;
             _txtDateEnd.text = thisYearEnd;
-            setState(() {
               titleButton = "this_year".tr;
             });
           }
@@ -581,8 +595,7 @@ class _ByWeekState extends State<ByWeek> with AfterLayoutMixin {
             onPressed: () {
               context
                   .read<SellReportCubit>()
-                  .getOrdersByFilter(
-                      startDate: _txtDateStart.text, endDate: _txtDateEnd.text)
+                  .getProfitDay(_txtDateStart.text, _txtDateEnd.text)
                   .whenComplete(() => Navigator.pop(context));
             },
             child: Text(
@@ -594,79 +607,6 @@ class _ByWeekState extends State<ByWeek> with AfterLayoutMixin {
       ),
     );
   }
-
-  List<BarChartGroupData> get barGroups => [
-        BarChartGroupData(
-          x: 0,
-          barRods: [
-            BarChartRodData(
-              toY: 2000000,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 1,
-          barRods: [
-            BarChartRodData(
-              toY: 10,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 2,
-          barRods: [
-            BarChartRodData(
-              toY: 14,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 3,
-          barRods: [
-            BarChartRodData(
-              toY: 15,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 4,
-          barRods: [
-            BarChartRodData(
-              toY: 13,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 5,
-          barRods: [
-            BarChartRodData(
-              toY: 10,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 6,
-          barRods: [
-            BarChartRodData(
-              toY: 16,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-      ];
 }
 
   FlBorderData get borderData => FlBorderData(
